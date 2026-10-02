@@ -1,58 +1,38 @@
+import type { CompteSummary } from './compte.model';
+
 export interface CreateClient {
-
-
-
-Cin: string;
-Nom: string;
-Prenom: string;
-DateNaissance?: Date;
-Email?: string;
-Telephone: string;
-Adresse?: string;
-DateCreation: Date;
-
-
+  cin: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string | null;
+  email: string | null;
+  telephone: string;
+  adresse: string | null;
 }
+
 export interface Client {
-Id: number;
-
-Cin: string;
-Nom: string;
-Prenom: string;
-DateNaissance?: Date;
-Email?: string;
-Telephone: string;
-Adresse?: string;
-DateCreation: Date;
-IsActive: boolean;
-
+  id: number;
+  cin: string;
+  nom: string;
+  prenom: string;
+  dateNaissance: string | null;
+  email: string | null;
+  telephone: string;
+  adresse: string | null;
+  dateCreation: string;
+  isActive: boolean;
 }
+
 export interface UpdateClient {
-
-
-Cin: string;
-Nom: string;
-Prenom: string;
-DateNaissance?: Date;
-Email?: string;
-Telephone: string;
-Adresse?: string;
-DateCreation: Date;
-IsActive: boolean;
+  nom: string;
+  prenom: string;
+  dateNaissance: string | null;
+  email: string | null;
+  telephone: string;
+  adresse: string | null;
+  isActive: boolean;
 }
-export interface ClientList {}
-export interface ClientDetails {
-  Id: number;
 
-Cin: string;
-Nom: string;
-Prenom: string;
-DateNaissance?: Date;
-Email?: string;
-Telephone: string;
-Adresse?: string;
-DateCreation: Date;
-IsActive: boolean;
-//     public List<Comptes.CompteSummaryDto> Comptes { get; set; } = [];
-
+export interface ClientDetails extends Client {
+  comptes: CompteSummary[];
 }
