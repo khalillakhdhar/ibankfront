@@ -1,0 +1,8 @@
+header { min-height: 4.5rem; display: flex; align-items: center; justify-content: flex-end; gap: 1rem; padding: .8rem clamp(1rem, 3vw, 2.5rem); border-bottom: 1px solid var(--border); background: var(--paper); }
+.menu { display: none; margin-right: auto; }
+.identity { display: flex; align-items: center; gap: .7rem; }
+.identity > span:last-child { display: grid; font-size: .82rem; }
+.identity small { color: var(--muted); }
+.avatar { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border-radius: 50%; background: var(--copper-soft); color: var(--copper-dark); font-weight: 800; }
+.logout, .menu { border: 1px solid var(--border); background: transparent; padding: .6rem .8rem; color: var(--ink); border-radius: .3rem; }
+@media(max-width: 860px) { .menu { display: inline-block; } }

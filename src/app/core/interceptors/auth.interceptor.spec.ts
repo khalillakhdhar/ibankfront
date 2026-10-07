@@ -1,10 +1,15 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { API_BASE_URL } from '../config/api.config';
 import { authInterceptor } from './auth.interceptor';
 import { SessionStorageService } from '../services/session-storage.service';
 import { HttpClient } from '@angular/common/http';
+import { provideRouter, Router } from '@angular/router';
+
+@Component({ template: '' })
+class TestLogin {}
 
 describe('authInterceptor', () => {
   const apiUrl = 'https://bank.135-125-182-42.nip.io/api';
@@ -19,6 +24,7 @@ describe('authInterceptor', () => {
         { provide: API_BASE_URL, useValue: apiUrl },
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
+        provideRouter([{ path: 'login', component: TestLogin }]),
       ],
     });
     http = TestBed.inject(HttpClient);
@@ -53,12 +59,14 @@ describe('authInterceptor', () => {
     request.flush({});
   });
 
-  it('clears the session after an API 401', () => {
+  it('clears the session and redirects to login after an API 401', async () => {
     http.get(`${apiUrl}/Clients`).subscribe({ error: () => undefined });
     controller.expectOne(`${apiUrl}/Clients`).flush(
       { message: 'Non autorisé.' },
       { status: 401, statusText: 'Unauthorized' },
     );
+    await new Promise((resolve) => setTimeout(resolve, 0));
     expect(session.read()).toBeNull();
+    expect(TestBed.inject(Router).url).toBe('/login');
   });
 });

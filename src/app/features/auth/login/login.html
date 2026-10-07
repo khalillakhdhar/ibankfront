@@ -1,0 +1,38 @@
+<main class="login-page">
+  <section class="brand-panel" aria-label="Présentation iBank">
+    <a class="brand" href="/" aria-label="iBank accueil"><span>iB</span> iBank</a>
+    <div class="brand-copy">
+      <p class="eyebrow">GESTION BANCAIRE</p>
+      <h1>La précision au service de chaque opération.</h1>
+      <p>Un espace de travail clair pour accompagner vos clients, gérer leurs comptes et sécuriser leurs transactions.</p>
+    </div>
+    <p class="training-note">Application pédagogique de formation</p>
+  </section>
+
+  <section class="form-panel">
+    <div class="login-card">
+      <p class="eyebrow">ESPACE COLLABORATEUR</p>
+      <h2>Bienvenue</h2>
+      <p class="intro">Connectez-vous avec votre compte Agent ou Administrateur.</p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <label for="email">Adresse e-mail</label>
+        <input id="email" type="email" formControlName="email" autocomplete="username" placeholder="nom@banque.tn">
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <p class="field-error">Saisissez une adresse e-mail valide.</p>
+        }
+
+        <label for="password">Mot de passe</label>
+        <input id="password" type="password" formControlName="password" autocomplete="current-password">
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <p class="field-error">Le mot de passe est requis.</p>
+        }
+
+        @if (error()) { <p class="alert" role="alert">{{ error() }}</p> }
+        <button class="button primary" type="submit" [disabled]="submitting()">
+          {{ submitting() ? 'Connexion…' : 'Se connecter' }}
+        </button>
+      </form>
+    </div>
+  </section>
+</main>

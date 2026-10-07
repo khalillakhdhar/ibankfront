@@ -1,0 +1,8 @@
+<header>
+  <button class="menu" type="button" aria-label="Ouvrir la navigation" (click)="menuToggle.emit()">☰</button>
+  <div class="identity">
+    <span class="avatar">{{ user()?.prenom?.charAt(0) }}{{ user()?.nom?.charAt(0) }}</span>
+    <span><strong>{{ user()?.prenom }} {{ user()?.nom }}</strong><small>{{ user()?.roles?.join(' · ') }}</small></span>
+  </div>
+  <button class="logout" type="button" (click)="logoutRequest.emit()">Déconnexion</button>
+</header>

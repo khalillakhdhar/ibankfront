@@ -1,0 +1,20 @@
+:host { display: block; min-height: 100dvh; }
+.login-page { min-height: 100dvh; display: grid; grid-template-columns: minmax(320px, 1fr) minmax(420px, 1.1fr); }
+.brand-panel { background: var(--ink); color: var(--ivory); padding: 3rem clamp(2rem, 6vw, 6rem); display: flex; flex-direction: column; justify-content: space-between; }
+.brand { color: inherit; text-decoration: none; font-size: 1.25rem; font-weight: 700; display: inline-flex; align-items: center; gap: .75rem; }
+.brand span { display: grid; place-items: center; width: 2.5rem; height: 2.5rem; background: var(--copper); border-radius: .35rem; }
+.brand-copy { max-width: 34rem; }
+h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1.02; margin: .7rem 0 1.5rem; font-weight: 500; }
+.brand-copy > p:last-child, .training-note { color: #d2c7bb; line-height: 1.7; }
+.form-panel { display: grid; place-items: center; padding: 2rem; background: var(--ivory); }
+.login-card { width: min(100%, 28rem); }
+h2 { font: 500 2.5rem/1.1 var(--font-display); margin: .5rem 0; }
+.intro { color: var(--muted); margin-bottom: 2rem; }
+form { display: grid; gap: .65rem; }
+label { font-size: .85rem; font-weight: 700; margin-top: .5rem; }
+input { width: 100%; border: 1px solid var(--border); background: var(--paper); padding: .9rem 1rem; border-radius: .35rem; color: var(--ink); }
+input:focus { outline: 3px solid color-mix(in srgb, var(--copper) 24%, transparent); border-color: var(--copper); }
+.field-error, .alert { color: var(--danger); font-size: .82rem; margin: 0; }
+.alert { padding: .8rem; background: #fff1ed; border-left: 3px solid var(--danger); }
+.button { margin-top: 1rem; }
+@media (max-width: 760px) { .login-page { grid-template-columns: 1fr; } .brand-panel { min-height: 16rem; padding: 2rem; } .brand-copy h1 { font-size: 2.2rem; } .training-note, .brand-copy > p:last-child { display: none; } }

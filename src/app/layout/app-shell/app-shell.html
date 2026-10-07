@@ -1,0 +1,7 @@
+<div class="shell">
+  <app-sidebar [open]="menuOpen()" [isAdmin]="isAdmin()" (closeMenu)="closeMenu()" />
+  <div class="workspace">
+    <app-header [user]="user()" (menuToggle)="toggleMenu()" (logoutRequest)="logout()" />
+    <main class="content"><router-outlet /></main>
+  </div>
+</div>
