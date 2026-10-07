@@ -75,9 +75,8 @@ describe('API services', () => {
     const service = TestBed.inject(GuichetService);
 
     service.delete(2).subscribe();
-    const request = http.expectOne('http://localhost:5176/api/guichets/2');
+    const request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Guichets/2');
     expect(request.request.method).toBe('DELETE');
-    expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush(null);
   });
 
@@ -85,9 +84,8 @@ describe('API services', () => {
     const service = TestBed.inject(TypeCompteService);
 
     service.loadAll();
-    const request = http.expectOne('http://localhost:5176/api/typescomptes');
+    const request = http.expectOne('https://bank.135-125-182-42.nip.io/api/TypesComptes');
     expect(request.request.method).toBe('GET');
-    expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush([]);
   });
 

@@ -1,0 +1,1 @@
+header{display:flex;justify-content:space-between;align-items:end}h1{font:500 3rem var(--font-display)}header a{text-decoration:none}.table{overflow:auto;background:var(--paper)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:1rem;border-bottom:1px solid var(--border)}td a{color:var(--copper-dark)}td button{border:0;background:none;color:var(--danger)}
