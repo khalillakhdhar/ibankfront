@@ -2,11 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { Client, ClientDetails, CreateClient, UpdateClient } from '../models/client.model';
+import { API_BASE_URL } from '../core/config/api.config';
+import { ApiErrorService } from '../core/services/api-error.service';
 
 @Injectable({ providedIn: 'root' })
 export class ClientService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://localhost:5176/api/clients';
+  private readonly baseUrl = `${inject(API_BASE_URL)}/Clients`;
+  private readonly apiError = inject(ApiErrorService);
   private readonly clientsSignal = signal<Client[]>([]);
   private readonly loadingSignal = signal(false);
   private readonly errorSignal = signal<string | null>(null);
@@ -85,7 +88,7 @@ export class ClientService {
   }
 
   private handleError(error: { message?: string }, fallback: string) {
-    this.errorSignal.set(error.message || fallback);
+    this.errorSignal.set(this.apiError.message(error, fallback));
     return throwError(() => error);
   }
 }

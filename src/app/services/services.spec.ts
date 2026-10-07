@@ -19,19 +19,39 @@ describe('API services', () => {
 
   afterEach(() => http.verify());
 
-  it('maps client operations to the clients controller without authorization', () => {
+  it('maps every client operation to the deployed clients controller', () => {
     const service = TestBed.inject(ClientService);
+    const client = { id: 1, cin: '12345678', nom: 'Ben Salah', prenom: 'Amira', dateNaissance: null, email: null, telephone: '20000000', adresse: null, dateCreation: '', isActive: true };
 
     service.loadAll();
-    let request = http.expectOne('http://localhost:5176/api/clients');
+    let request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients');
     expect(request.request.method).toBe('GET');
-    expect(request.request.headers.has('Authorization')).toBe(false);
-    request.flush([]);
+    request.flush([client]);
+    expect(service.clients()).toEqual([client]);
 
-    service.search('Doe');
-    request = http.expectOne('http://localhost:5176/api/clients/search?term=Doe');
+    service.search('Ben Salah');
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients/search?term=Ben%20Salah');
     expect(request.request.method).toBe('GET');
-    request.flush([]);
+    request.flush([client]);
+
+    service.loadById(1);
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients/1');
+    request.flush({ ...client, comptes: [] });
+
+    service.create({ cin: client.cin, nom: client.nom, prenom: client.prenom, dateNaissance: null, email: null, telephone: client.telephone, adresse: null }).subscribe();
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients');
+    expect(request.request.method).toBe('POST');
+    request.flush(client);
+
+    service.update(1, { nom: client.nom, prenom: client.prenom, dateNaissance: null, email: null, telephone: client.telephone, adresse: null, isActive: false }).subscribe();
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients/1');
+    expect(request.request.method).toBe('PUT');
+    request.flush(null);
+
+    service.delete(1).subscribe();
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Clients/1');
+    expect(request.request.method).toBe('DELETE');
+    request.flush(null);
   });
 
   it('maps account operations to the comptes controller', () => {

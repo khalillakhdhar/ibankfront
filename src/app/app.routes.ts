@@ -13,6 +13,10 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then((module) => module.Dashboard) },
+      { path: 'clients', loadComponent: () => import('./features/clients/client-list/client-list').then((m) => m.ClientList) },
+      { path: 'clients/new', loadComponent: () => import('./features/clients/client-form/client-form').then((m) => m.ClientForm) },
+      { path: 'clients/:id/edit', loadComponent: () => import('./features/clients/client-form/client-form').then((m) => m.ClientForm) },
+      { path: 'clients/:id', loadComponent: () => import('./features/clients/client-detail/client-detail').then((m) => m.ClientDetail) },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
