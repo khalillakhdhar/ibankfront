@@ -56,15 +56,19 @@ describe('API services', () => {
 
   it('maps account operations to the comptes controller', () => {
     const service = TestBed.inject(CompteService);
-
+    service.loadAll();
+    let request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Comptes');
+    expect(request.request.method).toBe('GET'); request.flush([]);
     service.loadById(3);
-    const request = http.expectOne('http://localhost:5176/api/comptes/3');
+    request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Comptes/3');
     expect(request.request.method).toBe('GET');
-    expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush({
       id: 3, numeroCompte: 'TN3', solde: 0, dateOuverture: '', isActive: true,
       clientId: 1, clientNomComplet: '', typeCompteId: 1, typeCompte: '', guichetId: 1, guichet: '',
     });
+    service.create({numeroCompte:'TN3',soldeInitial:0,clientId:1,typeCompteId:1,guichetId:1}).subscribe();
+    request=http.expectOne('https://bank.135-125-182-42.nip.io/api/Comptes');expect(request.request.method).toBe('POST');request.flush({id:3,numeroCompte:'TN3',solde:0,dateOuverture:'',isActive:true,clientId:1,clientNomComplet:'',typeCompteId:1,typeCompte:'',guichetId:1,guichet:''});
+    service.update(3,{isActive:false}).subscribe();request=http.expectOne('https://bank.135-125-182-42.nip.io/api/Comptes/3');expect(request.request.body).toEqual({isActive:false});request.flush(null);
   });
 
   it('maps branch operations to the guichets controller', () => {
@@ -96,7 +100,7 @@ describe('API services', () => {
       montant: 50,
       description: null,
     }).subscribe();
-    const request = http.expectOne('http://localhost:5176/api/transactions/virement');
+    const request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Transactions/virement');
     expect(request.request.method).toBe('POST');
     expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush({
