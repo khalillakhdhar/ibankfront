@@ -12,7 +12,7 @@ export const routes: Routes = [
     loadComponent: () => import('./layout/app-shell/app-shell').then((module) => module.AppShell),
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-      { path: 'dashboard', children: [] },
+      { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then((module) => module.Dashboard) },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
