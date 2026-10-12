@@ -1,0 +1,62 @@
+<style>
+  .bank-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:22px; }
+  .bank-choice { border:2px solid #dbe3ea; border-radius:18px; overflow:hidden; background:#fff; color:#17212b; box-shadow:0 12px 32px rgba(23,33,43,.08); transition:.2s ease; }
+  .bank-choice:hover { transform:translateY(-3px); border-color:#678096; }
+  .bank-choice.selected { border-color:#146b5d; box-shadow:0 0 0 4px rgba(20,107,93,.14); }
+  .bank-screen { min-height:360px; display:grid; grid-template-columns:62px 1fr; background:var(--screen,#f4f7f8); }
+  .bank-side { padding:18px 12px; background:var(--nav,#102f35); color:white; display:flex; flex-direction:column; gap:18px; align-items:center; }
+  .bank-logo { width:32px;height:32px;border-radius:10px;background:var(--accent,#42c3a6);display:grid;place-items:center;font-weight:800; }
+  .bank-dot { width:24px;height:24px;border-radius:8px;background:rgba(255,255,255,.12); }
+  .bank-dot.active { background:var(--accent,#42c3a6); }
+  .bank-main { padding:20px; }
+  .bank-top { display:flex;justify-content:space-between;align-items:center;margin-bottom:20px; }
+  .bank-title { font-size:15px;font-weight:800; }
+  .bank-avatar { width:30px;height:30px;border-radius:50%;background:var(--accent,#42c3a6); }
+  .bank-stats { display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px; }
+  .bank-stat { padding:12px;border-radius:12px;background:var(--card,#fff);box-shadow:0 3px 12px rgba(0,0,0,.06); }
+  .bank-stat small { display:block;color:#71808d;font-size:8px;margin-bottom:7px; }
+  .bank-stat strong { font-size:16px; }
+  .bank-table { background:var(--card,#fff);border-radius:14px;padding:14px; }
+  .bank-row { height:25px;border-bottom:1px solid #e6ecef;display:grid;grid-template-columns:1.2fr 1fr .7fr;align-items:center;font-size:8px;color:#64727e; }
+  .bank-row.head { color:#263640;font-weight:800; }
+  .bank-pill { display:inline-block;width:34px;height:10px;border-radius:99px;background:var(--soft,#d9f4ec); }
+  .choice-copy { padding:16px 17px 18px; }
+  .choice-copy h3 { margin:0 0 6px;font-size:17px; }
+  .choice-copy p { margin:0;color:#65727d;font-size:13px;line-height:1.45; }
+  .option-b { --nav:#19213b;--accent:#6978ed;--screen:#f7f7fb;--soft:#e7e9ff; }
+  .option-b .bank-screen { grid-template-columns:86px 1fr; }
+  .option-b .bank-side { border-radius:0 22px 22px 0; }
+  .option-b .bank-stat,.option-b .bank-table { border:1px solid #e5e7f1;box-shadow:none; }
+  .option-c { --nav:#f1ede3;--accent:#c8753d;--screen:#fbf8f2;--card:#fffdf8;--soft:#f8dfcf; }
+  .option-c .bank-side { color:#3d352e;border-right:1px solid #ddd4c4; }
+  .option-c .bank-dot { background:#ddd4c4; }
+  .option-c .bank-dot.active { background:#c8753d; }
+  .option-c .bank-stat,.option-c .bank-table { border-radius:3px;box-shadow:none;border:1px solid #e3dbcf; }
+  @media(max-width:850px){.bank-options{grid-template-columns:1fr}.bank-screen{min-height:300px}}
+</style>
+
+<h2>Quelle direction visuelle convient à iBank ?</h2>
+<p class="subtitle">Les trois propositions gardent la même structure fonctionnelle : navigation latérale, indicateurs, recherche, tableaux et actions métier.</p>
+
+<div class="bank-options">
+  <article class="bank-choice option-a" data-choice="a" onclick="toggleSelect(this)">
+    <div class="bank-screen">
+      <aside class="bank-side"><div class="bank-logo">iB</div><div class="bank-dot active"></div><div class="bank-dot"></div><div class="bank-dot"></div><div class="bank-dot"></div></aside>
+      <main class="bank-main"><div class="bank-top"><div class="bank-title">Vue d’ensemble</div><div class="bank-avatar"></div></div><div class="bank-stats"><div class="bank-stat"><small>CLIENTS ACTIFS</small><strong>1 248</strong></div><div class="bank-stat"><small>ENCOURS</small><strong>2,4 M</strong></div><div class="bank-stat"><small>OPÉRATIONS</small><strong>386</strong></div></div><div class="bank-table"><div class="bank-row head"><span>Client</span><span>Compte</span><span>Statut</span></div><div class="bank-row"><span>Amira Ben Salah</span><span>TN59 •••• 8471</span><span class="bank-pill"></span></div><div class="bank-row"><span>Mehdi Trabelsi</span><span>TN42 •••• 1290</span><span class="bank-pill"></span></div><div class="bank-row"><span>Inès Gharbi</span><span>TN18 •••• 9042</span><span class="bank-pill"></span></div></div></main>
+    </div><div class="choice-copy"><h3>A — Banque moderne</h3><p>Vert profond, surfaces aérées et hiérarchie très lisible. Chaleureux sans perdre le sérieux bancaire.</p></div>
+  </article>
+
+  <article class="bank-choice option-b" data-choice="b" onclick="toggleSelect(this)">
+    <div class="bank-screen">
+      <aside class="bank-side"><div class="bank-logo">iB</div><div class="bank-dot active"></div><div class="bank-dot"></div><div class="bank-dot"></div><div class="bank-dot"></div></aside>
+      <main class="bank-main"><div class="bank-top"><div class="bank-title">Tableau de bord</div><div class="bank-avatar"></div></div><div class="bank-stats"><div class="bank-stat"><small>CLIENTS ACTIFS</small><strong>1 248</strong></div><div class="bank-stat"><small>ENCOURS</small><strong>2,4 M</strong></div><div class="bank-stat"><small>OPÉRATIONS</small><strong>386</strong></div></div><div class="bank-table"><div class="bank-row head"><span>Client</span><span>Compte</span><span>Statut</span></div><div class="bank-row"><span>Amira Ben Salah</span><span>TN59 •••• 8471</span><span class="bank-pill"></span></div><div class="bank-row"><span>Mehdi Trabelsi</span><span>TN42 •••• 1290</span><span class="bank-pill"></span></div><div class="bank-row"><span>Inès Gharbi</span><span>TN18 •••• 9042</span><span class="bank-pill"></span></div></div></main>
+    </div><div class="choice-copy"><h3>B — SaaS analytique</h3><p>Bleu indigo, grille dense et efficace. Plus technique, idéal pour un usage intensif par les agents.</p></div>
+  </article>
+
+  <article class="bank-choice option-c" data-choice="c" onclick="toggleSelect(this)">
+    <div class="bank-screen">
+      <aside class="bank-side"><div class="bank-logo">iB</div><div class="bank-dot active"></div><div class="bank-dot"></div><div class="bank-dot"></div><div class="bank-dot"></div></aside>
+      <main class="bank-main"><div class="bank-top"><div class="bank-title">Espace opérations</div><div class="bank-avatar"></div></div><div class="bank-stats"><div class="bank-stat"><small>CLIENTS ACTIFS</small><strong>1 248</strong></div><div class="bank-stat"><small>ENCOURS</small><strong>2,4 M</strong></div><div class="bank-stat"><small>OPÉRATIONS</small><strong>386</strong></div></div><div class="bank-table"><div class="bank-row head"><span>Client</span><span>Compte</span><span>Statut</span></div><div class="bank-row"><span>Amira Ben Salah</span><span>TN59 •••• 8471</span><span class="bank-pill"></span></div><div class="bank-row"><span>Mehdi Trabelsi</span><span>TN42 •••• 1290</span><span class="bank-pill"></span></div><div class="bank-row"><span>Inès Gharbi</span><span>TN18 •••• 9042</span><span class="bank-pill"></span></div></div></main>
+    </div><div class="choice-copy"><h3>C — Institution élégante</h3><p>Ivoire et cuivre, lignes sobres et éditoriales. Une identité plus distinctive et premium.</p></div>
+  </article>
+</div>

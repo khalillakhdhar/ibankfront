@@ -1,0 +1,33 @@
+<style>
+  .flow-wrap{max-width:1050px;margin:0 auto;color:#352f29}.flow-head{display:flex;align-items:center;justify-content:center;margin:20px 0 30px}.flow-node{background:#fffdf8;border:1px solid #ded5c9;border-radius:8px;padding:14px 16px;box-shadow:0 5px 18px rgba(64,48,34,.06)}.flow-login{border-top:4px solid #bd6b37;text-align:center;min-width:240px}.flow-arrow{text-align:center;color:#bd6b37;font-size:24px;line-height:1;margin:8px}.flow-shell{background:#f7f1e7;border:1px solid #d6c8b8;padding:18px;border-radius:12px}.flow-shell-title{text-align:center;font-weight:800;margin-bottom:18px}.flow-cols{display:grid;grid-template-columns:1fr 1.45fr;gap:18px}.flow-role{padding:16px;border-radius:9px}.flow-role.agent{background:#fff}.flow-role.admin{background:#342f2b;color:#fff}.flow-role h3{margin:0 0 13px;font-size:17px}.flow-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.flow-item{padding:11px;border-radius:6px;border:1px solid #e5ddd3;background:#fffdf8;color:#3a332d}.admin .flow-item{background:#433c36;border-color:#5a5048;color:#fff}.flow-item strong{display:block;font-size:13px;margin-bottom:3px}.flow-item span{font-size:11px;color:#82756a}.admin .flow-item span{color:#cfc3b9}.flow-shared{margin-top:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.flow-state{font-size:11px;text-align:center;background:#efe5d8;padding:9px;border-radius:5px}.flow-note{margin-top:16px;font-size:12px;color:#71665d;text-align:center}@media(max-width:760px){.flow-cols{grid-template-columns:1fr}.flow-shared{grid-template-columns:repeat(2,1fr)}.flow-grid{grid-template-columns:1fr}}
+</style>
+<div class="flow-wrap">
+  <h2>Parcours et droits de l’application</h2>
+  <p class="subtitle">Aucune donnée fictive : chaque écran est alimenté uniquement par l’API déployée.</p>
+  <div class="flow-head"><div><div class="flow-node flow-login"><strong>Connexion</strong><br><small>Email + mot de passe</small></div><div class="flow-arrow">↓</div></div></div>
+  <section class="flow-shell">
+    <div class="flow-shell-title">Shell authentifié · navigation selon le rôle</div>
+    <div class="flow-cols">
+      <div class="flow-role agent">
+        <h3>Agent</h3>
+        <div class="flow-grid">
+          <div class="flow-item"><strong>Tableau de bord</strong><span>Indicateurs réels et raccourcis</span></div>
+          <div class="flow-item"><strong>Clients</strong><span>Liste, recherche, fiche, formulaire</span></div>
+          <div class="flow-item"><strong>Comptes</strong><span>Liste, ouverture, fiche, état</span></div>
+          <div class="flow-item"><strong>Transactions</strong><span>Dépôt, retrait, virement, historique</span></div>
+        </div>
+      </div>
+      <div class="flow-role admin">
+        <h3>Admin · accès Agent + administration</h3>
+        <div class="flow-grid">
+          <div class="flow-item"><strong>Guichets</strong><span>Liste, création, modification, désactivation</span></div>
+          <div class="flow-item"><strong>Types de comptes</strong><span>Liste, création, modification, désactivation</span></div>
+          <div class="flow-item"><strong>Agents</strong><span>Création et affectation à un guichet</span></div>
+          <div class="flow-item"><strong>Contrôle d’accès</strong><span>Route protégée et menu conditionnel</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="flow-shared"><div class="flow-state">Chargement</div><div class="flow-state">Liste vide</div><div class="flow-state">Erreur API</div><div class="flow-state">Confirmation</div></div>
+    <div class="flow-note">Après actualisation, la session est restaurée depuis localStorage puis validée par sa date d’expiration.</div>
+  </section>
+</div>
