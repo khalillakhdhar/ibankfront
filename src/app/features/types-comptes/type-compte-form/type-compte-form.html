@@ -1,4 +1,7 @@
 <h1>{{ id ? 'Modifier le type' : 'Nouveau type de compte' }}</h1>
+@if (service.error()) {
+  <p class="alert" role="alert">{{ service.error() }}</p>
+}
 <form [formGroup]="form" (ngSubmit)="submit()">
   <label>Code<input formControlName="code" [readOnly]="!!id" /></label
   ><label>Libellé<input formControlName="libelle" /></label

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { TypeCompteService } from '../../../services/type-compte.service';
   templateUrl: './type-compte-form.html',
   styleUrl: './type-compte-form.css',
 })
-export class TypeCompteForm {
+export class TypeCompteForm implements OnInit {
   readonly service = inject(TypeCompteService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -29,6 +29,17 @@ export class TypeCompteForm {
     fraisMensuels: new FormControl(0, { nonNullable: true, validators: [Validators.min(0)] }),
     isActive: new FormControl(true, { nonNullable: true }),
   });
+  constructor() {
+    effect(() => {
+      const type = this.service.selectedTypeCompte();
+      if (this.id && type?.id === this.id) {
+        this.form.patchValue(type, { emitEvent: false });
+      }
+    });
+  }
+  ngOnInit(): void {
+    if (this.id) this.service.loadById(this.id);
+  }
   submit() {
     if (this.form.invalid || this.pending()) return;
     const v = this.form.getRawValue(),

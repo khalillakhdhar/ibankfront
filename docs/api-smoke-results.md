@@ -1,6 +1,6 @@
 ﻿# RÃ©sultats du smoke test API
 
-ExÃ©cution : 2026-10-12 10:23:03 +01:00
+ExÃ©cution : 2026-10-12 10:28:39 +01:00
 
 Ce test utilise le compte administrateur de formation. Les Ã©critures emploient uniquement des charges invalides ou lâ€™identifiant `0`; aucune donnÃ©e persistante nâ€™est crÃ©Ã©e ou modifiÃ©e.
 

@@ -5,6 +5,7 @@ import { ClientService } from './client.service';
 import { CompteService } from './compte.service';
 import { GuichetService } from './guichet.service';
 import { TransactionService } from './transaction.service';
+import { HealthService } from './health.service';
 import { TypeCompteService } from './type-compte.service';
 
 describe('API services', () => {
@@ -15,6 +16,14 @@ describe('API services', () => {
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     http = TestBed.inject(HttpTestingController);
+  });
+
+  it('maps the health endpoint', () => {
+    const service = TestBed.inject(HealthService);
+    service.check().subscribe();
+    const request = http.expectOne('https://bank.135-125-182-42.nip.io/api/Health');
+    expect(request.request.method).toBe('GET');
+    request.flush({ status: 'OK', project: 'Bank.Api', message: 'Running' });
   });
 
   afterEach(() => http.verify());

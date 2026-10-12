@@ -7,6 +7,7 @@ import { authInterceptor } from './auth.interceptor';
 import { SessionStorageService } from '../services/session-storage.service';
 import { HttpClient } from '@angular/common/http';
 import { provideRouter, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({ template: '' })
 class TestLogin {}
@@ -24,7 +25,10 @@ describe('authInterceptor', () => {
         { provide: API_BASE_URL, useValue: apiUrl },
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
-        provideRouter([{ path: 'login', component: TestLogin }]),
+        provideRouter([
+          { path: 'login', component: TestLogin },
+          { path: 'dashboard', component: TestLogin },
+        ]),
       ],
     });
     http = TestBed.inject(HttpClient);
@@ -65,12 +69,26 @@ describe('authInterceptor', () => {
   });
 
   it('clears the session and redirects to login after an API 401', async () => {
+    const auth = TestBed.inject(AuthService);
+    expect(auth.isAuthenticated()).toBe(true);
     http.get(`${apiUrl}/Clients`).subscribe({ error: () => undefined });
     controller
       .expectOne(`${apiUrl}/Clients`)
       .flush({ message: 'Non autorisé.' }, { status: 401, statusText: 'Unauthorized' });
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(session.read()).toBeNull();
+    expect(auth.isAuthenticated()).toBe(false);
     expect(TestBed.inject(Router).url).toBe('/login');
+  });
+
+  it('keeps the session and redirects to dashboard after an API 403', async () => {
+    const auth = TestBed.inject(AuthService);
+    http.get(`${apiUrl}/Clients`).subscribe({ error: () => undefined });
+    controller
+      .expectOne(`${apiUrl}/Clients`)
+      .flush({ message: 'Accès refusé.' }, { status: 403, statusText: 'Forbidden' });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(auth.isAuthenticated()).toBe(true);
+    expect(TestBed.inject(Router).url).toBe('/dashboard');
   });
 });

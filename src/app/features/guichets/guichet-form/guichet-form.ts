@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { finalize, Observable } from 'rxjs';
@@ -9,7 +9,7 @@ import { GuichetService } from '../../../services/guichet.service';
   templateUrl: './guichet-form.html',
   styleUrl: './guichet-form.css',
 })
-export class GuichetForm {
+export class GuichetForm implements OnInit {
   readonly service = inject(GuichetService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -35,6 +35,17 @@ export class GuichetForm {
     telephone: new FormControl(''),
     isActive: new FormControl(true, { nonNullable: true }),
   });
+  constructor() {
+    effect(() => {
+      const guichet = this.service.selectedGuichet();
+      if (this.id && guichet?.id === this.id) {
+        this.form.patchValue(guichet, { emitEvent: false });
+      }
+    });
+  }
+  ngOnInit(): void {
+    if (this.id) this.service.loadById(this.id);
+  }
   submit() {
     if (this.form.invalid || this.pending()) return;
     const v = this.form.getRawValue();

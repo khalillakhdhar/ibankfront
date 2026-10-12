@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { routes } from '../../app.routes';
-import { authGuard } from './auth.guard';
+import { authGuard, guestGuard } from './auth.guard';
 import { roleGuard } from './role.guard';
 
 describe('route guards', () => {
@@ -34,6 +34,14 @@ describe('route guards', () => {
       authGuard({} as ActivatedRouteSnapshot, { url: '/dashboard' } as RouterStateSnapshot),
     );
     expect(result).toBe(true);
+  });
+
+  it('redirects an authenticated user away from login', () => {
+    authenticated.set(true);
+    const result = TestBed.runInInjectionContext(() =>
+      guestGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot),
+    );
+    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/dashboard');
   });
 
   it('rejects an expired session restored as unauthenticated', () => {

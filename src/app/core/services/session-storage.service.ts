@@ -41,8 +41,13 @@ export class SessionStorageService {
       expiration > Date.now() &&
       !!user &&
       typeof user.id === 'string' &&
+      typeof user.nom === 'string' &&
+      typeof user.prenom === 'string' &&
       typeof user.email === 'string' &&
-      Array.isArray(user.roles)
+      (typeof user.guichetId === 'number' || user.guichetId === null) &&
+      typeof user.isActive === 'boolean' &&
+      Array.isArray(user.roles) &&
+      user.roles.every((role) => typeof role === 'string')
     );
   }
 }

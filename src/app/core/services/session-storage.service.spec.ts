@@ -45,6 +45,16 @@ describe('SessionStorageService', () => {
     expect(localStorage.getItem('ibank.session')).toBeNull();
   });
 
+  it('clears a session whose user or roles are only partially shaped', () => {
+    const session = validSession();
+    localStorage.setItem(
+      'ibank.session',
+      JSON.stringify({ ...session, user: { id: '1', email: 'admin@bank.local', roles: [7] } }),
+    );
+    expect(service.read()).toBeNull();
+    expect(localStorage.getItem('ibank.session')).toBeNull();
+  });
+
   it('clears an expired session', () => {
     const session = validSession();
     session.expiration = new Date(Date.now() - 60_000).toISOString();

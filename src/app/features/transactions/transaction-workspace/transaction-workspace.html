@@ -2,6 +2,12 @@
   <p class="eyebrow">OPÉRATIONS</p>
   <h1>Transactions</h1>
 </header>
+@if (comptes.error()) {
+  <p class="alert" role="alert">{{ comptes.error() }}</p>
+}
+@if (service.error()) {
+  <p class="alert" role="alert">{{ service.error() }}</p>
+}
 <nav>
   <button (click)="tab.set('depot')">Dépôt</button
   ><button (click)="tab.set('retrait')">Retrait</button

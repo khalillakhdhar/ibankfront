@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { of, Subject } from 'rxjs';
 import { ClientService } from '../../../services/client.service';
 import { ClientForm } from './client-form';
@@ -37,5 +37,46 @@ describe('ClientForm', () => {
     expect(calls).toBe(1);
     expect(body.email).toBeNull();
     expect(body.adresse).toBeNull();
+  });
+
+  it('prefills the form when editing a loaded client', () => {
+    const selectedClient = signal<any>({
+      id: 4,
+      cin: '12345678',
+      nom: 'Ben Salah',
+      prenom: 'Amira',
+      dateNaissance: '1990-01-01',
+      email: 'amira@example.com',
+      telephone: '20000000',
+      adresse: 'Tunis',
+      isActive: true,
+      comptes: [],
+    });
+    let loadedId: number | null = null;
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: { get: () => '4' } } },
+        },
+        {
+          provide: ClientService,
+          useValue: {
+            selectedClient,
+            error: signal(null),
+            loadById: (id: number) => (loadedId = id),
+            create: () => of(null),
+            update: () => of(null),
+          },
+        },
+      ],
+    });
+    const fixture = TestBed.createComponent(ClientForm);
+    fixture.detectChanges();
+    expect(loadedId).toBe(4);
+    expect(fixture.componentInstance.form.getRawValue()).toEqual(
+      expect.objectContaining({ cin: '12345678', nom: 'Ben Salah', prenom: 'Amira' }),
+    );
   });
 });

@@ -20,6 +20,8 @@ describe('TransactionWorkspace', () => {
               { id: 1, numeroCompte: 'TN1', isActive: true },
               { id: 2, numeroCompte: 'TN2', isActive: true },
             ]),
+            loading: signal(false),
+            error: signal('Chargement des comptes impossible.'),
             loadAll: () => {},
           },
         },
@@ -28,7 +30,7 @@ describe('TransactionWorkspace', () => {
           useValue: {
             transactions: signal([]),
             loading: signal(false),
-            error: signal(null),
+            error: signal('Opération refusée.'),
             depot: (v: any) => {
               body = v;
               calls++;
@@ -47,5 +49,8 @@ describe('TransactionWorkspace', () => {
     f.componentInstance.submitDepot();
     expect(calls).toBe(1);
     expect(body.description).toBeNull();
+    f.detectChanges();
+    expect(f.nativeElement.textContent).toContain('Chargement des comptes impossible.');
+    expect(f.nativeElement.textContent).toContain('Opération refusée.');
   });
 });

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { finalize, Observable } from 'rxjs';
@@ -38,6 +38,14 @@ export class ClientForm implements OnInit {
     adresse: new FormControl('', Validators.maxLength(250)),
     isActive: new FormControl(true, { nonNullable: true }),
   });
+  constructor() {
+    effect(() => {
+      const client = this.service.selectedClient();
+      if (this.id && client?.id === this.id) {
+        this.form.patchValue(client, { emitEvent: false });
+      }
+    });
+  }
   ngOnInit(): void {
     if (this.id) this.service.loadById(this.id);
   }

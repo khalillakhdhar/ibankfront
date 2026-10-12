@@ -1,3 +1,12 @@
+@if (comptes.loading()) {
+  <p role="status">Chargement du compte…</p>
+}
+@if (comptes.error()) {
+  <p class="alert" role="alert">{{ comptes.error() }}</p>
+}
+@if (transactions.error()) {
+  <p class="alert" role="alert">{{ transactions.error() }}</p>
+}
 @if (comptes.selectedCompte(); as c) {
   <header>
     <div>

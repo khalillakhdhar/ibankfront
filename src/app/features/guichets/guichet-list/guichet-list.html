@@ -2,6 +2,12 @@
   <h1>Guichets</h1>
   <a class="button primary" routerLink="/admin/guichets/new">Nouveau guichet</a>
 </header>
+@if (service.loading()) {
+  <p role="status">Chargement des guichets…</p>
+}
+@if (service.error()) {
+  <p class="alert" role="alert">{{ service.error() }}</p>
+}
 <div class="grid">
   @for (g of service.guichets(); track g.id) {
     <article>
