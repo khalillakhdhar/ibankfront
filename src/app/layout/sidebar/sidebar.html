@@ -2,16 +2,16 @@
   <a class="brand" [routerLink]="base()" (click)="closeMenu.emit()"><span>iB</span><strong>iBank</strong></a>
   <nav>
     <p>ESPACE DE TRAVAIL</p>
-    <a [routerLink]="base()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Vue d’ensemble</a>
-    <a [routerLink]="base() + '/clients'" routerLinkActive="active">Clients</a>
-    <a [routerLink]="base() + '/comptes'" routerLinkActive="active">Comptes</a>
-    <a [routerLink]="base() + '/transactions'" routerLinkActive="active">Transactions</a>
+    <a [routerLink]="base()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu.emit()">Vue d’ensemble</a>
+    <a [routerLink]="base() + '/clients'" routerLinkActive="active" (click)="closeMenu.emit()">Clients</a>
+    <a [routerLink]="base() + '/comptes'" routerLinkActive="active" (click)="closeMenu.emit()">Comptes</a>
+    <a [routerLink]="base() + '/transactions'" routerLinkActive="active" (click)="closeMenu.emit()">Transactions</a>
     @if (role() === 'admin') {
       <p>ADMINISTRATION</p>
-      <a [routerLink]="base() + '/guichets'" routerLinkActive="active">Guichets</a>
-      <a [routerLink]="base() + '/types-comptes'" routerLinkActive="active">Types de comptes</a>
-      <a [routerLink]="base() + '/agents/new'" routerLinkActive="active">Nouvel agent</a>
+      <a [routerLink]="base() + '/guichets'" routerLinkActive="active" (click)="closeMenu.emit()">Guichets</a>
+      <a [routerLink]="base() + '/types-comptes'" routerLinkActive="active" (click)="closeMenu.emit()">Types de comptes</a>
+      <a [routerLink]="base() + '/agents/new'" routerLinkActive="active" (click)="closeMenu.emit()">Nouvel agent</a>
     }
-    <p>COMPTE</p><a [routerLink]="base() + '/profil'" routerLinkActive="active">Mon profil</a>
+    <p>COMPTE</p><a [routerLink]="base() + '/profil'" routerLinkActive="active" (click)="closeMenu.emit()">Mon profil</a>
   </nav>
 </aside>

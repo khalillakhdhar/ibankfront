@@ -10,7 +10,7 @@ export class Login {
 
   submit(event: Event, username: string, password: string): void {
     event.preventDefault();
-    if (this.auth.login(username.trim(), password)) {
+    if (this.auth.login(username, password)) {
       void this.router.navigateByUrl(this.auth.dashboardUrl());
     }
   }
