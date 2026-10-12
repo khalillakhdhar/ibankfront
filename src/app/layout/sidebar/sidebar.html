@@ -1,33 +1,17 @@
-<aside
-  id="main-navigation"
-  class="sidebar"
-  [class.open]="open()"
-  aria-label="Navigation principale"
->
-  <a class="brand" routerLink="/dashboard" (click)="closeMenu.emit()"
-    ><span>iB</span><strong>iBank</strong></a
-  >
+<aside id="main-navigation" class="sidebar" [class.open]="open()" aria-label="Navigation principale">
+  <a class="brand" [routerLink]="base()" (click)="closeMenu.emit()"><span>iB</span><strong>iBank</strong></a>
   <nav>
     <p>ESPACE DE TRAVAIL</p>
-    <a routerLink="/dashboard" routerLinkActive="active" (click)="closeMenu.emit()"
-      >Vue d’ensemble</a
-    >
-    <a routerLink="/clients" routerLinkActive="active" (click)="closeMenu.emit()">Clients</a>
-    <a routerLink="/comptes" routerLinkActive="active" (click)="closeMenu.emit()">Comptes</a>
-    <a routerLink="/transactions" routerLinkActive="active" (click)="closeMenu.emit()"
-      >Transactions</a
-    >
-    @if (isAdmin()) {
+    <a [routerLink]="base()" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Vue d’ensemble</a>
+    <a [routerLink]="base() + '/clients'" routerLinkActive="active">Clients</a>
+    <a [routerLink]="base() + '/comptes'" routerLinkActive="active">Comptes</a>
+    <a [routerLink]="base() + '/transactions'" routerLinkActive="active">Transactions</a>
+    @if (role() === 'admin') {
       <p>ADMINISTRATION</p>
-      <a routerLink="/admin/guichets" routerLinkActive="active" (click)="closeMenu.emit()"
-        >Guichets</a
-      >
-      <a routerLink="/admin/types-comptes" routerLinkActive="active" (click)="closeMenu.emit()"
-        >Types de comptes</a
-      >
-      <a routerLink="/admin/agents/new" routerLinkActive="active" (click)="closeMenu.emit()"
-        >Agents</a
-      >
+      <a [routerLink]="base() + '/guichets'" routerLinkActive="active">Guichets</a>
+      <a [routerLink]="base() + '/types-comptes'" routerLinkActive="active">Types de comptes</a>
+      <a [routerLink]="base() + '/agents/new'" routerLinkActive="active">Nouvel agent</a>
     }
+    <p>COMPTE</p><a [routerLink]="base() + '/profil'" routerLinkActive="active">Mon profil</a>
   </nav>
 </aside>

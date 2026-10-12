@@ -4,12 +4,12 @@ import { AuthService } from '../../services/auth.service';
 
 export const authGuard: CanActivateFn = (_route, state) => {
   const auth = inject(AuthService);
-  return auth.isAuthenticated()
+  return auth.role()
     ? true
     : inject(Router).createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
 };
 
 export const guestGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
-  return auth.isAuthenticated() ? inject(Router).createUrlTree(['/dashboard']) : true;
+  return auth.role() ? inject(Router).createUrlTree([auth.dashboardUrl()]) : true;
 };

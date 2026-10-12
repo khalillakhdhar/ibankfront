@@ -1,0 +1,6 @@
+:host { display: grid; gap: 1.5rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 1rem; }
+article, .panel { padding: 1.25rem; background: var(--paper); border: 1px solid var(--border); border-radius: .45rem; }
+article { display: grid; gap: .35rem; } article strong { font: 600 2rem var(--font-display); }
+.activity p { display: flex; gap: 1rem; justify-content: space-between; border-top: 1px solid var(--border); padding: 1rem 0; }
+.quick-actions { display: flex; flex-wrap: wrap; gap: .75rem; }.quick-actions a { padding: .8rem 1rem; background: var(--copper); color: white; text-decoration: none; border-radius: .3rem; }
