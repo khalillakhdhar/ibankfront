@@ -1,18 +1,1 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { GuichetService } from '../../../services/guichet.service';
-@Component({
-  selector: 'app-guichet-list',
-  imports: [RouterLink],
-  templateUrl: './guichet-list.html',
-  styleUrl: './guichet-list.css',
-})
-export class GuichetList implements OnInit {
-  readonly service = inject(GuichetService);
-  ngOnInit() {
-    this.service.loadAll();
-  }
-  remove(id: number) {
-    if (confirm('Désactiver ce guichet ?')) this.service.delete(id).subscribe();
-  }
-}
+import { Component } from '@angular/core'; import { RouterLink } from '@angular/router'; @Component({selector:'app-guichet-list',imports:[RouterLink],templateUrl:'./guichet-list.html',styleUrl:'./guichet-list.css'}) export class GuichetList {}

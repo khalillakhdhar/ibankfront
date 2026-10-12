@@ -1,15 +1,1 @@
-<h1>{{ id ? 'Modifier le guichet' : 'Nouveau guichet' }}</h1>
-@if (service.error()) {
-  <p class="alert" role="alert">{{ service.error() }}</p>
-}
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <label>Code<input formControlName="code" [readOnly]="!!id" /></label
-  ><label>Nom<input formControlName="nom" /></label
-  ><label>Adresse<input formControlName="adresse" /></label
-  ><label>Ville<input formControlName="ville" /></label
-  ><label>Téléphone<input formControlName="telephone" /></label>
-  @if (id) {
-    <label><input type="checkbox" formControlName="isActive" /> Actif</label>
-  }
-  <button class="button primary" [disabled]="pending()">Enregistrer</button>
-</form>
+<header><p class="eyebrow">RÉSEAU</p><h1>Créer ou modifier un guichet</h1></header><form><label for="branch-code">Code<input id="branch-code" value="TUN-01" required /></label><label for="branch-name">Nom<input id="branch-name" value="Tunis Centre" required /></label><label for="branch-address">Adresse<input id="branch-address" value="12 avenue de France" required /></label><label for="branch-city">Ville<input id="branch-city" value="Tunis" required /></label><label for="branch-phone">Téléphone<input id="branch-phone" value="71 245 600" /></label><label><input type="checkbox" checked /> Guichet actif</label><div class="actions"><a class="button" routerLink="../">Annuler</a><button class="button primary" type="button">Enregistrer</button></div></form>

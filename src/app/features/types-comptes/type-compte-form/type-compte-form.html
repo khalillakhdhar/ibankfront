@@ -1,15 +1,1 @@
-<h1>{{ id ? 'Modifier le type' : 'Nouveau type de compte' }}</h1>
-@if (service.error()) {
-  <p class="alert" role="alert">{{ service.error() }}</p>
-}
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <label>Code<input formControlName="code" [readOnly]="!!id" /></label
-  ><label>Libellé<input formControlName="libelle" /></label
-  ><label>Description<textarea formControlName="description"></textarea></label
-  ><label>Solde minimum<input type="number" formControlName="soldeMinimum" /></label
-  ><label>Frais mensuels<input type="number" formControlName="fraisMensuels" /></label>
-  @if (id) {
-    <label><input type="checkbox" formControlName="isActive" /> Actif</label>
-  }
-  <button class="button primary" [disabled]="pending()">Enregistrer</button>
-</form>
+<header><p class="eyebrow">CATALOGUE</p><h1>Créer ou modifier un type</h1></header><form><label for="type-code">Code<input id="type-code" value="CUR" required /></label><label for="type-label">Libellé<input id="type-label" value="Compte courant" required /></label><label for="type-description">Description<textarea id="type-description">Compte destiné aux opérations bancaires quotidiennes.</textarea></label><label for="minimum">Solde minimum<input id="minimum" type="number" value="0" /></label><label for="fees">Frais mensuels<input id="fees" type="number" value="8.5" /></label><label><input type="checkbox" checked /> Type actif</label><div class="actions"><a class="button" routerLink="../">Annuler</a><button class="button primary" type="button">Enregistrer</button></div></form>
