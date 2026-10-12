@@ -1,25 +1,2 @@
-<header>
-  <p class="eyebrow">CLIENT</p>
-  <h1>{{ id ? 'Modifier le client' : 'Nouveau client' }}</h1>
-</header>
-<form [formGroup]="form" (ngSubmit)="submit()">
-  <label>CIN<input formControlName="cin" [readOnly]="!!id" /></label
-  ><label>Nom<input formControlName="nom" /></label
-  ><label>Prénom<input formControlName="prenom" /></label
-  ><label>Date de naissance<input type="date" formControlName="dateNaissance" /></label
-  ><label>E-mail<input type="email" formControlName="email" /></label
-  ><label>Téléphone<input formControlName="telephone" /></label
-  ><label class="wide">Adresse<textarea formControlName="adresse"></textarea></label>
-  @if (id) {
-    <label class="check"><input type="checkbox" formControlName="isActive" /> Client actif</label>
-  }
-  @if (service.error()) {
-    <p class="alert">{{ service.error() }}</p>
-  }
-  <div class="wide actions">
-    <a class="button" routerLink="/clients">Annuler</a
-    ><button class="button primary" [disabled]="submitting()">
-      {{ submitting() ? 'Enregistrement…' : 'Enregistrer' }}
-    </button>
-  </div>
-</form>
+<header><p class="eyebrow">DOSSIER CLIENT</p><h1>Créer ou modifier un client</h1><p>Renseignez les informations d’identité et de contact.</p></header>
+<form><div class="form-grid"><label for="cin">CIN<input id="cin" name="cin" value="08345126" required /></label><label for="nom">Nom<input id="nom" name="nom" value="Ben Salah" required /></label><label for="prenom">Prénom<input id="prenom" name="prenom" value="Amira" required /></label><label for="birth">Date de naissance<input id="birth" name="dateNaissance" type="date" value="1990-04-16" /></label><label for="email">E-mail<input id="email" name="email" type="email" value="amira.bensalah@mail.tn" /></label><label for="phone">Téléphone<input id="phone" name="telephone" value="22 345 678" required /></label><label class="wide" for="address">Adresse<textarea id="address" name="adresse">18 avenue Habib Bourguiba, Tunis</textarea></label><label><input name="isActive" type="checkbox" checked /> Client actif</label></div><div class="actions"><a class="button" routerLink="../">Annuler</a><button class="button primary" type="button">Enregistrer le dossier</button></div></form>

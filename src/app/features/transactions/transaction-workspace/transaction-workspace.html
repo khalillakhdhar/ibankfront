@@ -1,65 +1,7 @@
-<header>
-  <p class="eyebrow">OPÉRATIONS</p>
-  <h1>Transactions</h1>
-</header>
-@if (comptes.error()) {
-  <p class="alert" role="alert">{{ comptes.error() }}</p>
-}
-@if (service.error()) {
-  <p class="alert" role="alert">{{ service.error() }}</p>
-}
-<nav>
-  <button (click)="tab.set('depot')">Dépôt</button
-  ><button (click)="tab.set('retrait')">Retrait</button
-  ><button (click)="tab.set('virement')">Virement</button>
-</nav>
-@if (tab() === 'depot') {
-  <form [formGroup]="depotForm" (ngSubmit)="submitDepot()">
-    <h2>Effectuer un dépôt</h2>
-    <label
-      >Compte<select formControlName="compteId">
-        @for (c of comptes.comptes(); track c.id) {
-          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
-        }
-      </select></label
-    ><label>Montant<input type="number" formControlName="montant" /></label
-    ><label>Description<textarea formControlName="description"></textarea></label
-    ><button class="button primary" [disabled]="pending()">Valider le dépôt</button>
-  </form>
-}
-@if (tab() === 'retrait') {
-  <form [formGroup]="retraitForm" (ngSubmit)="submitRetrait()">
-    <h2>Effectuer un retrait</h2>
-    <label
-      >Compte<select formControlName="compteId">
-        @for (c of comptes.comptes(); track c.id) {
-          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
-        }
-      </select></label
-    ><label>Montant<input type="number" formControlName="montant" /></label
-    ><label>Description<textarea formControlName="description"></textarea></label
-    ><button class="button primary" [disabled]="pending()">Valider le retrait</button>
-  </form>
-}
-@if (tab() === 'virement') {
-  <form [formGroup]="virementForm" (ngSubmit)="submitVirement()">
-    <h2>Effectuer un virement</h2>
-    <label
-      >Compte source<select formControlName="compteSourceId">
-        <option [ngValue]="0">Sélectionner</option>
-        @for (c of comptes.comptes(); track c.id) {
-          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
-        }
-      </select></label
-    ><label
-      >Compte destination<select formControlName="compteDestinationId">
-        <option [ngValue]="0">Sélectionner</option>
-        @for (c of comptes.comptes(); track c.id) {
-          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
-        }
-      </select></label
-    ><label>Montant<input type="number" formControlName="montant" /></label
-    ><label>Description<textarea formControlName="description"></textarea></label
-    ><button class="button primary" [disabled]="pending()">Valider le virement</button>
-  </form>
-}
+<header><p class="eyebrow">OPÉRATIONS</p><h1>Transactions</h1><p>Préparez les opérations et consultez l’historique récent.</p></header>
+<section class="operation-grid">
+<form><h2>Dépôt</h2><label for="deposit-account">Compte<select id="deposit-account"><option>TN59 1000 0001 2847 · Amira Ben Salah</option><option>TN59 2000 0004 1088 · Youssef Trabelsi</option></select></label><label for="deposit-amount">Montant<input id="deposit-amount" type="number" value="1000" /></label><label for="deposit-note">Description<textarea id="deposit-note">Versement espèces</textarea></label><button class="button primary" type="button">Préparer le dépôt</button></form>
+<form><h2>Retrait</h2><label for="withdraw-account">Compte<select id="withdraw-account"><option>TN59 1000 0001 2847 · Amira Ben Salah</option><option>TN59 2000 0004 1088 · Youssef Trabelsi</option></select></label><label for="withdraw-amount">Montant<input id="withdraw-amount" type="number" value="300" /></label><label for="withdraw-note">Description<textarea id="withdraw-note">Retrait au guichet</textarea></label><button class="button primary" type="button">Préparer le retrait</button></form>
+<form><h2>Virement</h2><label for="source">Compte source<select id="source"><option>TN59 1000 0001 2847</option></select></label><label for="destination">Compte destination<select id="destination"><option>TN59 2000 0004 1088</option></select></label><label for="transfer-amount">Montant<input id="transfer-amount" type="number" value="2450" /></label><label for="transfer-note">Description<textarea id="transfer-note">Règlement fournisseur</textarea></label><button class="button primary" type="button">Préparer le virement</button></form>
+</section>
+<section><h2>Historique des transactions</h2><div class="table"><table><thead><tr><th>Référence</th><th>Date</th><th>Type</th><th>Compte source</th><th>Destination</th><th>Montant</th></tr></thead><tbody><tr><td>TRX-2026-1842</td><td>10/10/2026 14:32</td><td>Virement</td><td>…2847</td><td>…1088</td><td>2 450,000 TND</td></tr><tr><td>TRX-2026-1798</td><td>08/10/2026 09:18</td><td>Retrait</td><td>…2847</td><td>—</td><td>300,000 TND</td></tr><tr><td>TRX-2026-1621</td><td>02/10/2026 16:05</td><td>Dépôt</td><td>…3012</td><td>—</td><td>1 000,000 TND</td></tr></tbody></table></div></section>

@@ -1,60 +1,7 @@
-<header class="page">
-  <div>
-    <p class="eyebrow">RELATION CLIENT</p>
-    <h1>Clients</h1>
-  </div>
-  <a class="button primary" routerLink="/clients/new">Nouveau client</a>
-</header>
-<form class="search" (ngSubmit)="runSearch()">
-  <input [formControl]="search" placeholder="Rechercher par nom, CIN ou téléphone" /><button
-    class="button"
-    type="submit"
-  >
-    Rechercher
-  </button>
-</form>
-@if (service.loading()) {
-  <app-loading-state />
-} @else if (service.error()) {
-  <app-error-state [message]="service.error()!" (retry)="service.loadAll()" />
-} @else if (!service.clients().length) {
-  <app-empty-state title="Aucun client" message="Créez le premier client pour commencer." />
-} @else {
-  <div class="table">
-    <table>
-      <thead>
-        <tr>
-          <th>Client</th>
-          <th>CIN</th>
-          <th>Téléphone</th>
-          <th>Statut</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (client of service.clients(); track client.id) {
-          <tr>
-            <td>
-              <a [routerLink]="['/clients', client.id]">{{ client.prenom }} {{ client.nom }}</a
-              ><small>{{ client.email || '—' }}</small>
-            </td>
-            <td>{{ client.cin }}</td>
-            <td>{{ client.telephone }}</td>
-            <td>{{ client.isActive ? 'Actif' : 'Inactif' }}</td>
-            <td>
-              <a [routerLink]="['/clients', client.id, 'edit']">Modifier</a>
-              <button type="button" (click)="pendingDelete.set(client.id)">Désactiver</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  </div>
-}
-@if (pendingDelete() !== null) {
-  <app-confirm-dialog
-    title="Désactiver ce client ?"
-    (cancel)="pendingDelete.set(null)"
-    (confirm)="remove()"
-  />
-}
+<header><div><p class="eyebrow">PORTEFEUILLE</p><h1>Clients</h1><p>Consultez et gérez les dossiers clients.</p></div><a class="button primary" routerLink="new">Nouveau client</a></header>
+<section class="filters"><label for="client-search">Rechercher</label><input id="client-search" type="search" placeholder="Nom, CIN ou téléphone" /><button type="button">Rechercher</button></section>
+<div class="table"><table><thead><tr><th>Client</th><th>CIN</th><th>Contact</th><th>Statut</th><th>Actions</th></tr></thead><tbody>
+<tr><td><strong>Amira Ben Salah</strong><small>Cliente depuis 2022</small></td><td>08345126</td><td>22 345 678<br />amira.bensalah@mail.tn</td><td><span class="badge active">Actif</span></td><td><a routerLink="101">Voir</a> · <a routerLink="101/edit">Modifier</a></td></tr>
+<tr><td><strong>Youssef Trabelsi</strong><small>Client depuis 2024</small></td><td>11208754</td><td>98 741 230<br />y.trabelsi@mail.tn</td><td><span class="badge active">Actif</span></td><td><a routerLink="102">Voir</a> · <a routerLink="102/edit">Modifier</a></td></tr>
+<tr><td><strong>Leïla Mansour</strong><small>Cliente depuis 2020</small></td><td>07412683</td><td>55 621 490<br />leila.mansour@mail.tn</td><td><span class="badge">Inactif</span></td><td><a routerLink="103">Voir</a> · <a routerLink="103/edit">Modifier</a></td></tr>
+</tbody></table></div>

@@ -1,22 +1,2 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CurrencyPipe, DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { ClientService } from '../../../services/client.service';
-import { LoadingState } from '../../../shared/components/loading-state/loading-state';
-import { ErrorState } from '../../../shared/components/error-state/error-state';
-
-@Component({
-  selector: 'app-client-detail',
-  imports: [CurrencyPipe, DatePipe, RouterLink, LoadingState, ErrorState],
-  templateUrl: './client-detail.html',
-  styleUrl: './client-detail.css',
-})
-export class ClientDetail implements OnInit {
-  readonly service = inject(ClientService);
-  private readonly route = inject(ActivatedRoute);
-  readonly id = Number(this.route.snapshot.paramMap.get('id'));
-
-  ngOnInit(): void {
-    this.service.loadById(this.id);
-  }
-}
+import { Component } from '@angular/core'; import { RouterLink } from '@angular/router';
+@Component({ selector:'app-client-detail', imports:[RouterLink], templateUrl:'./client-detail.html', styleUrl:'./client-detail.css' }) export class ClientDetail {}
