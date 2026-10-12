@@ -20,38 +20,58 @@ export class CompteService {
   readonly error = this.errorSignal.asReadonly();
   readonly selectedCompte = this.selectedCompteSignal.asReadonly();
   readonly totalComptes = computed(() => this.comptesSignal().length);
-  readonly activeComptes = computed(() => this.comptesSignal().filter((compte) => compte.isActive).length);
-  readonly totalSolde = computed(() => this.comptesSignal().reduce((total, compte) => total + compte.solde, 0));
+  readonly activeComptes = computed(
+    () => this.comptesSignal().filter((compte) => compte.isActive).length,
+  );
+  readonly totalSolde = computed(() =>
+    this.comptesSignal().reduce((total, compte) => total + compte.solde, 0),
+  );
 
   loadAll(): void {
     this.startLoading();
-    this.http.get<Compte[]>(this.baseUrl).pipe(
-      tap((comptes) => this.finishLoading(() => this.comptesSignal.set(comptes))),
-      catchError((error) => this.handleLoadError(error, 'An error occurred while loading accounts.')),
-    ).subscribe();
+    this.http
+      .get<Compte[]>(this.baseUrl)
+      .pipe(
+        tap((comptes) => this.finishLoading(() => this.comptesSignal.set(comptes))),
+        catchError((error) =>
+          this.handleLoadError(error, 'An error occurred while loading accounts.'),
+        ),
+      )
+      .subscribe();
   }
 
   loadById(id: number): void {
     this.startLoading();
-    this.http.get<Compte>(`${this.baseUrl}/${id}`).pipe(
-      tap((compte) => this.finishLoading(() => this.selectedCompteSignal.set(compte))),
-      catchError((error) => this.handleLoadError(error, 'An error occurred while loading the account.')),
-    ).subscribe();
+    this.http
+      .get<Compte>(`${this.baseUrl}/${id}`)
+      .pipe(
+        tap((compte) => this.finishLoading(() => this.selectedCompteSignal.set(compte))),
+        catchError((error) =>
+          this.handleLoadError(error, 'An error occurred while loading the account.'),
+        ),
+      )
+      .subscribe();
   }
 
   create(compte: CreateCompte) {
     return this.http.post<Compte>(this.baseUrl, compte).pipe(
       tap((created) => this.comptesSignal.update((comptes) => [...comptes, created])),
-      catchError((error) => this.handleError(error, 'An error occurred while creating the account.')),
+      catchError((error) =>
+        this.handleError(error, 'An error occurred while creating the account.'),
+      ),
     );
   }
 
   update(id: number, compte: UpdateCompte) {
     return this.http.put<void>(`${this.baseUrl}/${id}`, compte).pipe(
-      tap(() => this.comptesSignal.update((comptes) => comptes.map((item) =>
-        item.id === id ? { ...item, ...compte } : item,
-      ))),
-      catchError((error) => this.handleError(error, 'An error occurred while updating the account.')),
+      tap(() =>
+        this.comptesSignal.update((comptes) =>
+          comptes.map((item) => (item.id === id ? { ...item, ...compte } : item)),
+        ),
+      ),
+      catchError((error) =>
+        this.handleError(error, 'An error occurred while updating the account.'),
+      ),
     );
   }
 

@@ -1,1 +1,54 @@
-import{Component,inject,OnInit,signal}from'@angular/core';import{FormControl,FormGroup,ReactiveFormsModule,Validators}from'@angular/forms';import{finalize}from'rxjs';import{AuthService}from'../../../services/auth.service';import{GuichetService}from'../../../services/guichet.service';@Component({selector:'app-agent-form',imports:[ReactiveFormsModule],templateUrl:'./agent-form.html',styleUrl:'./agent-form.css'})export class AgentForm implements OnInit{readonly auth=inject(AuthService);readonly guichets=inject(GuichetService);readonly pending=signal(false);readonly success=signal(false);readonly form=new FormGroup({nom:new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.maxLength(80)]}),prenom:new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.maxLength(80)]}),email:new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.email]}),password:new FormControl('',{nonNullable:true,validators:[Validators.required,Validators.minLength(8)]}),guichetId:new FormControl(0,{nonNullable:true})});ngOnInit(){this.guichets.loadAll()}submit(){if(this.form.invalid||this.pending())return;const v=this.form.getRawValue();this.pending.set(true);this.auth.createAgent({...v,guichetId:v.guichetId||null}).pipe(finalize(()=>this.pending.set(false))).subscribe({next:()=>{this.success.set(true);this.form.reset()},error:()=>{}})}}
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { GuichetService } from '../../../services/guichet.service';
+@Component({
+  selector: 'app-agent-form',
+  imports: [ReactiveFormsModule],
+  templateUrl: './agent-form.html',
+  styleUrl: './agent-form.css',
+})
+export class AgentForm implements OnInit {
+  readonly auth = inject(AuthService);
+  readonly guichets = inject(GuichetService);
+  readonly pending = signal(false);
+  readonly success = signal(false);
+  readonly form = new FormGroup({
+    nom: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(80)],
+    }),
+    prenom: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(80)],
+    }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
+    password: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
+    guichetId: new FormControl(0, { nonNullable: true }),
+  });
+  ngOnInit() {
+    this.guichets.loadAll();
+  }
+  submit() {
+    if (this.form.invalid || this.pending()) return;
+    const v = this.form.getRawValue();
+    this.pending.set(true);
+    this.auth
+      .createAgent({ ...v, guichetId: v.guichetId || null })
+      .pipe(finalize(() => this.pending.set(false)))
+      .subscribe({
+        next: () => {
+          this.success.set(true);
+          this.form.reset();
+        },
+        error: () => {},
+      });
+  }
+}

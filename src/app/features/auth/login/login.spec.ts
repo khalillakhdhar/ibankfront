@@ -13,7 +13,10 @@ describe('Login', () => {
   const auth = {
     error: signal<string | null>(null),
     isAuthenticated: signal(false),
-    login: () => { calls += 1; return pending.asObservable(); },
+    login: () => {
+      calls += 1;
+      return pending.asObservable();
+    },
   };
 
   beforeEach(async () => {
@@ -21,10 +24,13 @@ describe('Login', () => {
     calls = 0;
     await TestBed.configureTestingModule({
       imports: [Login],
-      providers: [{ provide: AuthService, useValue: auth }, provideRouter([
-        { path: '', component: Login },
-        { path: 'dashboard', component: Login },
-      ])],
+      providers: [
+        { provide: AuthService, useValue: auth },
+        provideRouter([
+          { path: '', component: Login },
+          { path: 'dashboard', component: Login },
+        ]),
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(Login);
     fixture.detectChanges();
@@ -56,9 +62,19 @@ describe('Login', () => {
     await router.navigateByUrl('/?returnUrl=%2Fdashboard');
     fixture.componentInstance.form.setValue({ email: 'admin@bank.local', password: 'Admin123!' });
     fixture.componentInstance.submit();
-    pending.next({ token: 'jwt', expiration: new Date(Date.now() + 1000).toISOString(), user: {
-      id: '1', nom: 'Admin', prenom: 'Test', email: 'admin@bank.local', guichetId: null, isActive: true, roles: ['Admin'],
-    }});
+    pending.next({
+      token: 'jwt',
+      expiration: new Date(Date.now() + 1000).toISOString(),
+      user: {
+        id: '1',
+        nom: 'Admin',
+        prenom: 'Test',
+        email: 'admin@bank.local',
+        guichetId: null,
+        isActive: true,
+        roles: ['Admin'],
+      },
+    });
     pending.complete();
     await fixture.whenStable();
     expect(router.url).toBe('/dashboard');

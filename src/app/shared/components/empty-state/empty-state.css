@@ -1,1 +1,10 @@
-.state{text-align:center;padding:3rem;border:1px dashed var(--border);background:var(--paper)}p{color:var(--muted);margin:.5rem 0 1rem}
+.state {
+  text-align: center;
+  padding: 3rem;
+  border: 1px dashed var(--border);
+  background: var(--paper);
+}
+p {
+  color: var(--muted);
+  margin: 0.5rem 0 1rem;
+}

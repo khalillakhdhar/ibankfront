@@ -1,1 +1,18 @@
-<header><h1>Guichets</h1><a class="button primary" routerLink="/admin/guichets/new">Nouveau guichet</a></header><div class="grid">@for(g of service.guichets();track g.id){<article><small>{{g.code}} · {{g.isActive?'Actif':'Inactif'}}</small><h2>{{g.nom}}</h2><p>{{g.adresse}}, {{g.ville}}</p><p>{{g.nombreAgents}} agent(s)</p><a [routerLink]="['/admin/guichets',g.id,'edit']">Modifier</a><button (click)="remove(g.id)">Désactiver</button></article>}@empty{<p>Aucun guichet.</p>}</div>
+<header>
+  <h1>Guichets</h1>
+  <a class="button primary" routerLink="/admin/guichets/new">Nouveau guichet</a>
+</header>
+<div class="grid">
+  @for (g of service.guichets(); track g.id) {
+    <article>
+      <small>{{ g.code }} · {{ g.isActive ? 'Actif' : 'Inactif' }}</small>
+      <h2>{{ g.nom }}</h2>
+      <p>{{ g.adresse }}, {{ g.ville }}</p>
+      <p>{{ g.nombreAgents }} agent(s)</p>
+      <a [routerLink]="['/admin/guichets', g.id, 'edit']">Modifier</a
+      ><button (click)="remove(g.id)">Désactiver</button>
+    </article>
+  } @empty {
+    <p>Aucun guichet.</p>
+  }
+</div>

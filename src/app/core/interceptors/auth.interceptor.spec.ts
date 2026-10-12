@@ -34,8 +34,13 @@ describe('authInterceptor', () => {
       token: 'secret-token',
       expiration: new Date(Date.now() + 60_000).toISOString(),
       user: {
-        id: '1', nom: 'Admin', prenom: 'Tutoriel', email: 'admin@bank.local',
-        guichetId: null, isActive: true, roles: ['Admin'],
+        id: '1',
+        nom: 'Admin',
+        prenom: 'Tutoriel',
+        email: 'admin@bank.local',
+        guichetId: null,
+        isActive: true,
+        roles: ['Admin'],
       },
     });
   });
@@ -61,10 +66,9 @@ describe('authInterceptor', () => {
 
   it('clears the session and redirects to login after an API 401', async () => {
     http.get(`${apiUrl}/Clients`).subscribe({ error: () => undefined });
-    controller.expectOne(`${apiUrl}/Clients`).flush(
-      { message: 'Non autorisé.' },
-      { status: 401, statusText: 'Unauthorized' },
-    );
+    controller
+      .expectOne(`${apiUrl}/Clients`)
+      .flush({ message: 'Non autorisé.' }, { status: 401, statusText: 'Unauthorized' });
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(session.read()).toBeNull();
     expect(TestBed.inject(Router).url).toBe('/login');

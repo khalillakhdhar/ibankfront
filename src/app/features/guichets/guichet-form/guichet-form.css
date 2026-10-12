@@ -1,1 +1,19 @@
-h1{font:500 3rem var(--font-display)}form{display:grid;gap:1rem;max-width:42rem;padding:1.5rem;background:var(--paper);border:1px solid var(--border)}label{display:grid;gap:.4rem}input{padding:.8rem;border:1px solid var(--border)}
+h1 {
+  font: 500 3rem var(--font-display);
+}
+form {
+  display: grid;
+  gap: 1rem;
+  max-width: 42rem;
+  padding: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+}
+label {
+  display: grid;
+  gap: 0.4rem;
+}
+input {
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+}

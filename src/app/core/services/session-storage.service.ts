@@ -31,15 +31,18 @@ export class SessionStorageService {
   }
 
   private isValid(session: Partial<AuthResponse>): session is AuthResponse {
-    const expiration = typeof session.expiration === 'string' ? Date.parse(session.expiration) : NaN;
+    const expiration =
+      typeof session.expiration === 'string' ? Date.parse(session.expiration) : NaN;
     const user = session.user;
-    return typeof session.token === 'string'
-      && session.token.length > 0
-      && Number.isFinite(expiration)
-      && expiration > Date.now()
-      && !!user
-      && typeof user.id === 'string'
-      && typeof user.email === 'string'
-      && Array.isArray(user.roles);
+    return (
+      typeof session.token === 'string' &&
+      session.token.length > 0 &&
+      Number.isFinite(expiration) &&
+      expiration > Date.now() &&
+      !!user &&
+      typeof user.id === 'string' &&
+      typeof user.email === 'string' &&
+      Array.isArray(user.roles)
+    );
   }
 }

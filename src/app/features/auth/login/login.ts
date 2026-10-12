@@ -18,7 +18,10 @@ export class Login {
   readonly error = this.auth.error;
   readonly submitting = signal(false);
   readonly form = new FormGroup({
-    email: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.email] }),
+    email: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.email],
+    }),
     password: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
@@ -28,14 +31,15 @@ export class Login {
       return;
     }
     this.submitting.set(true);
-    this.auth.login(this.form.getRawValue()).pipe(
-      finalize(() => this.submitting.set(false)),
-    ).subscribe({
-      next: () => {
-        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
-        void this.router.navigateByUrl(returnUrl);
-      },
-      error: () => undefined,
-    });
+    this.auth
+      .login(this.form.getRawValue())
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe({
+        next: () => {
+          const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/dashboard';
+          void this.router.navigateByUrl(returnUrl);
+        },
+        error: () => undefined,
+      });
   }
 }

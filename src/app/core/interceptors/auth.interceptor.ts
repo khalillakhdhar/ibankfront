@@ -11,9 +11,10 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
   const router = inject(Router);
   const session = sessionStorage.read();
   const apiRequest = request.url === apiBaseUrl || request.url.startsWith(`${apiBaseUrl}/`);
-  const authenticatedRequest = apiRequest && session
-    ? request.clone({ setHeaders: { Authorization: `Bearer ${session.token}` } })
-    : request;
+  const authenticatedRequest =
+    apiRequest && session
+      ? request.clone({ setHeaders: { Authorization: `Bearer ${session.token}` } })
+      : request;
 
   return next(authenticatedRequest).pipe(
     catchError((error) => {

@@ -1,1 +1,15 @@
-<div class="backdrop" role="presentation" (click)="cancel.emit()"><section role="dialog" aria-modal="true" aria-labelledby="confirm-title" (click)="$event.stopPropagation()"><h2 id="confirm-title">{{ title() }}</h2><p>{{ message() }}</p><div><button class="button" type="button" (click)="cancel.emit()">Annuler</button><button class="button primary" type="button" (click)="confirm.emit()">Confirmer</button></div></section></div>
+<div class="backdrop" role="presentation" (click)="cancel.emit()">
+  <section
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="confirm-title"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 id="confirm-title">{{ title() }}</h2>
+    <p>{{ message() }}</p>
+    <div>
+      <button class="button" type="button" (click)="cancel.emit()">Annuler</button
+      ><button class="button primary" type="button" (click)="confirm.emit()">Confirmer</button>
+    </div>
+  </section>
+</div>

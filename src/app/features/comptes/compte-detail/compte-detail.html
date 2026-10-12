@@ -1,1 +1,34 @@
-@if(comptes.selectedCompte();as c){<header><div><p class="eyebrow">COMPTE</p><h1>{{c.numeroCompte}}</h1><p>{{c.clientNomComplet}} · {{c.typeCompte}}</p></div><div><a class="button primary" [routerLink]="['/transactions']" [queryParams]="{compteId:c.id}">Nouvelle opération</a><button class="button" (click)="toggle()">{{c.isActive?'Désactiver':'Activer'}}</button></div></header><section class="balance"><span>Solde disponible</span><strong>{{c.solde|currency:'TND':'symbol':'1.3-3'}}</strong><small>{{c.guichet}}</small></section><h2>Historique</h2><div class="history">@for(t of transactions.transactions();track t.id){<article><span>{{t.dateOperation|date:'short'}}</span><strong>{{t.reference}}</strong><b>{{t.montant|currency:'TND':'symbol':'1.3-3'}}</b><small>{{t.description||'Sans description'}}</small></article>}@empty{<p>Aucune transaction.</p>}</div>}
+@if (comptes.selectedCompte(); as c) {
+  <header>
+    <div>
+      <p class="eyebrow">COMPTE</p>
+      <h1>{{ c.numeroCompte }}</h1>
+      <p>{{ c.clientNomComplet }} · {{ c.typeCompte }}</p>
+    </div>
+    <div>
+      <a class="button primary" [routerLink]="['/transactions']" [queryParams]="{ compteId: c.id }"
+        >Nouvelle opération</a
+      ><button class="button" (click)="toggle()">
+        {{ c.isActive ? 'Désactiver' : 'Activer' }}
+      </button>
+    </div>
+  </header>
+  <section class="balance">
+    <span>Solde disponible</span
+    ><strong>{{ c.solde | currency: 'TND' : 'symbol' : '1.3-3' }}</strong
+    ><small>{{ c.guichet }}</small>
+  </section>
+  <h2>Historique</h2>
+  <div class="history">
+    @for (t of transactions.transactions(); track t.id) {
+      <article>
+        <span>{{ t.dateOperation | date: 'short' }}</span
+        ><strong>{{ t.reference }}</strong
+        ><b>{{ t.montant | currency: 'TND' : 'symbol' : '1.3-3' }}</b
+        ><small>{{ t.description || 'Sans description' }}</small>
+      </article>
+    } @empty {
+      <p>Aucune transaction.</p>
+    }
+  </div>
+}

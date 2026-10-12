@@ -21,16 +21,19 @@ export class TransactionService {
   loadByCompte(compteId: number): void {
     this.errorSignal.set(null);
     this.loadingSignal.set(true);
-    this.http.get<Transaction[]>(`${this.baseUrl}/compte/${compteId}`).pipe(
-      tap((transactions) => {
-        this.transactionsSignal.set(transactions);
-        this.loadingSignal.set(false);
-      }),
-      catchError((error) => {
-        this.loadingSignal.set(false);
-        return this.handleError(error, 'An error occurred while loading transactions.');
-      }),
-    ).subscribe();
+    this.http
+      .get<Transaction[]>(`${this.baseUrl}/compte/${compteId}`)
+      .pipe(
+        tap((transactions) => {
+          this.transactionsSignal.set(transactions);
+          this.loadingSignal.set(false);
+        }),
+        catchError((error) => {
+          this.loadingSignal.set(false);
+          return this.handleError(error, 'An error occurred while loading transactions.');
+        }),
+      )
+      .subscribe();
   }
 
   depot(depot: Depot) {
@@ -47,7 +50,9 @@ export class TransactionService {
 
   private execute(operation: string, payload: Depot | Retrait | Virement, fallback: string) {
     return this.http.post<Transaction>(`${this.baseUrl}/${operation}`, payload).pipe(
-      tap((transaction) => this.transactionsSignal.update((transactions) => [transaction, ...transactions])),
+      tap((transaction) =>
+        this.transactionsSignal.update((transactions) => [transaction, ...transactions]),
+      ),
       catchError((error) => this.handleError(error, fallback)),
     );
   }

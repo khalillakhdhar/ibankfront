@@ -39,7 +39,7 @@ export class AuthService {
 
   createAgent(agent: CreateAgent): Observable<User> {
     this.errorSignal.set(null);
-    return this.http.post<User>(`${this.apiBaseUrl}/Auth/agents`, agent).pipe(
+    return this.http.post<User>(`${this.apiBaseUrl}/Auth/agent`, agent).pipe(
       catchError((error) => {
         this.errorSignal.set(this.apiError.message(error, "Impossible de créer l'agent."));
         return throwError(() => error);

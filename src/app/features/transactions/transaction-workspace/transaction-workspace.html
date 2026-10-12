@@ -1,1 +1,59 @@
-<header><p class="eyebrow">OPÉRATIONS</p><h1>Transactions</h1></header><nav><button (click)="tab.set('depot')">Dépôt</button><button (click)="tab.set('retrait')">Retrait</button><button (click)="tab.set('virement')">Virement</button></nav>@if(tab()==='depot'){<form [formGroup]="depotForm" (ngSubmit)="submitDepot()"><h2>Effectuer un dépôt</h2><label>Compte<select formControlName="compteId">@for(c of comptes.comptes();track c.id){<option [ngValue]="c.id">{{c.numeroCompte}}</option>}</select></label><label>Montant<input type="number" formControlName="montant"></label><label>Description<textarea formControlName="description"></textarea></label><button class="button primary" [disabled]="pending()">Valider le dépôt</button></form>}@if(tab()==='retrait'){<form [formGroup]="retraitForm" (ngSubmit)="submitRetrait()"><h2>Effectuer un retrait</h2><label>Compte<select formControlName="compteId">@for(c of comptes.comptes();track c.id){<option [ngValue]="c.id">{{c.numeroCompte}}</option>}</select></label><label>Montant<input type="number" formControlName="montant"></label><label>Description<textarea formControlName="description"></textarea></label><button class="button primary" [disabled]="pending()">Valider le retrait</button></form>}@if(tab()==='virement'){<form [formGroup]="virementForm" (ngSubmit)="submitVirement()"><h2>Effectuer un virement</h2><label>Compte source<select formControlName="compteSourceId"><option [ngValue]="0">Sélectionner</option>@for(c of comptes.comptes();track c.id){<option [ngValue]="c.id">{{c.numeroCompte}}</option>}</select></label><label>Compte destination<select formControlName="compteDestinationId"><option [ngValue]="0">Sélectionner</option>@for(c of comptes.comptes();track c.id){<option [ngValue]="c.id">{{c.numeroCompte}}</option>}</select></label><label>Montant<input type="number" formControlName="montant"></label><label>Description<textarea formControlName="description"></textarea></label><button class="button primary" [disabled]="pending()">Valider le virement</button></form>}
+<header>
+  <p class="eyebrow">OPÉRATIONS</p>
+  <h1>Transactions</h1>
+</header>
+<nav>
+  <button (click)="tab.set('depot')">Dépôt</button
+  ><button (click)="tab.set('retrait')">Retrait</button
+  ><button (click)="tab.set('virement')">Virement</button>
+</nav>
+@if (tab() === 'depot') {
+  <form [formGroup]="depotForm" (ngSubmit)="submitDepot()">
+    <h2>Effectuer un dépôt</h2>
+    <label
+      >Compte<select formControlName="compteId">
+        @for (c of comptes.comptes(); track c.id) {
+          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+        }
+      </select></label
+    ><label>Montant<input type="number" formControlName="montant" /></label
+    ><label>Description<textarea formControlName="description"></textarea></label
+    ><button class="button primary" [disabled]="pending()">Valider le dépôt</button>
+  </form>
+}
+@if (tab() === 'retrait') {
+  <form [formGroup]="retraitForm" (ngSubmit)="submitRetrait()">
+    <h2>Effectuer un retrait</h2>
+    <label
+      >Compte<select formControlName="compteId">
+        @for (c of comptes.comptes(); track c.id) {
+          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+        }
+      </select></label
+    ><label>Montant<input type="number" formControlName="montant" /></label
+    ><label>Description<textarea formControlName="description"></textarea></label
+    ><button class="button primary" [disabled]="pending()">Valider le retrait</button>
+  </form>
+}
+@if (tab() === 'virement') {
+  <form [formGroup]="virementForm" (ngSubmit)="submitVirement()">
+    <h2>Effectuer un virement</h2>
+    <label
+      >Compte source<select formControlName="compteSourceId">
+        <option [ngValue]="0">Sélectionner</option>
+        @for (c of comptes.comptes(); track c.id) {
+          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+        }
+      </select></label
+    ><label
+      >Compte destination<select formControlName="compteDestinationId">
+        <option [ngValue]="0">Sélectionner</option>
+        @for (c of comptes.comptes(); track c.id) {
+          <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+        }
+      </select></label
+    ><label>Montant<input type="number" formControlName="montant" /></label
+    ><label>Description<textarea formControlName="description"></textarea></label
+    ><button class="button primary" [disabled]="pending()">Valider le virement</button>
+  </form>
+}

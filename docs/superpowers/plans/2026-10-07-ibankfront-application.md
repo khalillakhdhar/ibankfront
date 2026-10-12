@@ -69,7 +69,7 @@ Use the storage key `ibank.session`. Parse expiration with `Date.parse`; any inv
 
 - [ ] **Step 4: Write failing AuthService tests**
 
-Assert `POST ${API_BASE_URL}/Auth/login`, `POST ${API_BASE_URL}/Auth/agents`, state restoration from storage, storage after login, signal reset after logout, and case-sensitive membership of `Admin` and `Agent` roles.
+Assert `POST ${API_BASE_URL}/Auth/login`, `POST ${API_BASE_URL}/Auth/agent`, state restoration from storage, storage after login, signal reset after logout, and case-sensitive membership of `Admin` and `Agent` roles.
 
 - [ ] **Step 5: Run AuthService tests and verify RED**
 

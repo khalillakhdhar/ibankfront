@@ -1,1 +1,31 @@
-<header><h1>Types de comptes</h1><a class="button primary" routerLink="/admin/types-comptes/new">Nouveau type</a></header><div class="table"><table><thead><tr><th>Code</th><th>Libellé</th><th>Solde minimum</th><th>Frais mensuels</th><th></th></tr></thead><tbody>@for(t of service.typesCompte();track t.id){<tr><td>{{t.code}}</td><td>{{t.libelle}}</td><td>{{t.soldeMinimum|currency:'TND'}}</td><td>{{t.fraisMensuels|currency:'TND'}}</td><td><a [routerLink]="['/admin/types-comptes',t.id,'edit']">Modifier</a> <button (click)="remove(t.id)">Désactiver</button></td></tr>}</tbody></table></div>
+<header>
+  <h1>Types de comptes</h1>
+  <a class="button primary" routerLink="/admin/types-comptes/new">Nouveau type</a>
+</header>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Libellé</th>
+        <th>Solde minimum</th>
+        <th>Frais mensuels</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of service.typesCompte(); track t.id) {
+        <tr>
+          <td>{{ t.code }}</td>
+          <td>{{ t.libelle }}</td>
+          <td>{{ t.soldeMinimum | currency: 'TND' }}</td>
+          <td>{{ t.fraisMensuels | currency: 'TND' }}</td>
+          <td>
+            <a [routerLink]="['/admin/types-comptes', t.id, 'edit']">Modifier</a>
+            <button (click)="remove(t.id)">Désactiver</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

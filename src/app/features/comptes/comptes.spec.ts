@@ -1,2 +1,37 @@
-import { signal } from '@angular/core';import{TestBed}from'@angular/core/testing';import{provideRouter}from'@angular/router';import{CompteService}from'../../services/compte.service';import{CompteList}from'./compte-list/compte-list';
-describe('Comptes',()=>{it('renders accounts loaded from the service',()=>{TestBed.configureTestingModule({providers:[provideRouter([]),{provide:CompteService,useValue:{comptes:signal([{id:1,numeroCompte:'TN001',solde:50,isActive:true,clientNomComplet:'Amira Ben Salah',typeCompte:'Courant',guichet:'Tunis'}]),loading:signal(false),error:signal(null),loadAll:()=>{}}}]});const f=TestBed.createComponent(CompteList);f.detectChanges();expect(f.nativeElement.textContent).toContain('TN001');expect(f.nativeElement.textContent).toContain('Amira Ben Salah');});});
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { CompteService } from '../../services/compte.service';
+import { CompteList } from './compte-list/compte-list';
+describe('Comptes', () => {
+  it('renders accounts loaded from the service', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        {
+          provide: CompteService,
+          useValue: {
+            comptes: signal([
+              {
+                id: 1,
+                numeroCompte: 'TN001',
+                solde: 50,
+                isActive: true,
+                clientNomComplet: 'Amira Ben Salah',
+                typeCompte: 'Courant',
+                guichet: 'Tunis',
+              },
+            ]),
+            loading: signal(false),
+            error: signal(null),
+            loadAll: () => {},
+          },
+        },
+      ],
+    });
+    const f = TestBed.createComponent(CompteList);
+    f.detectChanges();
+    expect(f.nativeElement.textContent).toContain('TN001');
+    expect(f.nativeElement.textContent).toContain('Amira Ben Salah');
+  });
+});

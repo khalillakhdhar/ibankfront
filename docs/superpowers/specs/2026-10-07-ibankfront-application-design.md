@@ -142,7 +142,7 @@ Les modèles TypeScript restent alignés sur les DTO JSON du backend. Les servic
 
 Endpoints couverts :
 
-- Auth : `POST /Auth/login`, `POST /Auth/agents` ;
+- Auth : `POST /Auth/login`, `POST /Auth/agent` ;
 - Clients : `GET /Clients`, `GET /Clients/{id}`, `GET /Clients/search`, `POST /Clients`, `PUT /Clients/{id}`, `DELETE /Clients/{id}` ;
 - Comptes : `GET /Comptes`, `GET /Comptes/{id}`, `POST /Comptes`, `PUT /Comptes/{id}` ;
 - Guichets : `GET /Guichets`, `GET /Guichets/{id}`, `POST /Guichets`, `PUT /Guichets/{id}`, `DELETE /Guichets/{id}` ;

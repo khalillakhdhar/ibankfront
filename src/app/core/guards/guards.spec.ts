@@ -19,28 +19,27 @@ describe('route guards', () => {
   });
 
   it('returns a login UrlTree with returnUrl for an unauthenticated user', () => {
-    const result = TestBed.runInInjectionContext(() => authGuard(
-      {} as ActivatedRouteSnapshot,
-      { url: '/clients/4' } as RouterStateSnapshot,
-    ));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, { url: '/clients/4' } as RouterStateSnapshot),
+    );
     expect(result).toBeInstanceOf(UrlTree);
-    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe('/login?returnUrl=%2Fclients%2F4');
+    expect(TestBed.inject(Router).serializeUrl(result as UrlTree)).toBe(
+      '/login?returnUrl=%2Fclients%2F4',
+    );
   });
 
   it('allows an authenticated user', () => {
     authenticated.set(true);
-    const result = TestBed.runInInjectionContext(() => authGuard(
-      {} as ActivatedRouteSnapshot,
-      { url: '/dashboard' } as RouterStateSnapshot,
-    ));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, { url: '/dashboard' } as RouterStateSnapshot),
+    );
     expect(result).toBe(true);
   });
 
   it('rejects an expired session restored as unauthenticated', () => {
-    const result = TestBed.runInInjectionContext(() => authGuard(
-      {} as ActivatedRouteSnapshot,
-      { url: '/dashboard' } as RouterStateSnapshot,
-    ));
+    const result = TestBed.runInInjectionContext(() =>
+      authGuard({} as ActivatedRouteSnapshot, { url: '/dashboard' } as RouterStateSnapshot),
+    );
     expect(result).toBeInstanceOf(UrlTree);
   });
 

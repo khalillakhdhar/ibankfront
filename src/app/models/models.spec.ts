@@ -1,38 +1,9 @@
-import type {
-  AuthResponse,
-  CreateAgent,
-  Login,
-  User,
-} from './auth.model';
-import type {
-  Client,
-  ClientDetails,
-  CreateClient,
-  UpdateClient,
-} from './client.model';
-import type {
-  Compte,
-  CompteSummary,
-  CreateCompte,
-  UpdateCompte,
-} from './compte.model';
-import type {
-  CreateGuichet,
-  Guichet,
-  UpdateGuichet,
-} from './guichet.model';
-import type {
-  Depot,
-  Retrait,
-  Transaction,
-  TypeTransaction,
-  Virement,
-} from './transaction.model';
-import type {
-  CreateTypeCompte,
-  TypeCompte,
-  UpdateTypeCompte,
-} from './type-compte.model';
+import type { AuthResponse, CreateAgent, Login, User } from './auth.model';
+import type { Client, ClientDetails, CreateClient, UpdateClient } from './client.model';
+import type { Compte, CompteSummary, CreateCompte, UpdateCompte } from './compte.model';
+import type { CreateGuichet, Guichet, UpdateGuichet } from './guichet.model';
+import type { Depot, Retrait, Transaction, TypeTransaction, Virement } from './transaction.model';
+import type { CreateTypeCompte, TypeCompte, UpdateTypeCompte } from './type-compte.model';
 
 describe('API models', () => {
   it('represent every Bank.Api DTO using its JSON field names', () => {

@@ -12,20 +12,54 @@ describe('Dashboard', () => {
   let clientLoads = 0;
   let compteLoads = 0;
   let guichetLoads = 0;
-  const clients = signal([{ id: 1, isActive: true }, { id: 2, isActive: false }]);
-  const comptes = signal([{ id: 1, isActive: true, solde: 1250 }, { id: 2, isActive: true, solde: 750 }]);
+  const clients = signal([
+    { id: 1, isActive: true },
+    { id: 2, isActive: false },
+  ]);
+  const comptes = signal([
+    { id: 1, isActive: true, solde: 1250 },
+    { id: 2, isActive: true, solde: 750 },
+  ]);
   const guichets = signal([{ id: 1, isActive: true }]);
-  const auth: { hasRole: (role: string) => boolean } = { hasRole: (role: string) => role === 'Admin' };
+  const auth: { hasRole: (role: string) => boolean } = {
+    hasRole: (role: string) => role === 'Admin',
+  };
 
   beforeEach(() => {
     clientLoads = compteLoads = guichetLoads = 0;
-    TestBed.configureTestingModule({ providers: [
-      provideRouter([]),
-      { provide: AuthService, useValue: auth },
-      { provide: ClientService, useValue: { clients, loading: signal(false), error: signal(null), loadAll: () => clientLoads++ } },
-      { provide: CompteService, useValue: { comptes, loading: signal(false), error: signal(null), loadAll: () => compteLoads++ } },
-      { provide: GuichetService, useValue: { guichets, loading: signal(false), error: signal(null), loadAll: () => guichetLoads++ } },
-    ] });
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useValue: auth },
+        {
+          provide: ClientService,
+          useValue: {
+            clients,
+            loading: signal(false),
+            error: signal(null),
+            loadAll: () => clientLoads++,
+          },
+        },
+        {
+          provide: CompteService,
+          useValue: {
+            comptes,
+            loading: signal(false),
+            error: signal(null),
+            loadAll: () => compteLoads++,
+          },
+        },
+        {
+          provide: GuichetService,
+          useValue: {
+            guichets,
+            loading: signal(false),
+            error: signal(null),
+            loadAll: () => guichetLoads++,
+          },
+        },
+      ],
+    });
   });
 
   it('loads real resources and derives the visible metrics', () => {

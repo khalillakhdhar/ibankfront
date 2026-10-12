@@ -18,7 +18,9 @@ describe('ApiErrorService', () => {
 
   it('uses a clear unavailable message for a network failure', () => {
     const error = new HttpErrorResponse({ status: 0, statusText: 'Unknown Error' });
-    expect(service.message(error, fallback)).toBe('Le service bancaire est indisponible. Réessayez.');
+    expect(service.message(error, fallback)).toBe(
+      'Le service bancaire est indisponible. Réessayez.',
+    );
   });
 
   it('uses the supplied fallback for an unknown error shape', () => {

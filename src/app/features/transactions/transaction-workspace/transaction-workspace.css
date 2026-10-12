@@ -1,1 +1,38 @@
-h1{font:500 3rem var(--font-display);margin:.2rem 0 1.5rem}nav{display:flex;gap:.4rem;margin-bottom:1rem}nav button{padding:.7rem 1rem;border:1px solid var(--border);background:var(--paper)}form{display:grid;gap:1rem;max-width:40rem;padding:1.5rem;background:var(--paper);border:1px solid var(--border)}h2{font:500 1.7rem var(--font-display);margin:0}label,ng-template div{display:grid;gap:.4rem}select,input,textarea{padding:.8rem;border:1px solid var(--border);background:white}
+h1 {
+  font: 500 3rem var(--font-display);
+  margin: 0.2rem 0 1.5rem;
+}
+nav {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+nav button {
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--paper);
+}
+form {
+  display: grid;
+  gap: 1rem;
+  max-width: 40rem;
+  padding: 1.5rem;
+  background: var(--paper);
+  border: 1px solid var(--border);
+}
+h2 {
+  font: 500 1.7rem var(--font-display);
+  margin: 0;
+}
+label,
+ng-template div {
+  display: grid;
+  gap: 0.4rem;
+}
+select,
+input,
+textarea {
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  background: white;
+}

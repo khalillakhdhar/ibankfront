@@ -11,8 +11,13 @@ describe('AuthService', () => {
     token: 'jwt-token',
     expiration: new Date(Date.now() + 60_000).toISOString(),
     user: {
-      id: 'admin-1', nom: 'Administrateur', prenom: 'Principal',
-      email: 'admin@bank.local', guichetId: null, isActive: true, roles: ['Admin'],
+      id: 'admin-1',
+      nom: 'Administrateur',
+      prenom: 'Principal',
+      email: 'admin@bank.local',
+      guichetId: null,
+      isActive: true,
+      roles: ['Admin'],
     },
   };
   let http: HttpTestingController;
@@ -59,11 +64,14 @@ describe('AuthService', () => {
   it('creates an agent using the documented endpoint', () => {
     const service = TestBed.inject(AuthService);
     const agent: CreateAgent = {
-      nom: 'Ben Salah', prenom: 'Amira', email: 'amira@bank.local',
-      password: 'Formation123!', guichetId: null,
+      nom: 'Ben Salah',
+      prenom: 'Amira',
+      email: 'amira@bank.local',
+      password: 'Formation123!',
+      guichetId: null,
     };
     service.createAgent(agent).subscribe();
-    const request = http.expectOne(`${apiUrl}/Auth/agents`);
+    const request = http.expectOne(`${apiUrl}/Auth/agent`);
     expect(request.request.method).toBe('POST');
     expect(request.request.body).toEqual(agent);
     request.flush({ ...response.user, id: 'agent-2', email: agent.email, roles: ['Agent'] });

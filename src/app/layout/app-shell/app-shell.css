@@ -1,3 +1,13 @@
-.workspace { min-height: 100dvh; margin-left: 17rem; background: var(--ivory); }
-.content { padding: clamp(1rem, 3vw, 2.5rem); }
-@media(max-width: 860px) { .workspace { margin-left: 0; } }
+.workspace {
+  min-height: 100dvh;
+  margin-left: 17rem;
+  background: var(--ivory);
+}
+.content {
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+@media (max-width: 860px) {
+  .workspace {
+    margin-left: 0;
+  }
+}

@@ -6,8 +6,13 @@ import { AppShell } from './app-shell';
 
 describe('AppShell', () => {
   const user = signal({
-    id: '1', nom: 'Administrateur', prenom: 'Principal', email: 'admin@bank.local',
-    guichetId: null, isActive: true, roles: ['Admin'],
+    id: '1',
+    nom: 'Administrateur',
+    prenom: 'Principal',
+    email: 'admin@bank.local',
+    guichetId: null,
+    isActive: true,
+    roles: ['Admin'],
   });
   const auth: {
     user: typeof user;
@@ -22,7 +27,10 @@ describe('AppShell', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppShell],
-      providers: [{ provide: AuthService, useValue: auth }, provideRouter([{ path: 'login', component: AppShell }])],
+      providers: [
+        { provide: AuthService, useValue: auth },
+        provideRouter([{ path: 'login', component: AppShell }]),
+      ],
     }).compileComponents();
   });
 
@@ -55,7 +63,9 @@ describe('AppShell', () => {
 
   it('logs out and redirects to login', async () => {
     let loggedOut = false;
-    auth.logout = () => { loggedOut = true; };
+    auth.logout = () => {
+      loggedOut = true;
+    };
     const fixture = TestBed.createComponent(AppShell);
     fixture.componentInstance.logout();
     await fixture.whenStable();
