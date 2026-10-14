@@ -1,26 +1,21 @@
 <main class="login-page">
   <section class="brand-panel">
     <a class="brand" href="/login"><span>iB</span><strong>iBank</strong></a>
-    <div class="brand-copy">
-      <p class="eyebrow">GESTION BANCAIRE</p>
-      <h1>La précision au service de chaque opération.</h1>
-      <p>Un espace clair pour accompagner les clients et piloter l’activité bancaire.</p>
-    </div>
-    <p class="training-note">Démonstrateur d’interfaces bancaires</p>
+    <div class="brand-copy"><p class="eyebrow">GESTION BANCAIRE</p><h1>La précision au service de chaque opération.</h1><p>Un espace clair pour accompagner les clients et piloter l’activité bancaire.</p></div>
+    <p class="training-note">Application de formation à la gestion bancaire</p>
   </section>
-  <section class="form-panel">
-    <div class="login-card">
-      <p class="eyebrow">ACCÈS SÉCURISÉ</p>
-      <h2>Bienvenue</h2>
-      <p class="intro">Connectez-vous pour accéder à votre espace.</p>
-      <form (submit)="submit($event, username.value, password.value)">
-        <label for="username">Identifiant</label>
-        <input #username id="username" name="username" autocomplete="username" required />
-        <label for="password">Mot de passe</label>
-        <input #password id="password" name="password" type="password" autocomplete="current-password" required />
-        @if (error()) { <p class="alert" role="alert">{{ error() }}</p> }
-        <button class="button primary" type="submit">Se connecter</button>
-      </form>
-    </div>
-  </section>
+  <section class="form-panel"><div class="login-card">
+    <p class="eyebrow">ACCÈS SÉCURISÉ</p><h2>Bienvenue</h2><p class="intro">Connectez-vous avec votre adresse professionnelle.</p>
+    <form #loginForm="ngForm" (ngSubmit)="submit(loginForm)" novalidate>
+      <label for="email">Adresse e-mail</label>
+      <input #email="ngModel" id="email" name="email" type="email" autocomplete="username" [(ngModel)]="credentials.email" required email />
+      @if ((email.touched || submitted) && email.errors?.['required']) { <p class="field-error">L’adresse e-mail est obligatoire.</p> }
+      @if ((email.touched || submitted) && email.errors?.['email']) { <p class="field-error">Saisissez une adresse e-mail valide.</p> }
+      <label for="password">Mot de passe</label>
+      <input #password="ngModel" id="password" name="password" type="password" autocomplete="current-password" [(ngModel)]="credentials.password" required />
+      @if ((password.touched || submitted) && password.invalid) { <p class="field-error">Le mot de passe est obligatoire.</p> }
+      @if (error()) { <p class="alert" role="alert">{{ error() }}</p> }
+      <button class="button primary" type="submit" [disabled]="loading()">{{ loading() ? 'Connexion…' : 'Se connecter' }}</button>
+    </form>
+  </div></section>
 </main>
