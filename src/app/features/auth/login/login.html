@@ -12,7 +12,7 @@
     <div class="login-card">
       <p class="eyebrow">ACCÈS SÉCURISÉ</p>
       <h2>Bienvenue</h2>
-      <p class="intro">Connectez-vous avec votre profil de démonstration.</p>
+      <p class="intro">Connectez-vous pour accéder à votre espace.</p>
       <form (submit)="submit($event, username.value, password.value)">
         <label for="username">Identifiant</label>
         <input #username id="username" name="username" autocomplete="username" required />
@@ -21,7 +21,6 @@
         @if (error()) { <p class="alert" role="alert">{{ error() }}</p> }
         <button class="button primary" type="submit">Se connecter</button>
       </form>
-      <div class="demo-accounts"><small>Admin : admin / admin</small><small>Agent : agent / agent</small></div>
     </div>
   </section>
 </main>
