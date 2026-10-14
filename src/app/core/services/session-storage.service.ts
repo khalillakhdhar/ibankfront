@@ -46,7 +46,9 @@ export class SessionStorageService {
       typeof user.email === 'string' &&
       (typeof user.guichetId === 'number' || user.guichetId === null) &&
       typeof user.isActive === 'boolean' &&
+      user.isActive &&
       Array.isArray(user.roles) &&
+      user.roles.length > 0 &&
       user.roles.every((role) => typeof role === 'string')
     );
   }
