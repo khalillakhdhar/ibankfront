@@ -1,59 +1,51 @@
-# Ibankfront
+# iBank Frontend — branche Angular complète
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.1.
+Application Angular 21 de formation connectée à l’API BankManagementStarter.
+Cette version fonctionnelle vit uniquement sur `feature/angular-complete`.
 
-## Development server
+## Installation et lancement
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Prérequis : Node.js compatible avec Angular 21 et npm 12.
 
 ```bash
-ng generate component component-name
+npm ci
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Ouvrir ensuite `http://localhost:4200`. L’API configurée est
+`https://bank.135-125-182-42.nip.io/api`.
+
+## Accès de formation
+
+- Administrateur : `admin@bank.local` / `Admin123!`
+- Agent de test : `agent.test.vps@bank.local` / `TestAgent123!`
+
+La connexion utilise un JWT réel. Pour simplifier le tutoriel, la session est
+stockée dans `localStorage`; ce choix n’est pas destiné à une application
+bancaire de production.
+
+## Fonctionnalités
+
+- authentification, déconnexion, guards et rôles Admin/Agent ;
+- clients : recherche, consultation, création, modification et suppression ;
+- comptes : liste, ouverture, consultation et activation/désactivation ;
+- guichets et types de comptes : consultation et administration ;
+- agents : création par un administrateur ;
+- transactions : dépôt, retrait, virement et historique ;
+- tableaux de bord alimentés par l’API et profil de session.
+
+Tous les formulaires utilisent l’approche Template-driven avec `FormsModule`
+et `ngModel`. Cette branche de cours ne contient volontairement aucun test
+unitaire.
+
+## Build
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+## Isolation du déploiement
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+`vercel.json` désactive les déploiements automatiques uniquement pour
+`feature/angular-complete`. Cette branche ne doit pas être fusionnée dans
+`master` et ne modifie ni le backend ni la VPS.
