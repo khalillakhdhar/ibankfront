@@ -33,6 +33,10 @@ export const routes: Routes = [
   { path: 'dashboard/agent', canActivate: [authGuard, roleGuard], data: { role: 'agent' }, loadComponent: () => import('./layout/app-shell/app-shell').then(m => m.AppShell), children: [
     { path: '', loadComponent: () => import('./features/dashboard/agent-dashboard/agent-dashboard').then(m => m.AgentDashboard) },
     ...commonChildren,
+    { path: 'guichets', loadComponent: () => import('./features/guichets/guichet-list/guichet-list').then(m => m.GuichetList) },
+    { path: 'guichets/:id', loadComponent: () => import('./features/guichets/guichet-detail/guichet-detail').then(m => m.GuichetDetail) },
+    { path: 'types-comptes', loadComponent: () => import('./features/types-comptes/type-compte-list/type-compte-list').then(m => m.TypeCompteList) },
+    { path: 'types-comptes/:id', loadComponent: () => import('./features/types-comptes/type-compte-detail/type-compte-detail').then(m => m.TypeCompteDetail) },
   ] },
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: '**', redirectTo: 'login' },
