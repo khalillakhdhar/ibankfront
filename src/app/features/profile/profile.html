@@ -1,1 +1,5 @@
-<header><p class="eyebrow">PROFIL</p><h1>Mon profil</h1></header><section class="profile-card empty-state"><p>Les informations du profil apparaîtront lorsque le service d’authentification sera connecté.</p></section>
+<header><p class="eyebrow">PROFIL</p><h1>Mon profil</h1><p>Informations fournies par votre session authentifiée.</p></header>
+@if (user(); as currentUser) {
+  <section class="profile-card"><span class="profile-avatar">{{ currentUser.prenom.charAt(0) }}{{ currentUser.nom.charAt(0) }}</span><div><h2>{{ currentUser.prenom }} {{ currentUser.nom }}</h2><p>{{ role() === 'admin' ? 'Administrateur' : 'Agent bancaire' }}</p></div></section>
+  <section class="details"><p><span>E-mail</span><strong>{{ currentUser.email }}</strong></p><p><span>Identifiant</span><strong>{{ currentUser.id }}</strong></p><p><span>Guichet</span><strong>{{ currentUser.guichetId ?? 'Non affecté' }}</strong></p><p><span>Statut</span><strong>{{ currentUser.isActive ? 'Actif' : 'Inactif' }}</strong></p></section>
+}

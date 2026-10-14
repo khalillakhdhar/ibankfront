@@ -9,6 +9,7 @@ const commonChildren: Routes = [
   { path: 'clients/:id', loadComponent: () => import('./features/clients/client-detail/client-detail').then(m => m.ClientDetail) },
   { path: 'comptes', loadComponent: () => import('./features/comptes/compte-list/compte-list').then(m => m.CompteList) },
   { path: 'comptes/new', loadComponent: () => import('./features/comptes/compte-form/compte-form').then(m => m.CompteForm) },
+  { path: 'comptes/:id/edit', loadComponent: () => import('./features/comptes/compte-form/compte-form').then(m => m.CompteForm) },
   { path: 'comptes/:id', loadComponent: () => import('./features/comptes/compte-detail/compte-detail').then(m => m.CompteDetail) },
   { path: 'transactions', loadComponent: () => import('./features/transactions/transaction-workspace/transaction-workspace').then(m => m.TransactionWorkspace) },
   { path: 'profil', loadComponent: () => import('./features/profile/profile').then(m => m.Profile) },
