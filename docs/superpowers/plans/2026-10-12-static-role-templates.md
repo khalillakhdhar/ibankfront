@@ -33,6 +33,7 @@
 ### Task 1: Local authentication and role routing
 
 **Files:**
+
 - Modify: `src/app/services/auth.service.ts`
 - Modify: `src/app/services/auth.service.spec.ts`
 - Modify: `src/app/core/guards/auth.guard.ts`
@@ -45,6 +46,7 @@
 - Modify: `src/app/app.config.ts`
 
 **Interfaces:**
+
 - Produces: `DemoRole = 'admin' | 'agent'`, `AuthService.login(username: string, password: string): boolean`, `role(): DemoRole | null`, `dashboardUrl(): '/dashboard/admin' | '/dashboard/agent' | '/login'`, `logout(): void`.
 - Produces: `authGuard`, `guestGuard`, and `roleGuard` using the locally restored role.
 
@@ -78,6 +80,7 @@ git commit -m "feat: add local role authentication"
 ### Task 2: Role-aware shell and dashboards
 
 **Files:**
+
 - Modify: `src/app/layout/app-shell/app-shell.ts`
 - Modify: `src/app/layout/app-shell/app-shell.html`
 - Modify: `src/app/layout/sidebar/sidebar.ts`
@@ -96,6 +99,7 @@ git commit -m "feat: add local role authentication"
 - Create: `src/app/features/profile/profile.css`
 
 **Interfaces:**
+
 - Consumes: `AuthService.role()`, `dashboardUrl()`, and `logout()` from Task 1.
 - Produces: role-filtered navigation and static Admin, Agent, and profile pages.
 
@@ -125,6 +129,7 @@ git commit -m "feat: add static role dashboards"
 ### Task 3: Static client and account page set
 
 **Files:**
+
 - Modify: `src/app/features/clients/client-list/*`
 - Modify: `src/app/features/clients/client-form/*`
 - Modify: `src/app/features/clients/client-detail/*`
@@ -137,6 +142,7 @@ git commit -m "feat: add static role dashboards"
 - Modify: `src/app/features/comptes/comptes.spec.ts`
 
 **Interfaces:**
+
 - Produces: static list, search, creation, edit and detail templates for clients; static list, opening and detail templates for accounts.
 - Constraint: page TypeScript imports only `Component`, `RouterLink`, and display pipes actually used by its HTML.
 
@@ -166,12 +172,14 @@ git commit -m "feat: add static client and account templates"
 ### Task 4: Static transaction workspace
 
 **Files:**
+
 - Modify: `src/app/features/transactions/transaction-workspace/transaction-workspace.ts`
 - Modify: `src/app/features/transactions/transaction-workspace/transaction-workspace.html`
 - Modify: `src/app/features/transactions/transaction-workspace/transaction-workspace.css`
 - Modify: `src/app/features/transactions/transaction-workspace/transaction-workspace.spec.ts`
 
 **Interfaces:**
+
 - Produces: one static page containing deposit, withdrawal and transfer forms plus a complete transaction history table.
 
 - [ ] **Step 1: Write failing static transaction tests**
@@ -200,6 +208,7 @@ git commit -m "feat: add static transaction templates"
 ### Task 5: Static administration page set
 
 **Files:**
+
 - Modify: `src/app/features/guichets/guichet-list/*`
 - Modify: `src/app/features/guichets/guichet-form/*`
 - Create: `src/app/features/guichets/guichet-detail/guichet-detail.ts`
@@ -217,6 +226,7 @@ git commit -m "feat: add static transaction templates"
 - Modify: `src/app/app.routes.ts`
 
 **Interfaces:**
+
 - Consumes: Admin-only route tree from Task 1.
 - Produces: static branch list/form/detail, account-type list/form/detail and agent-creation templates.
 
@@ -246,6 +256,7 @@ git commit -m "feat: add static administration templates"
 ### Task 6: Remove runtime API wiring and verify the demonstrator
 
 **Files:**
+
 - Modify: `src/app/app.config.ts`
 - Modify: `src/app/app.spec.ts`
 - Modify: `src/styles.css` only where shared responsive/focus styling is missing
@@ -253,6 +264,7 @@ git commit -m "feat: add static administration templates"
 - Delete obsolete tests that assert HTTP-backed page behavior; retain services and models as dormant future integration code.
 
 **Interfaces:**
+
 - Consumes: all static pages and local-role routing from Tasks 1–5.
 - Produces: a production build with no runtime HTTP provider or page-level business integration.
 

@@ -1,28 +1,37 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from './auth.service';
 
-describe('AuthService local demo', () => {
-  beforeEach(() => localStorage.clear());
-  afterEach(() => localStorage.clear());
-
-  it('accepts only the two demo accounts', () => {
-    const auth = TestBed.inject(AuthService);
-    expect(auth.login('admin', 'admin')).toBe(true);
-    expect(auth.role()).toBe('admin');
-    auth.logout();
-    expect(auth.login('agent', 'agent')).toBe(true);
-    expect(auth.role()).toBe('agent');
-    auth.logout();
-    expect(auth.login('admin', 'wrong')).toBe(false);
-    expect(auth.role()).toBeNull();
+describe('AuthService', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), provideHttpClientTesting()],
+    });
   });
-
-  it('restores valid roles and clears unknown values', () => {
-    localStorage.setItem('ibank.demo.role', 'agent');
-    expect(TestBed.inject(AuthService).dashboardUrl()).toBe('/dashboard/agent');
-    TestBed.resetTestingModule();
-    localStorage.setItem('ibank.demo.role', 'owner');
-    expect(TestBed.inject(AuthService).role()).toBeNull();
-    expect(localStorage.getItem('ibank.demo.role')).toBeNull();
+  afterEach(() => localStorage.clear());
+  it('authenticates against the backend and stores the session', () => {
+    const auth = TestBed.inject(AuthService);
+    auth.login({ email: 'admin@bank.local', password: 'secret' }).subscribe();
+    const request = TestBed.inject(HttpTestingController).expectOne(
+      'https://bank.135-125-182-42.nip.io/api/Auth/login',
+    );
+    request.flush({
+      token: 'jwt',
+      expiration: new Date(Date.now() + 60000).toISOString(),
+      user: {
+        id: '1',
+        nom: 'Admin',
+        prenom: 'Bank',
+        email: 'admin@bank.local',
+        guichetId: null,
+        isActive: true,
+        roles: ['Admin'],
+      },
+    });
+    expect(request.request.method).toBe('POST');
+    expect(auth.role()).toBe('admin');
+    expect(localStorage.getItem('ibank.session')).toContain('jwt');
   });
 });

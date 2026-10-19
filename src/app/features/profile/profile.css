@@ -1,1 +1,31 @@
-:host { display: grid; gap: 1.5rem; }.profile-card,.details { background: var(--paper); border:1px solid var(--border); padding:1.5rem; border-radius:.45rem; }.profile-card { display:flex; align-items:center; gap:1rem; }.profile-avatar { width:4rem;height:4rem;border-radius:50%;display:grid;place-items:center;background:var(--copper-soft);font-weight:800; }.details p { display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:.8rem 0; }
+:host {
+  display: grid;
+  gap: 1.5rem;
+}
+.profile-card,
+.details {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 0.45rem;
+}
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.profile-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--copper-soft);
+  font-weight: 800;
+}
+.details p {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 0;
+}

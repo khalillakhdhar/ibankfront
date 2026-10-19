@@ -1,3 +1,24 @@
-import { TestBed } from '@angular/core/testing'; import { provideRouter, Router } from '@angular/router'; import { Component } from '@angular/core'; import { Login } from './login';
-@Component({template:''}) class Empty {}
-describe('Login',()=>{ beforeEach(()=>localStorage.clear()); afterEach(()=>localStorage.clear()); it('routes both local demo accounts and rejects unknown credentials',async()=>{TestBed.configureTestingModule({providers:[provideRouter([{path:'dashboard/admin',component:Empty},{path:'dashboard/agent',component:Empty}])]});const f=TestBed.createComponent(Login);f.componentInstance.submit(new Event('submit'),'admin','admin');await f.whenStable();expect(TestBed.inject(Router).url).toBe('/dashboard/admin');localStorage.clear();TestBed.inject(Router).navigateByUrl('/');f.componentInstance.submit(new Event('submit'),'unknown','wrong');expect(f.componentInstance.error()).toContain('incorrect');});it('requires the exact demo username',()=>{TestBed.configureTestingModule({providers:[provideRouter([])]});const f=TestBed.createComponent(Login);f.componentInstance.submit(new Event('submit'),' admin ','admin');expect(f.componentInstance.error()).toContain('incorrect');});});
+import { signal } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { Login } from './login';
+
+describe('Login', () => {
+  it('renders the backend credential form', () => {
+    const auth = {
+      error: signal(null),
+      loading: signal(false),
+      login: vi.fn(() => of({})),
+      dashboardUrl: () => '/dashboard/admin',
+    };
+    TestBed.configureTestingModule({
+      providers: [provideRouter([]), { provide: AuthService, useValue: auth }],
+    });
+    const fixture = TestBed.createComponent(Login);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('input[type="email"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('input[type="password"]')).not.toBeNull();
+  });
+});

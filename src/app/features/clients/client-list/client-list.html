@@ -1,3 +1,64 @@
-<header><div><p class="eyebrow">PORTEFEUILLE</p><h1>Clients</h1><p>Consultez et gérez les dossiers clients.</p></div><a class="button primary" routerLink="new">Nouveau client</a></header>
-<section class="filters"><label for="client-search">Rechercher</label><input id="client-search" type="search" placeholder="Nom, CIN ou téléphone" /><button type="button">Rechercher</button></section>
-<div class="table"><table><thead><tr><th>Client</th><th>CIN</th><th>Contact</th><th>Statut</th><th>Actions</th></tr></thead><tbody></tbody></table><p class="empty-state">Aucun client à afficher.</p></div>
+<header class="page">
+  <div>
+    <p class="eyebrow">PORTEFEUILLE</p>
+    <h1>Clients</h1>
+    <p>Consultez et gérez les dossiers clients.</p>
+  </div>
+  <a class="button primary" routerLink="new">Nouveau client</a>
+</header>
+<form class="search" (ngSubmit)="search()">
+  <input
+    name="search"
+    [(ngModel)]="searchTerm"
+    type="search"
+    placeholder="Nom, CIN ou téléphone"
+  /><button class="button" type="submit">Rechercher</button
+  ><button class="button" type="button" (click)="reset()">Réinitialiser</button>
+</form>
+@if (loading()) {
+  <app-loading-state label="Chargement des clients…" />
+} @else if (error()) {
+  <app-error-state [message]="error()!" (retry)="reset()" />
+} @else if (!clients().length) {
+  <app-empty-state title="Aucun client" message="Créez un dossier pour commencer." />
+} @else {
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>CIN</th>
+          <th>Contact</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (client of clients(); track client.id) {
+          <tr>
+            <td>
+              <strong>{{ client.prenom }} {{ client.nom }}</strong
+              ><small>{{ client.email || 'Sans e-mail' }}</small>
+            </td>
+            <td>{{ client.cin }}</td>
+            <td>{{ client.telephone }}</td>
+            <td>{{ client.isActive ? 'Actif' : 'Inactif' }}</td>
+            <td>
+              <a [routerLink]="[client.id]">Voir</a> ·
+              <a [routerLink]="[client.id, 'edit']">Modifier</a> ·
+              <button type="button" (click)="pendingDelete.set(client.id)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
+@if (pendingDelete()) {
+  <app-confirm-dialog
+    title="Supprimer ce client ?"
+    message="Le dossier sera supprimé si aucune règle bancaire ne l’empêche."
+    (cancel)="pendingDelete.set(null)"
+    (confirm)="remove()"
+  />
+}

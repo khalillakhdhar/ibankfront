@@ -1,2 +1,52 @@
-<header><p class="eyebrow">DOSSIER CLIENT</p><h1>Créer ou modifier un client</h1><p>Renseignez les informations d’identité et de contact.</p></header>
-<form><div class="form-grid"><label for="cin">CIN<input id="cin" name="cin" required /></label><label for="nom">Nom<input id="nom" name="nom" required /></label><label for="prenom">Prénom<input id="prenom" name="prenom" required /></label><label for="birth">Date de naissance<input id="birth" name="dateNaissance" type="date" /></label><label for="email">E-mail<input id="email" name="email" type="email" /></label><label for="phone">Téléphone<input id="phone" name="telephone" required /></label><label class="wide" for="address">Adresse<textarea id="address" name="adresse"></textarea></label><label><input name="isActive" type="checkbox" /> Client actif</label></div><div class="actions"><a class="button" routerLink="../">Annuler</a><button class="button primary" type="button">Enregistrer le dossier</button></div></form>
+<header>
+  <p class="eyebrow">DOSSIER CLIENT</p>
+  <h1>{{ edit ? 'Modifier le client' : 'Nouveau client' }}</h1>
+  <p>Renseignez les informations d’identité et de contact.</p>
+</header>
+<form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
+  <label
+    >CIN<input
+      name="cin"
+      [(ngModel)]="model.cin"
+      required
+      minlength="4"
+      maxlength="20"
+      [disabled]="edit"
+  /></label>
+  <label>Nom<input name="nom" [(ngModel)]="model.nom" required maxlength="80" /></label
+  ><label>Prénom<input name="prenom" [(ngModel)]="model.prenom" required maxlength="80" /></label>
+  <label
+    >Date de naissance<input
+      name="dateNaissance"
+      [(ngModel)]="model.dateNaissance"
+      type="date" /></label
+  ><label
+    >E-mail<input name="email" [(ngModel)]="model.email" type="email" email maxlength="150"
+  /></label>
+  <label
+    >Téléphone<input
+      name="telephone"
+      [(ngModel)]="model.telephone"
+      required
+      maxlength="30" /></label
+  ><label class="wide"
+    >Adresse<textarea name="adresse" [(ngModel)]="model.adresse" maxlength="250"></textarea>
+  </label>
+  @if (edit) {
+    <label class="check"
+      ><input name="isActive" [(ngModel)]="model.isActive" type="checkbox" /> Client actif</label
+    >
+  }
+  @if (submitted && form.invalid) {
+    <p class="alert wide">Vérifiez les champs obligatoires et leurs formats.</p>
+  }
+  @if (error) {
+    <p class="alert wide">{{ error }}</p>
+  }
+  <div class="actions wide">
+    <a class="button" routerLink="../">Annuler</a
+    ><button class="button primary" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Enregistrement…' : 'Enregistrer' }}
+    </button>
+  </div>
+</form>

@@ -1,7 +1,63 @@
-<header><p class="eyebrow">OPÉRATIONS</p><h1>Transactions</h1><p>Préparez les opérations et consultez l’historique.</p></header>
+<header>
+  <p class="eyebrow">OPÉRATIONS</p>
+  <h1>Transactions</h1>
+  <p>Préparez les opérations et consultez l’historique.</p>
+</header>
 <section class="operation-grid">
-  <form><h2>Dépôt</h2><label for="deposit-account">Compte<select id="deposit-account"><option value="">Sélectionner un compte</option></select></label><label for="deposit-amount">Montant<input id="deposit-amount" type="number" min="0.01" /></label><label for="deposit-note">Description<textarea id="deposit-note"></textarea></label><button class="button primary" type="button">Préparer le dépôt</button></form>
-  <form><h2>Retrait</h2><label for="withdraw-account">Compte<select id="withdraw-account"><option value="">Sélectionner un compte</option></select></label><label for="withdraw-amount">Montant<input id="withdraw-amount" type="number" min="0.01" /></label><label for="withdraw-note">Description<textarea id="withdraw-note"></textarea></label><button class="button primary" type="button">Préparer le retrait</button></form>
-  <form><h2>Virement</h2><label for="source">Compte source<select id="source"><option value="">Sélectionner un compte</option></select></label><label for="destination">Compte destination<select id="destination"><option value="">Sélectionner un compte</option></select></label><label for="transfer-amount">Montant<input id="transfer-amount" type="number" min="0.01" /></label><label for="transfer-note">Description<textarea id="transfer-note"></textarea></label><button class="button primary" type="button">Préparer le virement</button></form>
+  <form>
+    <h2>Dépôt</h2>
+    <label for="deposit-account"
+      >Compte<select id="deposit-account">
+        <option value="">Sélectionner un compte</option>
+      </select></label
+    ><label for="deposit-amount"
+      >Montant<input id="deposit-amount" type="number" min="0.01" /></label
+    ><label for="deposit-note">Description<textarea id="deposit-note"></textarea></label
+    ><button class="button primary" type="button">Préparer le dépôt</button>
+  </form>
+  <form>
+    <h2>Retrait</h2>
+    <label for="withdraw-account"
+      >Compte<select id="withdraw-account">
+        <option value="">Sélectionner un compte</option>
+      </select></label
+    ><label for="withdraw-amount"
+      >Montant<input id="withdraw-amount" type="number" min="0.01" /></label
+    ><label for="withdraw-note">Description<textarea id="withdraw-note"></textarea></label
+    ><button class="button primary" type="button">Préparer le retrait</button>
+  </form>
+  <form>
+    <h2>Virement</h2>
+    <label for="source"
+      >Compte source<select id="source">
+        <option value="">Sélectionner un compte</option>
+      </select></label
+    ><label for="destination"
+      >Compte destination<select id="destination">
+        <option value="">Sélectionner un compte</option>
+      </select></label
+    ><label for="transfer-amount"
+      >Montant<input id="transfer-amount" type="number" min="0.01" /></label
+    ><label for="transfer-note">Description<textarea id="transfer-note"></textarea></label
+    ><button class="button primary" type="button">Préparer le virement</button>
+  </form>
 </section>
-<section><h2>Historique des transactions</h2><div class="table"><table><thead><tr><th>Référence</th><th>Date</th><th>Type</th><th>Compte source</th><th>Destination</th><th>Montant</th></tr></thead><tbody></tbody></table><p class="empty-state">Aucune transaction à afficher.</p></div></section>
+<section>
+  <h2>Historique des transactions</h2>
+  <div class="table">
+    <table>
+      <thead>
+        <tr>
+          <th>Référence</th>
+          <th>Date</th>
+          <th>Type</th>
+          <th>Compte source</th>
+          <th>Destination</th>
+          <th>Montant</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p class="empty-state">Aucune transaction à afficher.</p>
+  </div>
+</section>

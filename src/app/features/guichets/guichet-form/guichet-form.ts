@@ -1,1 +1,9 @@
-import { Component } from '@angular/core'; import { RouterLink } from '@angular/router'; @Component({selector:'app-guichet-form',imports:[RouterLink],templateUrl:'./guichet-form.html',styleUrl:'./guichet-form.css'}) export class GuichetForm {}
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+@Component({
+  selector: 'app-guichet-form',
+  imports: [RouterLink],
+  templateUrl: './guichet-form.html',
+  styleUrl: './guichet-form.css',
+})
+export class GuichetForm {}

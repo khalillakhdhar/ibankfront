@@ -1,1 +1,46 @@
-<header><div><p class="eyebrow">CLIENT</p><h1>Détail du client</h1></div><a class="button primary" routerLink="edit">Modifier</a></header><section class="details empty-state"><p>Aucune donnée client chargée.</p></section>
+@if (loading()) {
+  <app-loading-state />
+} @else if (error()) {
+  <app-error-state [message]="error()!" (retry)="load()" />
+} @else if (client(); as c) {
+  <header>
+    <div>
+      <p class="eyebrow">CLIENT</p>
+      <h1>{{ c.prenom }} {{ c.nom }}</h1>
+      <p>CIN {{ c.cin }}</p>
+    </div>
+    <a class="button primary" routerLink="edit">Modifier</a>
+  </header>
+  <section class="details">
+    <p>
+      <span>E-mail</span><strong>{{ c.email || 'Non renseigné' }}</strong>
+    </p>
+    <p>
+      <span>Téléphone</span><strong>{{ c.telephone }}</strong>
+    </p>
+    <p>
+      <span>Date de naissance</span><strong>{{ c.dateNaissance || 'Non renseignée' }}</strong>
+    </p>
+    <p>
+      <span>Adresse</span><strong>{{ c.adresse || 'Non renseignée' }}</strong>
+    </p>
+    <p>
+      <span>Statut</span><strong>{{ c.isActive ? 'Actif' : 'Inactif' }}</strong>
+    </p>
+    <p>
+      <span>Création</span><strong>{{ c.dateCreation | date: 'mediumDate' }}</strong>
+    </p>
+  </section>
+  <h2>Comptes</h2>
+  <section class="accounts">
+    @for (account of c.comptes; track account.id) {
+      <a [routerLink]="['../../comptes', account.id]"
+        ><strong>{{ account.numeroCompte }}</strong
+        ><span>{{ account.typeCompte }}</span
+        ><b>{{ account.solde | currency: 'TND' }}</b></a
+      >
+    } @empty {
+      <p>Aucun compte associé.</p>
+    }
+  </section>
+}
