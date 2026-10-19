@@ -1,1 +1,57 @@
-<header><p class="eyebrow">COMPTE</p><h1>{{edit?'Modifier le statut':'Nouveau compte'}}</h1></header><form #f="ngForm" (ngSubmit)="submit(f)">@if(edit){<label><input name="active" type="checkbox" [(ngModel)]="model.isActive"/> Compte actif</label>}@else{<label>Numéro<input name="numero" [(ngModel)]="model.numeroCompte" required minlength="4" maxlength="34"/></label><label>Client<select name="client" [(ngModel)]="model.clientId" required><option [ngValue]="0">Sélectionner</option>@for(x of clients();track x.id){<option [ngValue]="x.id">{{x.prenom}} {{x.nom}}</option>}</select></label><label>Type<select name="type" [(ngModel)]="model.typeCompteId" required><option [ngValue]="0">Sélectionner</option>@for(x of types();track x.id){@if(x.isActive){<option [ngValue]="x.id">{{x.libelle}}</option>}}</select></label><label>Guichet<select name="guichet" [(ngModel)]="model.guichetId" required><option [ngValue]="0">Sélectionner</option>@for(x of guichets();track x.id){@if(x.isActive){<option [ngValue]="x.id">{{x.nom}}</option>}}</select></label><label>Solde initial<input name="solde" type="number" [(ngModel)]="model.soldeInitial" min="0" required/></label>}@if(error){<p class="alert">{{error}}</p>}<div class="actions"><a class="button" routerLink="../">Annuler</a><button class="button primary" [disabled]="f.invalid||busy()">Enregistrer</button></div></form>
+<header>
+  <p class="eyebrow">COMPTE</p>
+  <h1>{{ edit ? 'Modifier le statut' : 'Nouveau compte' }}</h1>
+</header>
+<form #f="ngForm" (ngSubmit)="submit(f)">
+  @if (edit) {
+    <label><input name="active" type="checkbox" [(ngModel)]="model.isActive" /> Compte actif</label>
+  } @else {
+    <label
+      >Numéro<input
+        name="numero"
+        [(ngModel)]="model.numeroCompte"
+        required
+        minlength="4"
+        maxlength="34" /></label
+    ><label
+      >Client<select name="client" [(ngModel)]="model.clientId" required>
+        <option [ngValue]="0">Sélectionner</option>
+        @for (x of clients(); track x.id) {
+          <option [ngValue]="x.id">{{ x.prenom }} {{ x.nom }}</option>
+        }
+      </select></label
+    ><label
+      >Type<select name="type" [(ngModel)]="model.typeCompteId" required>
+        <option [ngValue]="0">Sélectionner</option>
+        @for (x of types(); track x.id) {
+          @if (x.isActive) {
+            <option [ngValue]="x.id">{{ x.libelle }}</option>
+          }
+        }
+      </select></label
+    ><label
+      >Guichet<select name="guichet" [(ngModel)]="model.guichetId" required>
+        <option [ngValue]="0">Sélectionner</option>
+        @for (x of guichets(); track x.id) {
+          @if (x.isActive) {
+            <option [ngValue]="x.id">{{ x.nom }}</option>
+          }
+        }
+      </select></label
+    ><label
+      >Solde initial<input
+        name="solde"
+        type="number"
+        [(ngModel)]="model.soldeInitial"
+        min="0"
+        required
+    /></label>
+  }
+  @if (error) {
+    <p class="alert">{{ error }}</p>
+  }
+  <div class="actions">
+    <a class="button" routerLink="../">Annuler</a
+    ><button class="button primary" [disabled]="f.invalid || busy()">Enregistrer</button>
+  </div>
+</form>

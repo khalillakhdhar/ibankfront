@@ -1,2 +1,21 @@
-import{CommonModule}from'@angular/common';import{Component,inject,OnInit}from'@angular/core';import{RouterLink}from'@angular/router';import{AuthService}from'../../../services/auth.service';import{ClientService}from'../../../services/client.service';import{CompteService}from'../../../services/compte.service';
-@Component({selector:'app-agent-dashboard',imports:[CommonModule,RouterLink],templateUrl:'./agent-dashboard.html',styleUrl:'./agent-dashboard.css'})export class AgentDashboard implements OnInit{readonly auth=inject(AuthService);readonly clients=inject(ClientService);readonly comptes=inject(CompteService);ngOnInit(){this.clients.loadAll();this.comptes.loadAll()}}
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { ClientService } from '../../../services/client.service';
+import { CompteService } from '../../../services/compte.service';
+@Component({
+  selector: 'app-agent-dashboard',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './agent-dashboard.html',
+  styleUrl: './agent-dashboard.css',
+})
+export class AgentDashboard implements OnInit {
+  readonly auth = inject(AuthService);
+  readonly clients = inject(ClientService);
+  readonly comptes = inject(CompteService);
+  ngOnInit() {
+    this.clients.loadAll();
+    this.comptes.loadAll();
+  }
+}

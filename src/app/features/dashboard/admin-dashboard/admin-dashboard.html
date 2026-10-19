@@ -1,1 +1,34 @@
-<header><p class="eyebrow">ADMINISTRATION</p><h1>Tableau de bord</h1><p>Pilotage du réseau bancaire et de l’activité globale.</p></header><section class="stats"><article><span>Clients</span><strong>{{clients.totalClients()}}</strong><small>{{clients.activeClients()}} actifs</small></article><article><span>Comptes</span><strong>{{comptes.totalComptes()}}</strong><small>{{comptes.activeComptes()}} actifs</small></article><article><span>Encours</span><strong>{{comptes.totalSolde()|currency:'TND'}}</strong></article><article><span>Guichets</span><strong>{{guichets.totalGuichets()}}</strong></article><article><span>Produits</span><strong>{{types.totalTypesCompte()}}</strong></article></section>@if(clients.error()||comptes.error()||guichets.error()||types.error()){<p class="alert">Certains indicateurs n’ont pas pu être chargés.</p>}<section class="panel"><h2>Actions rapides</h2><div class="quick-actions"><a routerLink="clients/new">Nouveau client</a><a routerLink="comptes/new">Ouvrir un compte</a><a routerLink="guichets/new">Nouveau guichet</a><a routerLink="agents/new">Nouvel agent</a></div></section>
+<header>
+  <p class="eyebrow">ADMINISTRATION</p>
+  <h1>Tableau de bord</h1>
+  <p>Pilotage du réseau bancaire et de l’activité globale.</p>
+</header>
+<section class="stats">
+  <article>
+    <span>Clients</span><strong>{{ clients.totalClients() }}</strong
+    ><small>{{ clients.activeClients() }} actifs</small>
+  </article>
+  <article>
+    <span>Comptes</span><strong>{{ comptes.totalComptes() }}</strong
+    ><small>{{ comptes.activeComptes() }} actifs</small>
+  </article>
+  <article>
+    <span>Encours</span><strong>{{ comptes.totalSolde() | currency: 'TND' }}</strong>
+  </article>
+  <article>
+    <span>Guichets</span><strong>{{ guichets.totalGuichets() }}</strong>
+  </article>
+  <article>
+    <span>Produits</span><strong>{{ types.totalTypesCompte() }}</strong>
+  </article>
+</section>
+@if (clients.error() || comptes.error() || guichets.error() || types.error()) {
+  <p class="alert">Certains indicateurs n’ont pas pu être chargés.</p>
+}
+<section class="panel">
+  <h2>Actions rapides</h2>
+  <div class="quick-actions">
+    <a routerLink="clients/new">Nouveau client</a><a routerLink="comptes/new">Ouvrir un compte</a
+    ><a routerLink="guichets/new">Nouveau guichet</a><a routerLink="agents/new">Nouvel agent</a>
+  </div>
+</section>

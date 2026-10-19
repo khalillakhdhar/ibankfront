@@ -1,2 +1,50 @@
-import{HttpErrorResponse}from'@angular/common/http';import{Component,inject,OnInit,signal}from'@angular/core';import{FormsModule,NgForm}from'@angular/forms';import{RouterLink}from'@angular/router';import{AgentService}from'../../../services/agent.service';import{GuichetService}from'../../../services/guichet.service';import{ApiErrorService}from'../../../core/services/api-error.service';
-@Component({selector:'app-agent-form',imports:[FormsModule,RouterLink],templateUrl:'./agent-form.html',styleUrl:'./agent-form.css'})export class AgentForm implements OnInit{private service=inject(AgentService);private gs=inject(GuichetService);private errors=inject(ApiErrorService);readonly guichets=this.gs.guichets;readonly busy=signal(false);error:string|null=null;success:string|null=null;model={nom:'',prenom:'',email:'',password:'',guichetId:null as number|null};ngOnInit(){this.gs.loadAll()}submit(f:NgForm){if(f.invalid||this.busy())return;this.busy.set(true);this.error=null;this.success=null;this.service.create({...this.model,nom:this.model.nom.trim(),prenom:this.model.prenom.trim(),email:this.model.email.trim()}).subscribe({next:u=>{this.success=`Agent ${u.prenom} ${u.nom} créé.`;this.busy.set(false);f.resetForm({guichetId:null});},error:(e:HttpErrorResponse)=>{this.error=this.errors.message(e,"Impossible de créer l'agent.");this.busy.set(false)}})}}
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { AgentService } from '../../../services/agent.service';
+import { GuichetService } from '../../../services/guichet.service';
+import { ApiErrorService } from '../../../core/services/api-error.service';
+@Component({
+  selector: 'app-agent-form',
+  imports: [FormsModule, RouterLink],
+  templateUrl: './agent-form.html',
+  styleUrl: './agent-form.css',
+})
+export class AgentForm implements OnInit {
+  private service = inject(AgentService);
+  private gs = inject(GuichetService);
+  private errors = inject(ApiErrorService);
+  readonly guichets = this.gs.guichets;
+  readonly busy = signal(false);
+  error: string | null = null;
+  success: string | null = null;
+  model = { nom: '', prenom: '', email: '', password: '', guichetId: null as number | null };
+  ngOnInit() {
+    this.gs.loadAll();
+  }
+  submit(f: NgForm) {
+    if (f.invalid || this.busy()) return;
+    this.busy.set(true);
+    this.error = null;
+    this.success = null;
+    this.service
+      .create({
+        ...this.model,
+        nom: this.model.nom.trim(),
+        prenom: this.model.prenom.trim(),
+        email: this.model.email.trim(),
+      })
+      .subscribe({
+        next: (u) => {
+          this.success = `Agent ${u.prenom} ${u.nom} créé.`;
+          this.busy.set(false);
+          f.resetForm({ guichetId: null });
+        },
+        error: (e: HttpErrorResponse) => {
+          this.error = this.errors.message(e, "Impossible de créer l'agent.");
+          this.busy.set(false);
+        },
+      });
+  }
+}

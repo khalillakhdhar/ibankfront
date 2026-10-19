@@ -1,9 +1,52 @@
-<header><p class="eyebrow">DOSSIER CLIENT</p><h1>{{ edit ? 'Modifier le client' : 'Nouveau client' }}</h1><p>Renseignez les informations d’identité et de contact.</p></header>
+<header>
+  <p class="eyebrow">DOSSIER CLIENT</p>
+  <h1>{{ edit ? 'Modifier le client' : 'Nouveau client' }}</h1>
+  <p>Renseignez les informations d’identité et de contact.</p>
+</header>
 <form #form="ngForm" (ngSubmit)="submit(form)" novalidate>
-<label>CIN<input name="cin" [(ngModel)]="model.cin" required minlength="4" maxlength="20" [disabled]="edit" /></label>
-<label>Nom<input name="nom" [(ngModel)]="model.nom" required maxlength="80" /></label><label>Prénom<input name="prenom" [(ngModel)]="model.prenom" required maxlength="80" /></label>
-<label>Date de naissance<input name="dateNaissance" [(ngModel)]="model.dateNaissance" type="date" /></label><label>E-mail<input name="email" [(ngModel)]="model.email" type="email" email maxlength="150" /></label>
-<label>Téléphone<input name="telephone" [(ngModel)]="model.telephone" required maxlength="30" /></label><label class="wide">Adresse<textarea name="adresse" [(ngModel)]="model.adresse" maxlength="250"></textarea></label>
-@if (edit) { <label class="check"><input name="isActive" [(ngModel)]="model.isActive" type="checkbox" /> Client actif</label> }
-@if (submitted && form.invalid) { <p class="alert wide">Vérifiez les champs obligatoires et leurs formats.</p> } @if (error) { <p class="alert wide">{{ error }}</p> }
-<div class="actions wide"><a class="button" routerLink="../">Annuler</a><button class="button primary" type="submit" [disabled]="submitting()">{{ submitting() ? 'Enregistrement…' : 'Enregistrer' }}</button></div></form>
+  <label
+    >CIN<input
+      name="cin"
+      [(ngModel)]="model.cin"
+      required
+      minlength="4"
+      maxlength="20"
+      [disabled]="edit"
+  /></label>
+  <label>Nom<input name="nom" [(ngModel)]="model.nom" required maxlength="80" /></label
+  ><label>Prénom<input name="prenom" [(ngModel)]="model.prenom" required maxlength="80" /></label>
+  <label
+    >Date de naissance<input
+      name="dateNaissance"
+      [(ngModel)]="model.dateNaissance"
+      type="date" /></label
+  ><label
+    >E-mail<input name="email" [(ngModel)]="model.email" type="email" email maxlength="150"
+  /></label>
+  <label
+    >Téléphone<input
+      name="telephone"
+      [(ngModel)]="model.telephone"
+      required
+      maxlength="30" /></label
+  ><label class="wide"
+    >Adresse<textarea name="adresse" [(ngModel)]="model.adresse" maxlength="250"></textarea>
+  </label>
+  @if (edit) {
+    <label class="check"
+      ><input name="isActive" [(ngModel)]="model.isActive" type="checkbox" /> Client actif</label
+    >
+  }
+  @if (submitted && form.invalid) {
+    <p class="alert wide">Vérifiez les champs obligatoires et leurs formats.</p>
+  }
+  @if (error) {
+    <p class="alert wide">{{ error }}</p>
+  }
+  <div class="actions wide">
+    <a class="button" routerLink="../">Annuler</a
+    ><button class="button primary" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Enregistrement…' : 'Enregistrer' }}
+    </button>
+  </div>
+</form>

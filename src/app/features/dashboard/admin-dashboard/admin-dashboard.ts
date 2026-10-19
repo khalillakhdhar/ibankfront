@@ -1,2 +1,25 @@
-import{CommonModule}from'@angular/common';import{Component,inject,OnInit}from'@angular/core';import{RouterLink}from'@angular/router';import{ClientService}from'../../../services/client.service';import{CompteService}from'../../../services/compte.service';import{GuichetService}from'../../../services/guichet.service';import{TypeCompteService}from'../../../services/type-compte.service';
-@Component({selector:'app-admin-dashboard',imports:[CommonModule,RouterLink],templateUrl:'./admin-dashboard.html',styleUrl:'./admin-dashboard.css'})export class AdminDashboard implements OnInit{readonly clients=inject(ClientService);readonly comptes=inject(CompteService);readonly guichets=inject(GuichetService);readonly types=inject(TypeCompteService);ngOnInit(){this.clients.loadAll();this.comptes.loadAll();this.guichets.loadAll();this.types.loadAll()}}
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ClientService } from '../../../services/client.service';
+import { CompteService } from '../../../services/compte.service';
+import { GuichetService } from '../../../services/guichet.service';
+import { TypeCompteService } from '../../../services/type-compte.service';
+@Component({
+  selector: 'app-admin-dashboard',
+  imports: [CommonModule, RouterLink],
+  templateUrl: './admin-dashboard.html',
+  styleUrl: './admin-dashboard.css',
+})
+export class AdminDashboard implements OnInit {
+  readonly clients = inject(ClientService);
+  readonly comptes = inject(CompteService);
+  readonly guichets = inject(GuichetService);
+  readonly types = inject(TypeCompteService);
+  ngOnInit() {
+    this.clients.loadAll();
+    this.comptes.loadAll();
+    this.guichets.loadAll();
+    this.types.loadAll();
+  }
+}

@@ -1,1 +1,21 @@
-:host { display:grid; gap:1.5rem; } header,.details { display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; } article,section { background:var(--paper); border:1px solid var(--border); border-radius:.45rem; padding:1.25rem; } .details article { flex:1 1 18rem; }
+:host {
+  display: grid;
+  gap: 1.5rem;
+}
+header,
+.details {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+article,
+section {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 0.45rem;
+  padding: 1.25rem;
+}
+.details article {
+  flex: 1 1 18rem;
+}

@@ -4,7 +4,12 @@ import { AuthService } from '../../services/auth.service';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
 
-@Component({ selector: 'app-shell', imports: [RouterOutlet, Header, Sidebar], templateUrl: './app-shell.html', styleUrl: './app-shell.css' })
+@Component({
+  selector: 'app-shell',
+  imports: [RouterOutlet, Header, Sidebar],
+  templateUrl: './app-shell.html',
+  styleUrl: './app-shell.css',
+})
 export class AppShell {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
@@ -12,7 +17,14 @@ export class AppShell {
   readonly user = this.auth.currentUser;
   readonly base = computed(() => '/dashboard/' + this.role());
   readonly menuOpen = signal(false);
-  toggleMenu(): void { this.menuOpen.update(value => !value); }
-  closeMenu(): void { this.menuOpen.set(false); }
-  logout(): void { this.auth.logout(); void this.router.navigateByUrl('/login'); }
+  toggleMenu(): void {
+    this.menuOpen.update((value) => !value);
+  }
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+  logout(): void {
+    this.auth.logout();
+    void this.router.navigateByUrl('/login');
+  }
 }

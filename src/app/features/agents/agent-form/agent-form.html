@@ -1,1 +1,37 @@
-<header><p class="eyebrow">ADMINISTRATION</p><h1>Créer un agent</h1><p>Ajoutez un collaborateur et affectez-le à un guichet.</p></header><form #f="ngForm" (ngSubmit)="submit(f)"><label>Nom<input name="nom" [(ngModel)]="model.nom" required maxlength="80"/></label><label>Prénom<input name="prenom" [(ngModel)]="model.prenom" required maxlength="80"/></label><label>E-mail<input name="email" [(ngModel)]="model.email" type="email" email required/></label><label>Mot de passe initial<input name="password" [(ngModel)]="model.password" type="password" required minlength="6"/></label><label>Guichet<select name="guichet" [(ngModel)]="model.guichetId"><option [ngValue]="null">Sans affectation</option>@for(g of guichets();track g.id){<option [ngValue]="g.id">{{g.nom}}</option>}</select></label>@if(error){<p class="error">{{error}}</p>}@if(success){<p class="success">{{success}}</p>}<div class="actions"><a class="button" routerLink="/dashboard/admin">Annuler</a><button class="button primary" [disabled]="f.invalid||busy()">{{busy()?'Création…':'Créer l’agent'}}</button></div></form>
+<header>
+  <p class="eyebrow">ADMINISTRATION</p>
+  <h1>Créer un agent</h1>
+  <p>Ajoutez un collaborateur et affectez-le à un guichet.</p>
+</header>
+<form #f="ngForm" (ngSubmit)="submit(f)">
+  <label>Nom<input name="nom" [(ngModel)]="model.nom" required maxlength="80" /></label
+  ><label>Prénom<input name="prenom" [(ngModel)]="model.prenom" required maxlength="80" /></label
+  ><label>E-mail<input name="email" [(ngModel)]="model.email" type="email" email required /></label
+  ><label
+    >Mot de passe initial<input
+      name="password"
+      [(ngModel)]="model.password"
+      type="password"
+      required
+      minlength="6" /></label
+  ><label
+    >Guichet<select name="guichet" [(ngModel)]="model.guichetId">
+      <option [ngValue]="null">Sans affectation</option>
+      @for (g of guichets(); track g.id) {
+        <option [ngValue]="g.id">{{ g.nom }}</option>
+      }
+    </select></label
+  >
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+  @if (success) {
+    <p class="success">{{ success }}</p>
+  }
+  <div class="actions">
+    <a class="button" routerLink="/dashboard/admin">Annuler</a
+    ><button class="button primary" [disabled]="f.invalid || busy()">
+      {{ busy() ? 'Création…' : 'Créer l’agent' }}
+    </button>
+  </div>
+</form>

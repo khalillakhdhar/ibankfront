@@ -8,8 +8,11 @@
     <h2 id="confirm-title">{{ title() }}</h2>
     <p>{{ message() }}</p>
     <div>
-      <button class="button" type="button" [disabled]="busy()" (click)="cancel.emit()">Annuler</button
-      ><button class="button primary" type="button" [disabled]="busy()" (click)="confirm.emit()">{{ busy() ? 'Traitement…' : 'Confirmer' }}</button>
+      <button class="button" type="button" [disabled]="busy()" (click)="cancel.emit()">
+        Annuler</button
+      ><button class="button primary" type="button" [disabled]="busy()" (click)="confirm.emit()">
+        {{ busy() ? 'Traitement…' : 'Confirmer' }}
+      </button>
     </div>
   </section>
 </div>

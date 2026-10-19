@@ -35,6 +35,7 @@
 ### Task 1: API configuration, error handling, and authentication core
 
 **Files:**
+
 - Create: `src/app/core/config/api.config.ts`
 - Create: `src/app/core/services/session-storage.service.ts`
 - Create: `src/app/core/services/api-error.service.ts`
@@ -47,6 +48,7 @@
 - Modify: `src/app/app.config.ts`
 
 **Interfaces:**
+
 - Produces: `API_BASE_URL: InjectionToken<string>` with value `https://bank.135-125-182-42.nip.io/api`.
 - Produces: `SessionStorageService.read(): AuthResponse | null`, `write(session: AuthResponse): void`, and `clear(): void`.
 - Produces: `ApiErrorService.message(error: unknown, fallback: string): string`.
@@ -91,6 +93,7 @@ git commit -m "feat: add API and authentication core"
 ### Task 2: Guards, routes, login, and authenticated shell
 
 **Files:**
+
 - Create: `src/app/core/guards/auth.guard.ts`
 - Create: `src/app/core/guards/role.guard.ts`
 - Create: `src/app/core/guards/guards.spec.ts`
@@ -115,6 +118,7 @@ git commit -m "feat: add API and authentication core"
 - Modify: `src/styles.css`
 
 **Interfaces:**
+
 - Consumes: `AuthService.isAuthenticated`, `AuthService.hasRole()`, `AuthService.user`, and `AuthService.logout()` from Task 1.
 - Produces: functional `authGuard` and `roleGuard`.
 - Produces: `/login`, a protected root shell, `/dashboard`, and an unknown-route redirect to `/dashboard`; Tasks 4–6 add their lazy feature routes to this shell.
@@ -162,6 +166,7 @@ git commit -m "feat: add guarded application shell"
 ### Task 3: Shared view states and dashboard
 
 **Files:**
+
 - Create: `src/app/shared/components/loading-state/loading-state.ts`
 - Create: `src/app/shared/components/loading-state/loading-state.html`
 - Create: `src/app/shared/components/loading-state/loading-state.css`
@@ -181,6 +186,7 @@ git commit -m "feat: add guarded application shell"
 - Modify: `src/app/app.routes.ts`
 
 **Interfaces:**
+
 - Consumes: readonly service signals from Tasks 1 and existing domain services.
 - Produces: presentational state components with typed `input()` values and retry/confirm/cancel `output()` events.
 - Produces: `Dashboard` that calls real service load methods and derives only available counts and balances.
@@ -213,6 +219,7 @@ git commit -m "feat: add dashboard and shared view states"
 ### Task 4: Complete client service and client screens
 
 **Files:**
+
 - Modify: `src/app/services/client.service.ts`
 - Modify: `src/app/services/services.spec.ts`
 - Create: `src/app/features/clients/client-list/client-list.ts`
@@ -230,6 +237,7 @@ git commit -m "feat: add dashboard and shared view states"
 - Modify: `src/app/app.routes.ts`
 
 **Interfaces:**
+
 - Consumes: API config/error services and shared state components.
 - Produces: `ClientService.loadAll(): void`, `loadById(id: number): void`, `search(term: string): void`, `create(dto: CreateClient): Observable<Client>`, `update(id: number, dto: UpdateClient): Observable<void>`, and `delete(id: number): Observable<void>` using `/Clients`.
 - Produces: client list/search, create/edit form, detail/accounts view, and confirmed deactivation routes.
@@ -272,6 +280,7 @@ git commit -m "feat: add client management screens"
 ### Task 5: Complete account and transaction services and screens
 
 **Files:**
+
 - Modify: `src/app/services/compte.service.ts`
 - Modify: `src/app/services/transaction.service.ts`
 - Modify: `src/app/services/services.spec.ts`
@@ -292,6 +301,7 @@ git commit -m "feat: add client management screens"
 - Modify: `src/app/app.routes.ts`
 
 **Interfaces:**
+
 - Produces: corrected account methods for `GET/POST/PUT /Comptes` and transaction methods for `GET /Transactions/compte/{id}` plus three operation posts.
 - Produces: account list, open/edit/detail routes and transaction workspace with `depot`, `retrait`, and `virement` form groups.
 
@@ -335,6 +345,7 @@ git commit -m "feat: add accounts and transactions"
 ### Task 6: Complete Admin services and screens
 
 **Files:**
+
 - Modify: `src/app/services/guichet.service.ts`
 - Modify: `src/app/services/type-compte.service.ts`
 - Modify: `src/app/services/services.spec.ts`
@@ -359,6 +370,7 @@ git commit -m "feat: add accounts and transactions"
 - Modify: `src/app/app.routes.ts`
 
 **Interfaces:**
+
 - Consumes: `AuthService.createAgent()` and Admin role guard.
 - Produces: complete guichet and type-compte CRUD services using `/Guichets` and `/TypesComptes`.
 - Produces: Admin-only list/forms for guichets and types, plus create-only agent form.
@@ -399,6 +411,7 @@ git commit -m "feat: add administration screens"
 ### Task 7: Full integration, accessibility, responsive behavior, and production verification
 
 **Files:**
+
 - Modify: `src/app/app.spec.ts`
 - Modify: `src/styles.css`
 - Modify: feature HTML/CSS files only where integration verification exposes defects
@@ -406,6 +419,7 @@ git commit -m "feat: add administration screens"
 - Create: `docs/api-smoke-results.md`
 
 **Interfaces:**
+
 - Consumes: all routes, components, services, guards, and shared states from Tasks 1–6.
 - Produces: a repeatable non-destructive API smoke script and recorded endpoint/status evidence.
 

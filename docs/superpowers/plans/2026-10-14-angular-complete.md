@@ -35,12 +35,14 @@
 ### Task 1: Non-deploying branch and course cleanup
 
 **Files:**
+
 - Create: `vercel.json`
 - Modify: `package.json`
 - Modify: `angular.json`
 - Delete: every `src/**/*.spec.ts`
 
 **Interfaces:**
+
 - Produces: repository policy preventing Vercel deployments from `feature/angular-complete`; production-only Angular dependency graph.
 
 - [ ] Add `vercel.json` using `$schema: https://openapi.vercel.sh/vercel.json` and `git.deploymentEnabled.feature/angular-complete: false`.
@@ -52,6 +54,7 @@
 ### Task 2: Session, authentication, interceptor, and guards
 
 **Files:**
+
 - Modify: `src/app/services/auth.service.ts`
 - Modify: `src/app/core/services/session-storage.service.ts`
 - Create: `src/app/core/interceptors/auth.interceptor.ts`
@@ -64,6 +67,7 @@
 - Modify: `src/app/features/auth/login/login.css`
 
 **Interfaces:**
+
 - Produces: `AuthService.login(credentials: Login): Observable<AuthResponse>`, `logout(): void`, `token(): string | null`, `role(): 'admin' | 'agent' | null`, `currentUser()`, `dashboardUrl()`; `authInterceptor: HttpInterceptorFn`; readable `ApiErrorService.message(error, fallback)`.
 
 - [ ] Replace demonstration credentials with `POST ${API_BASE_URL}/Auth/login`, persist successful `AuthResponse`, normalize the first supported role case-insensitively, and expose loading/error signals.
@@ -80,6 +84,7 @@
 ### Task 3: Shared shell, navigation, and view states
 
 **Files:**
+
 - Modify: `src/app/app.routes.ts`
 - Modify: `src/app/layout/app-shell/*`
 - Modify: `src/app/layout/header/*`
@@ -91,6 +96,7 @@
 - Modify: `src/app/features/profile/profile.*`
 
 **Interfaces:**
+
 - Consumes: Task 2 `AuthService` and guards.
 - Produces: role-relative navigation helpers, reusable confirmation event contract, consistent state components.
 
@@ -104,12 +110,14 @@
 ### Task 4: Client workflows
 
 **Files:**
+
 - Modify: `src/app/services/client.service.ts`
 - Modify: `src/app/features/clients/client-list/*`
 - Modify: `src/app/features/clients/client-detail/*`
 - Modify: `src/app/features/clients/client-form/*`
 
 **Interfaces:**
+
 - Consumes: `ClientService.loadAll/loadById/search/create/update/delete` and shared state components.
 - Produces: complete list, search, detail, create, edit, and delete UI for backend client DTOs.
 
@@ -124,12 +132,14 @@
 ### Task 5: Branch-office and account-type administration
 
 **Files:**
+
 - Modify: `src/app/services/guichet.service.ts`
 - Modify: `src/app/services/type-compte.service.ts`
 - Modify: `src/app/features/guichets/**`
 - Modify: `src/app/features/types-comptes/**`
 
 **Interfaces:**
+
 - Consumes: Task 2 role/session and Task 3 shared states.
 - Produces: authenticated read views and Admin-only CRUD forms for guichets and types.
 
@@ -144,12 +154,14 @@
 ### Task 6: Account workflows
 
 **Files:**
+
 - Modify: `src/app/services/compte.service.ts`
 - Modify: `src/app/features/comptes/compte-list/*`
 - Modify: `src/app/features/comptes/compte-detail/*`
 - Modify: `src/app/features/comptes/compte-form/*`
 
 **Interfaces:**
+
 - Consumes: client, guichet, type services for create selectors; transaction service for detail history.
 - Produces: account list/detail/create/status-edit workflows.
 
@@ -163,10 +175,12 @@
 ### Task 7: Transactions
 
 **Files:**
+
 - Modify: `src/app/services/transaction.service.ts`
 - Modify: `src/app/features/transactions/transaction-workspace/*`
 
 **Interfaces:**
+
 - Consumes: `CompteService` collection and `TransactionService.loadByCompte/depot/retrait/virement`.
 - Produces: tabbed operation workspace and account-specific history refresh.
 
@@ -181,12 +195,14 @@
 ### Task 8: Agent creation and live dashboards
 
 **Files:**
+
 - Create: `src/app/services/agent.service.ts`
 - Modify: `src/app/features/agents/agent-form/*`
 - Modify: `src/app/features/dashboard/admin-dashboard/*`
 - Modify: `src/app/features/dashboard/agent-dashboard/*`
 
 **Interfaces:**
+
 - Consumes: `POST /Auth/agents`, guichet/client/account/type services.
 - Produces: `AgentService.create(payload: CreateAgent): Observable<User>` and live dashboard metrics.
 
@@ -199,10 +215,12 @@
 ### Task 9: End-to-end verification and delivery
 
 **Files:**
+
 - Modify as needed: runtime files found defective during verification
 - Update: `README.md`
 
 **Interfaces:**
+
 - Consumes: all prior task deliverables.
 - Produces: verified course branch and usage documentation.
 

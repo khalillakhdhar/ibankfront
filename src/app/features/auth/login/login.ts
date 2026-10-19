@@ -3,7 +3,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
-@Component({ selector: 'app-login', imports: [FormsModule], templateUrl: './login.html', styleUrl: './login.css' })
+@Component({
+  selector: 'app-login',
+  imports: [FormsModule],
+  templateUrl: './login.html',
+  styleUrl: './login.css',
+})
 export class Login {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);

@@ -1,7 +1,13 @@
 <div class="shell">
   <app-sidebar [open]="menuOpen()" [role]="role()" [base]="base()" (closeMenu)="closeMenu()" />
   <div class="workspace">
-    <app-header [menuOpen]="menuOpen()" [role]="role()" [user]="user()" (menuToggle)="toggleMenu()" (logoutRequest)="logout()" />
+    <app-header
+      [menuOpen]="menuOpen()"
+      [role]="role()"
+      [user]="user()"
+      (menuToggle)="toggleMenu()"
+      (logoutRequest)="logout()"
+    />
     <main class="content"><router-outlet /></main>
   </div>
 </div>
