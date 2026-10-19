@@ -1,9 +1,8 @@
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { CreateClient, UpdateClient } from '../../../models/client.model';
 import { ClientService } from '../../../services/client.service';
-
+import { CreateClient, UpdateClient } from '../../../models/client.model';
 @Component({
   selector: 'app-client-form',
   imports: [FormsModule, RouterLink],
@@ -19,7 +18,16 @@ export class ClientForm implements OnInit {
   readonly submitting = signal(false);
   error: string | null = null;
   submitted = false;
-  model = {
+  model: {
+    cin: string;
+    nom: string;
+    prenom: string;
+    dateNaissance: string;
+    email: string;
+    telephone: string;
+    adresse: string;
+    isActive: boolean;
+  } = {
     cin: '',
     nom: '',
     prenom: '',
@@ -29,27 +37,26 @@ export class ClientForm implements OnInit {
     adresse: '',
     isActive: true,
   };
-
   constructor() {
     effect(() => {
-      const client = this.service.selectedClient();
-      if (this.edit && client?.id === this.id)
+      const c = this.service.selectedClient();
+      if (this.edit && c?.id === this.id)
         this.model = {
-          cin: client.cin,
-          nom: client.nom,
-          prenom: client.prenom,
-          dateNaissance: client.dateNaissance ?? '',
-          email: client.email ?? '',
-          telephone: client.telephone,
-          adresse: client.adresse ?? '',
-          isActive: client.isActive,
+          cin: c.cin,
+          nom: c.nom,
+          prenom: c.prenom,
+          dateNaissance: c.dateNaissance ?? '',
+          email: c.email ?? '',
+          telephone: c.telephone,
+          adresse: c.adresse ?? '',
+          isActive: c.isActive,
         };
     });
   }
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.edit) this.service.loadById(this.id);
   }
-  submit(form: NgForm): void {
+  submit(form: NgForm) {
     this.submitted = true;
     if (form.invalid || this.submitting()) return;
     this.submitting.set(true);
@@ -66,18 +73,19 @@ export class ClientForm implements OnInit {
       this.error = this.service.error();
       this.submitting.set(false);
     };
-    if (this.edit)
+    if (this.edit) {
       this.service
         .update(this.id, { ...common, isActive: this.model.isActive } as UpdateClient)
         .subscribe({
           next: () => void this.router.navigate(['../../', this.id], { relativeTo: this.route }),
           error: failed,
         });
-    else
+    } else {
       this.service.create({ ...common, cin: this.model.cin.trim() } as CreateClient).subscribe({
         next: (created) =>
           void this.router.navigate(['../', created.id], { relativeTo: this.route }),
         error: failed,
       });
+    }
   }
 }

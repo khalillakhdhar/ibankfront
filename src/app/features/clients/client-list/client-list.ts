@@ -14,15 +14,15 @@ import { LoadingState } from '../../../shared/components/loading-state/loading-s
   styleUrl: './client-list.css',
 })
 export class ClientList implements OnInit {
-  private readonly service = inject(ClientService);
-  readonly clients = this.service.clients;
-  readonly loading = this.service.loading;
-  readonly error = this.service.error;
-  readonly pendingDelete = signal<number | null>(null);
+  private readonly service = inject(ClientService); // injection de service DI
+  readonly clients = this.service.clients; // variable signal pour stocker la liste des clients
+  readonly loading = this.service.loading; // controle de lecture asynchrone
+  readonly error = this.service.error; // variable signal pour stocker les erreurs
+  readonly pendingDelete = signal<number | null>(null); // variable signal pour stocker l'ID du client à supprimer
   readonly deleting = signal(false);
-  searchTerm = '';
-
-  ngOnInit(): void {
+  busy = signal(false);
+  searchTerm = ''; // aucune recherche par défaut
+  ngOnInit(): void { // onInit début de cycle de vie du composant
     this.service.loadAll();
   }
   search(): void {
@@ -41,6 +41,7 @@ export class ClientList implements OnInit {
       next: () => {
         this.pendingDelete.set(null);
         this.deleting.set(false);
+        this.busy.set(false);
       },
       error: () => this.deleting.set(false),
     });
