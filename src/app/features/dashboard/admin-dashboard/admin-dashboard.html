@@ -3,11 +3,28 @@
   <h1>Tableau de bord</h1>
   <p>Pilotage du réseau bancaire et de l’activité globale.</p>
 </header>
-<section class="panel empty-state">
-  <h2>Aucune donnée chargée</h2>
-  <p>Les indicateurs et l’activité apparaîtront lorsque les services seront connectés.</p>
+<section class="stats">
+  <article>
+    <span>Clients</span><strong>{{ clients.totalClients() }}</strong
+    ><small>{{ clients.activeClients() }} actifs</small>
+  </article>
+  <article>
+    <span>Comptes</span><strong>{{ comptes.totalComptes() }}</strong
+    ><small>{{ comptes.activeComptes() }} actifs</small>
+  </article>
+  <article>
+    <span>Encours</span><strong>{{ comptes.totalSolde() | currency: 'TND' }}</strong>
+  </article>
+  <article>
+    <span>Guichets</span><strong>{{ guichets.totalGuichets() }}</strong>
+  </article>
+  <article>
+    <span>Produits</span><strong>{{ types.totalTypesCompte() }}</strong>
+  </article>
 </section>
-
+@if (clients.error() || comptes.error() || guichets.error() || types.error()) {
+  <p class="alert">Certains indicateurs n’ont pas pu être chargés.</p>
+}
 <section class="panel">
   <h2>Actions rapides</h2>
   <div class="quick-actions">

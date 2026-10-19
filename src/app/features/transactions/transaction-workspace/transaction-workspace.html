@@ -1,49 +1,113 @@
 <header>
   <p class="eyebrow">OPÉRATIONS</p>
   <h1>Transactions</h1>
-  <p>Préparez les opérations et consultez l’historique.</p>
+  <p>Effectuez les opérations et consultez l’historique.</p>
 </header>
+@if (success) {
+  <p class="success">{{ success }}</p>
+}
+@if (error()) {
+  <p class="alert">{{ error() }}</p>
+}
 <section class="operation-grid">
-  <form>
+  <form #fd="ngForm" (ngSubmit)="submit('depot', fd)">
     <h2>Dépôt</h2>
-    <label for="deposit-account"
-      >Compte<select id="deposit-account">
-        <option value="">Sélectionner un compte</option>
+    <label
+      >Compte<select name="dc" [(ngModel)]="depot.compteId" required>
+        @for (c of comptes(); track c.id) {
+          @if (c.isActive) {
+            <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+          }
+        }
       </select></label
-    ><label for="deposit-amount"
-      >Montant<input id="deposit-amount" type="number" min="0.01" /></label
-    ><label for="deposit-note">Description<textarea id="deposit-note"></textarea></label
-    ><button class="button primary" type="button">Préparer le dépôt</button>
+    ><label
+      >Montant<input
+        name="dm"
+        [(ngModel)]="depot.montant"
+        type="number"
+        min="0.01"
+        required /></label
+    ><label
+      >Description<textarea
+        name="dd"
+        [(ngModel)]="depot.description"
+        maxlength="250"
+      ></textarea></label
+    ><button class="button primary" [disabled]="fd.invalid || busy()">Déposer</button>
   </form>
-  <form>
+  <form #fr="ngForm" (ngSubmit)="submit('retrait', fr)">
     <h2>Retrait</h2>
-    <label for="withdraw-account"
-      >Compte<select id="withdraw-account">
-        <option value="">Sélectionner un compte</option>
+    <label
+      >Compte<select name="rc" [(ngModel)]="retrait.compteId" required>
+        @for (c of comptes(); track c.id) {
+          @if (c.isActive) {
+            <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+          }
+        }
       </select></label
-    ><label for="withdraw-amount"
-      >Montant<input id="withdraw-amount" type="number" min="0.01" /></label
-    ><label for="withdraw-note">Description<textarea id="withdraw-note"></textarea></label
-    ><button class="button primary" type="button">Préparer le retrait</button>
+    ><label
+      >Montant<input
+        name="rm"
+        [(ngModel)]="retrait.montant"
+        type="number"
+        min="0.01"
+        required /></label
+    ><label
+      >Description<textarea
+        name="rd"
+        [(ngModel)]="retrait.description"
+        maxlength="250"
+      ></textarea></label
+    ><button class="button primary" [disabled]="fr.invalid || busy()">Retirer</button>
   </form>
-  <form>
+  <form #fv="ngForm" (ngSubmit)="submit('virement', fv)">
     <h2>Virement</h2>
-    <label for="source"
-      >Compte source<select id="source">
-        <option value="">Sélectionner un compte</option>
+    <label
+      >Source<select name="vs" [(ngModel)]="virement.compteSourceId" required>
+        @for (c of comptes(); track c.id) {
+          @if (c.isActive) {
+            <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+          }
+        }
       </select></label
-    ><label for="destination"
-      >Compte destination<select id="destination">
-        <option value="">Sélectionner un compte</option>
+    ><label
+      >Destination<select name="vd" [(ngModel)]="virement.compteDestinationId" required>
+        @for (c of comptes(); track c.id) {
+          @if (c.isActive) {
+            <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+          }
+        }
       </select></label
-    ><label for="transfer-amount"
-      >Montant<input id="transfer-amount" type="number" min="0.01" /></label
-    ><label for="transfer-note">Description<textarea id="transfer-note"></textarea></label
-    ><button class="button primary" type="button">Préparer le virement</button>
+    ><label
+      >Montant<input
+        name="vm"
+        [(ngModel)]="virement.montant"
+        type="number"
+        min="0.01"
+        required /></label
+    ><label
+      >Description<textarea name="vn" [(ngModel)]="virement.description" maxlength="250"></textarea>
+    </label>
+    @if (virement.compteSourceId && virement.compteSourceId === virement.compteDestinationId) {
+      <p class="alert">Les comptes doivent être différents.</p>
+    }
+    <button
+      class="button primary"
+      [disabled]="fv.invalid || busy() || virement.compteSourceId === virement.compteDestinationId"
+    >
+      Virer
+    </button>
   </form>
 </section>
 <section>
-  <h2>Historique des transactions</h2>
+  <h2>Historique</h2>
+  <label
+    >Compte<select [(ngModel)]="historyId" (ngModelChange)="history()">
+      @for (c of comptes(); track c.id) {
+        <option [ngValue]="c.id">{{ c.numeroCompte }}</option>
+      }
+    </select></label
+  >
   <div class="table">
     <table>
       <thead>
@@ -51,13 +115,23 @@
           <th>Référence</th>
           <th>Date</th>
           <th>Type</th>
-          <th>Compte source</th>
-          <th>Destination</th>
           <th>Montant</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        @for (t of transactions(); track t.id) {
+          <tr>
+            <td>{{ t.reference }}</td>
+            <td>{{ t.dateOperation | date: 'short' }}</td>
+            <td>{{ t.type === 1 ? 'Dépôt' : t.type === 2 ? 'Retrait' : 'Virement' }}</td>
+            <td>{{ t.montant | currency: 'TND' }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4">Aucune transaction.</td>
+          </tr>
+        }
+      </tbody>
     </table>
-    <p class="empty-state">Aucune transaction à afficher.</p>
   </div>
 </section>

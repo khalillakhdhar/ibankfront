@@ -1,9 +1,68 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TypeCompteService } from '../../../services/type-compte.service';
 @Component({
   selector: 'app-type-compte-form',
-  imports: [RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './type-compte-form.html',
   styleUrl: './type-compte-form.css',
 })
-export class TypeCompteForm {}
+export class TypeCompteForm implements OnInit {
+  private s = inject(TypeCompteService);
+  private r = inject(ActivatedRoute);
+  private router = inject(Router);
+  id = Number(this.r.snapshot.paramMap.get('id'));
+  edit = this.id > 0;
+  busy = signal(false);
+  error: string | null = null;
+  model = {
+    code: '',
+    libelle: '',
+    description: '',
+    soldeMinimum: 0,
+    fraisMensuels: 0,
+    isActive: true,
+  };
+  constructor() {
+    effect(() => {
+      const t = this.s.selectedTypeCompte();
+      if (this.edit && t)
+        this.model = {
+          code: t.code,
+          libelle: t.libelle,
+          description: t.description ?? '',
+          soldeMinimum: t.soldeMinimum,
+          fraisMensuels: t.fraisMensuels,
+          isActive: t.isActive,
+        };
+    });
+  }
+  ngOnInit() {
+    if (this.edit) this.s.loadById(this.id);
+  }
+  submit(f: NgForm) {
+    if (f.invalid || this.busy()) return;
+    this.busy.set(true);
+    const p = {
+      libelle: this.model.libelle.trim(),
+      description: this.model.description.trim() || null,
+      soldeMinimum: Number(this.model.soldeMinimum),
+      fraisMensuels: Number(this.model.fraisMensuels),
+    };
+    const fail = () => {
+      this.error = this.s.error();
+      this.busy.set(false);
+    };
+    if (this.edit)
+      this.s.update(this.id, { ...p, isActive: this.model.isActive }).subscribe({
+        next: () => void this.router.navigate(['../../', this.id], { relativeTo: this.r }),
+        error: fail,
+      });
+    else
+      this.s.create({ ...p, code: this.model.code.trim() }).subscribe({
+        next: (t) => void this.router.navigate(['../', t.id], { relativeTo: this.r }),
+        error: fail,
+      });
+  }
+}

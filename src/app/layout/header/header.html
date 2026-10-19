@@ -10,10 +10,10 @@
     ☰
   </button>
   <div class="identity">
-    <span class="avatar">{{ role() === 'admin' ? 'AD' : 'AG' }}</span
+    <span class="avatar">{{ user()?.prenom?.charAt(0) }}{{ user()?.nom?.charAt(0) }}</span
     ><span
-      ><strong>{{ role() === 'admin' ? 'Administrateur' : 'Agent bancaire' }}</strong
-      ><small>Accès {{ role() }}</small></span
+      ><strong>{{ user()?.prenom }} {{ user()?.nom }}</strong
+      ><small>{{ role() === 'admin' ? 'Administrateur' : 'Agent bancaire' }}</small></span
     >
   </div>
   <button class="logout" type="button" (click)="logoutRequest.emit()">Déconnexion</button>

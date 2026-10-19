@@ -1,12 +1,22 @@
 <header>
   <p class="eyebrow">ESPACE AGENT</p>
-  <h1>Bonjour, Agent</h1>
+  <h1>Bonjour, {{ auth.currentUser()?.prenom }}</h1>
   <p>Retrouvez les opérations courantes de votre guichet.</p>
 </header>
-<section class="panel empty-state">
-  <h2>Aucune donnée chargée</h2>
-  <p>Les indicateurs apparaîtront lorsque les services seront connectés.</p>
+<section class="stats">
+  <article>
+    <span>Clients</span><strong>{{ clients.totalClients() }}</strong>
+  </article>
+  <article>
+    <span>Comptes actifs</span><strong>{{ comptes.activeComptes() }}</strong>
+  </article>
+  <article>
+    <span>Encours</span><strong>{{ comptes.totalSolde() | currency: 'TND' }}</strong>
+  </article>
 </section>
+@if (clients.error() || comptes.error()) {
+  <p class="alert">Certains indicateurs n’ont pas pu être chargés.</p>
+}
 <section class="panel">
   <h2>Actions rapides</h2>
   <div class="quick-actions">

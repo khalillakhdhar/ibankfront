@@ -7,6 +7,7 @@ import { Component, input, output } from '@angular/core';
 export class ConfirmDialog {
   readonly title = input('Confirmer cette action');
   readonly message = input('Cette action modifiera la ressource.');
+  readonly busy = input(false);
   readonly confirm = output<void>();
   readonly cancel = output<void>();
 }

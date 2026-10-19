@@ -2,8 +2,32 @@
   <div>
     <p class="eyebrow">RÉSEAU</p>
     <h1>Guichets</h1>
-    <p>Administration des points de service.</p>
+    <p>Points de service bancaires.</p>
   </div>
-  <a class="button primary" routerLink="new">Nouveau guichet</a>
+  @if (auth.hasRole('admin')) {
+    <a class="button primary" routerLink="new">Nouveau guichet</a>
+  }
 </header>
-<div class="grid"><p class="empty-state">Aucun guichet à afficher.</p></div>
+@if (loading()) {
+  <p>Chargement…</p>
+} @else if (error()) {
+  <p class="alert">{{ error() }}</p>
+} @else {
+  <div class="grid">
+    @for (g of items(); track g.id) {
+      <article>
+        <p class="eyebrow">{{ g.code }}</p>
+        <h2>{{ g.nom }}</h2>
+        <p>{{ g.adresse }}, {{ g.ville }}</p>
+        <p>{{ g.nombreAgents }} agent(s) · {{ g.isActive ? 'Actif' : 'Inactif' }}</p>
+        <a [routerLink]="[g.id]">Consulter</a>
+        @if (auth.hasRole('admin')) {
+          · <a [routerLink]="[g.id, 'edit']">Modifier</a> ·
+          <button type="button" (click)="remove(g.id)">Supprimer</button>
+        }
+      </article>
+    } @empty {
+      <p class="empty-state">Aucun guichet.</p>
+    }
+  </div>
+}

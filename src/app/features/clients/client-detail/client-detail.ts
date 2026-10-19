@@ -2,9 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ClientService } from '../../../services/client.service';
-import { ErrorState } from '../../../shared/components/error-state/error-state';
 import { LoadingState } from '../../../shared/components/loading-state/loading-state';
-
+import { ErrorState } from '../../../shared/components/error-state/error-state';
 @Component({
   selector: 'app-client-detail',
   imports: [CommonModule, RouterLink, LoadingState, ErrorState],
@@ -18,10 +17,10 @@ export class ClientDetail implements OnInit {
   readonly loading = this.service.loading;
   readonly error = this.service.error;
   readonly id = Number(this.route.snapshot.paramMap.get('id'));
-  ngOnInit(): void {
+  ngOnInit() {
     this.load();
   }
-  load(): void {
+  load() {
     if (Number.isInteger(this.id) && this.id > 0) this.service.loadById(this.id);
   }
 }

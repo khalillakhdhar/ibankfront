@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
+  imports: [FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
-  imports: [FormsModule],
 })
 export class Login {
   private readonly auth = inject(AuthService);
@@ -21,17 +21,14 @@ export class Login {
   submit(form: NgForm): void {
     this.submitted = true;
     if (form.invalid || this.loading()) return;
-    this.credentials.email = this.credentials.email.trim();
-    this.credentials.password = this.credentials.password.trim();
-    this.auth.login(this.credentials).subscribe({
-      next: (response: any) => {
-        const returnUrl =
-          this.route.snapshot.queryParamMap.get('returnUrl') || this.auth.dashboardUrl();
-        this.router.navigateByUrl(returnUrl);
-      },
-      error: (error: any) => {
-        this.auth.error.set(error);
-      },
+    this.auth.login({ ...this.credentials, email: this.credentials.email.trim() }).subscribe({
+      next: () => void this.router.navigateByUrl(this.safeReturnUrl()),
+      error: () => undefined,
     });
+  }
+
+  private safeReturnUrl(): string {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    return returnUrl?.startsWith('/dashboard/') ? returnUrl : this.auth.dashboardUrl();
   }
 }

@@ -14,6 +14,7 @@ export class AppShell {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   readonly role = this.auth.role;
+  readonly user = this.auth.currentUser;
   readonly base = computed(() => '/dashboard/' + this.role());
   readonly menuOpen = signal(false);
   toggleMenu(): void {

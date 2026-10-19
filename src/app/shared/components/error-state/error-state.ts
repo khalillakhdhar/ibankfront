@@ -6,5 +6,7 @@ import { Component, input, output } from '@angular/core';
 })
 export class ErrorState {
   readonly message = input.required<string>();
+  readonly retryLabel = input('Réessayer');
+  readonly showRetry = input(true);
   readonly retry = output<void>();
 }

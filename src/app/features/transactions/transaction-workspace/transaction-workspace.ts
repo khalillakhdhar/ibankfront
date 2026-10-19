@@ -1,7 +1,59 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { CompteService } from '../../../services/compte.service';
+import { TransactionService } from '../../../services/transaction.service';
 @Component({
   selector: 'app-transaction-workspace',
+  imports: [CommonModule, FormsModule],
   templateUrl: './transaction-workspace.html',
   styleUrl: './transaction-workspace.css',
 })
-export class TransactionWorkspace {}
+export class TransactionWorkspace implements OnInit {
+  private cs = inject(CompteService);
+  private ts = inject(TransactionService);
+  private route = inject(ActivatedRoute);
+  readonly comptes = this.cs.comptes;
+  readonly transactions = this.ts.transactions;
+  readonly error = this.ts.error;
+  readonly busy = signal(false);
+  success: string | null = null;
+  historyId = 0;
+  depot = { compteId: 0, montant: 0, description: '' };
+  retrait = { compteId: 0, montant: 0, description: '' };
+  virement = { compteSourceId: 0, compteDestinationId: 0, montant: 0, description: '' };
+  ngOnInit() {
+    this.cs.loadAll();
+    const id = Number(this.route.snapshot.queryParamMap.get('compteId'));
+    if (id > 0) {
+      this.historyId = id;
+      this.ts.loadByCompte(id);
+    }
+  }
+  history() {
+    if (this.historyId > 0) this.ts.loadByCompte(this.historyId);
+  }
+  submit(kind: 'depot' | 'retrait' | 'virement', f: NgForm) {
+    if (f.invalid || this.busy()) return;
+    if (kind === 'virement' && this.virement.compteSourceId === this.virement.compteDestinationId)
+      return;
+    this.busy.set(true);
+    this.success = null;
+    const m = kind === 'depot' ? this.depot : kind === 'retrait' ? this.retrait : this.virement;
+    const payload = { ...m, description: m.description.trim() || null };
+    this.ts[kind](payload as never).subscribe({
+      next: (t) => {
+        this.success = `Opération ${t.reference} enregistrée.`;
+        this.busy.set(false);
+        this.cs.loadAll();
+        const id =
+          kind === 'virement' ? this.virement.compteSourceId : (m as { compteId: number }).compteId;
+        this.historyId = id;
+        this.ts.loadByCompte(id);
+        f.resetForm();
+      },
+      error: () => this.busy.set(false),
+    });
+  }
+}

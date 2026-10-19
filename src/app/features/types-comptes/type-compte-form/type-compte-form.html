@@ -1,16 +1,47 @@
 <header>
   <p class="eyebrow">CATALOGUE</p>
-  <h1>Créer ou modifier un type</h1>
+  <h1>{{ edit ? 'Modifier' : 'Créer' }} un type</h1>
 </header>
-<form>
-  <label for="type-code">Code<input id="type-code" required /></label
-  ><label for="type-label">Libellé<input id="type-label" required /></label
-  ><label for="type-description">Description<textarea id="type-description"></textarea></label
-  ><label for="minimum">Solde minimum<input id="minimum" type="number" min="0" /></label
-  ><label for="fees">Frais mensuels<input id="fees" type="number" min="0" /></label
-  ><label><input type="checkbox" /> Type actif</label>
+<form #f="ngForm" (ngSubmit)="submit(f)">
+  <label
+    >Code<input
+      name="code"
+      [(ngModel)]="model.code"
+      required
+      minlength="2"
+      maxlength="30"
+      [disabled]="edit" /></label
+  ><label
+    >Libellé<input name="libelle" [(ngModel)]="model.libelle" required maxlength="100" /></label
+  ><label
+    >Description<textarea
+      name="description"
+      [(ngModel)]="model.description"
+      maxlength="300"
+    ></textarea></label
+  ><label
+    >Solde minimum<input
+      name="minimum"
+      [(ngModel)]="model.soldeMinimum"
+      type="number"
+      min="0"
+      required /></label
+  ><label
+    >Frais mensuels<input
+      name="fees"
+      [(ngModel)]="model.fraisMensuels"
+      type="number"
+      min="0"
+      required
+  /></label>
+  @if (edit) {
+    <label><input name="active" [(ngModel)]="model.isActive" type="checkbox" /> Actif</label>
+  }
+  @if (error) {
+    <p class="alert">{{ error }}</p>
+  }
   <div class="actions">
     <a class="button" routerLink="../">Annuler</a
-    ><button class="button primary" type="button">Enregistrer</button>
+    ><button class="button primary" [disabled]="f.invalid || busy()">Enregistrer</button>
   </div>
 </form>

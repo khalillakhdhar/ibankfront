@@ -58,6 +58,7 @@
   <app-confirm-dialog
     title="Supprimer ce client ?"
     message="Le dossier sera supprimé si aucune règle bancaire ne l’empêche."
+    [busy]="deleting()"
     (cancel)="pendingDelete.set(null)"
     (confirm)="remove()"
   />

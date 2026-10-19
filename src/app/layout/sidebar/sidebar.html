@@ -25,17 +25,14 @@
     <a [routerLink]="base() + '/transactions'" routerLinkActive="active" (click)="closeMenu.emit()"
       >Transactions</a
     >
+    <a [routerLink]="base() + '/guichets'" routerLinkActive="active" (click)="closeMenu.emit()"
+      >Guichets</a
+    >
+    <a [routerLink]="base() + '/types-comptes'" routerLinkActive="active" (click)="closeMenu.emit()"
+      >Types de comptes</a
+    >
     @if (role() === 'admin') {
       <p>ADMINISTRATION</p>
-      <a [routerLink]="base() + '/guichets'" routerLinkActive="active" (click)="closeMenu.emit()"
-        >Guichets</a
-      >
-      <a
-        [routerLink]="base() + '/types-comptes'"
-        routerLinkActive="active"
-        (click)="closeMenu.emit()"
-        >Types de comptes</a
-      >
       <a [routerLink]="base() + '/agents/new'" routerLinkActive="active" (click)="closeMenu.emit()"
         >Nouvel agent</a
       >

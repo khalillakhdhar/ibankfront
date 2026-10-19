@@ -7,7 +7,6 @@ import { SessionStorageService } from '../core/services/session-storage.service'
 import { AuthResponse, Login, User } from '../models/auth.model';
 
 export type AppRole = 'admin' | 'agent';
-export type DemoRole = 'admin' | 'agent';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

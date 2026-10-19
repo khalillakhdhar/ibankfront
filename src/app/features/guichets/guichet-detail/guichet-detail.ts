@@ -1,9 +1,22 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { GuichetService } from '../../../services/guichet.service';
+import { AuthService } from '../../../services/auth.service';
 @Component({
   selector: 'app-guichet-detail',
   imports: [RouterLink],
   templateUrl: './guichet-detail.html',
   styleUrl: './guichet-detail.css',
 })
-export class GuichetDetail {}
+export class GuichetDetail implements OnInit {
+  private s = inject(GuichetService);
+  private r = inject(ActivatedRoute);
+  readonly auth = inject(AuthService);
+  readonly item = this.s.selectedGuichet;
+  readonly loading = this.s.loading;
+  readonly error = this.s.error;
+  id = Number(this.r.snapshot.paramMap.get('id'));
+  ngOnInit() {
+    this.s.loadById(this.id);
+  }
+}

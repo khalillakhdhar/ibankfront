@@ -34,6 +34,11 @@ const commonChildren: Routes = [
       import('./features/comptes/compte-form/compte-form').then((m) => m.CompteForm),
   },
   {
+    path: 'comptes/:id/edit',
+    loadComponent: () =>
+      import('./features/comptes/compte-form/compte-form').then((m) => m.CompteForm),
+  },
+  {
     path: 'comptes/:id',
     loadComponent: () =>
       import('./features/comptes/compte-detail/compte-detail').then((m) => m.CompteDetail),
@@ -140,6 +145,30 @@ export const routes: Routes = [
           ),
       },
       ...commonChildren,
+      {
+        path: 'guichets',
+        loadComponent: () =>
+          import('./features/guichets/guichet-list/guichet-list').then((m) => m.GuichetList),
+      },
+      {
+        path: 'guichets/:id',
+        loadComponent: () =>
+          import('./features/guichets/guichet-detail/guichet-detail').then((m) => m.GuichetDetail),
+      },
+      {
+        path: 'types-comptes',
+        loadComponent: () =>
+          import('./features/types-comptes/type-compte-list/type-compte-list').then(
+            (m) => m.TypeCompteList,
+          ),
+      },
+      {
+        path: 'types-comptes/:id',
+        loadComponent: () =>
+          import('./features/types-comptes/type-compte-detail/type-compte-detail').then(
+            (m) => m.TypeCompteDetail,
+          ),
+      },
     ],
   },
   { path: '', pathMatch: 'full', redirectTo: 'login' },

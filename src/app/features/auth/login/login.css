@@ -99,12 +99,6 @@ input:focus {
 .button {
   margin-top: 1rem;
 }
-.demo-accounts {
-  display: grid;
-  gap: 0.25rem;
-  margin-top: 1.25rem;
-  color: var(--muted);
-}
 @media (max-width: 760px) {
   .login-page {
     grid-template-columns: 1fr;
