@@ -8,7 +8,7 @@ import { TypeCompteService } from '../../../services/type-compte.service';
 
 @Component({
   selector: 'app-compte-form',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink,FormsModule],
   templateUrl: './compte-form.html',
   styleUrl: './compte-form.css',
 })
