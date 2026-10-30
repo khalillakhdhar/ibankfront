@@ -43,3 +43,5 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 docs/EBS_Academie_Cours_Angular_Interceptor_CRUD_Profil.docx
+
+.vercel

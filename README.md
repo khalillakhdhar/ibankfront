@@ -1,7 +1,8 @@
-# iBank Frontend — branche Angular complète
+# iBank Frontend
 
 Application Angular 21 de formation connectée à l’API BankManagementStarter.
-Cette version fonctionnelle vit uniquement sur `feature/angular-complete`.
+La version de production est publiée depuis la branche `master` par
+l’intégration GitHub de Vercel.
 
 ## Installation et lancement
 
@@ -35,8 +36,7 @@ bancaire de production.
 - tableaux de bord alimentés par l’API et profil de session.
 
 Tous les formulaires utilisent l’approche Template-driven avec `FormsModule`
-et `ngModel`. Cette branche de cours ne contient volontairement aucun test
-unitaire.
+et `ngModel`.
 
 ## Build
 
@@ -44,8 +44,9 @@ unitaire.
 npm run build
 ```
 
-## Isolation du déploiement
+## Déploiement
 
-`vercel.json` désactive les déploiements automatiques uniquement pour
-`feature/angular-complete`. Cette branche ne doit pas être fusionnée dans
-`master` et ne modifie ni le backend ni la VPS.
+Vercel construit automatiquement chaque push sur `master`. Le fallback défini
+dans `vercel.json` renvoie les routes Angular (par exemple
+`/dashboard/admin/clients`) vers `index.html`, afin qu’un rechargement ou un
+lien direct ne produise pas de page 404.
