@@ -22,7 +22,10 @@ export class Login {
     this.submitted = true;
     if (form.invalid || this.loading()) return;
     this.auth.login({ ...this.credentials, email: this.credentials.email.trim() }).subscribe({
-      next: () => void this.router.navigateByUrl(this.safeReturnUrl()),
+      next: (result) => {
+        // Two-factor step UI is added in a later task.
+        if (result.status === 'authenticated') void this.router.navigateByUrl(this.safeReturnUrl());
+      },
       error: () => undefined,
     });
   }

@@ -26,3 +26,34 @@ export interface AuthResponse {
   expiration: string;
   user: User;
 }
+
+export interface LoginApiResponse {
+  session?: AuthResponse | null;
+  requiresTwoFactor: boolean;
+  twoFactorChallenge?: string | null;
+}
+
+export interface AuthenticatedLogin {
+  status: 'authenticated';
+  session: AuthResponse;
+}
+
+export interface TwoFactorRequired {
+  status: 'twoFactorRequired';
+}
+
+export type LoginResult = AuthenticatedLogin | TwoFactorRequired;
+
+export interface TwoFactorStatus {
+  enabled: boolean;
+  recoveryCodesLeft: number;
+}
+
+export interface TwoFactorSetup {
+  sharedKey: string;
+  authenticatorUri: string;
+}
+
+export interface TwoFactorRecoveryCodes {
+  recoveryCodes: string[];
+}

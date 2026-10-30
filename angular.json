@@ -61,6 +61,14 @@
             }
           },
           "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "tsconfig.spec.json",
+            "buildTarget": "ibankfront:build:development",
+            "runner": "vitest"
+          }
         }
       }
     }
