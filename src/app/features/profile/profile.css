@@ -29,3 +29,70 @@
   border-bottom: 1px solid var(--border);
   padding: 0.8rem 0;
 }
+.security {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  border-radius: 0.45rem;
+  display: grid;
+  gap: 1rem;
+}
+.twofa-status {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 0;
+}
+.twofa-status .on {
+  color: var(--success);
+}
+.setup,
+.codes-box {
+  display: grid;
+  gap: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  padding: 1rem;
+}
+.codes-box {
+  background: var(--copper-soft);
+}
+.codes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem;
+  font-family: monospace;
+  font-weight: 700;
+}
+.qr {
+  justify-self: center;
+  background: white;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+}
+.manual code {
+  font-weight: 700;
+  word-break: break-all;
+}
+.setup input {
+  padding: 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  font: inherit;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.form-error {
+  color: var(--danger);
+  font-weight: 700;
+}
+.button.danger {
+  color: var(--danger);
+  border-color: var(--danger);
+}

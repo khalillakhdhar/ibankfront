@@ -28,3 +28,159 @@
     </p>
   </section>
 }
+
+<section class="security" aria-labelledby="twofa-title">
+  <h2 id="twofa-title">Double authentification</h2>
+
+  @if (statusError(); as message) {
+    <p class="form-error" role="alert">{{ message }}</p>
+    <button class="button" type="button" (click)="loadStatus()">Réessayer</button>
+  }
+
+  @if (status(); as current) {
+    <p class="twofa-status">
+      <span>Statut</span>
+      <strong [class.on]="current.enabled">{{ current.enabled ? 'Activée' : 'Désactivée' }}</strong>
+    </p>
+    @if (current.enabled) {
+      <p class="twofa-status">
+        <span>Codes de récupération restants</span>
+        <strong data-test="recovery-left">{{ current.recoveryCodesLeft }}</strong>
+      </p>
+    }
+  }
+
+  @if (recoveryCodes().length) {
+    <div class="codes-box" role="region" aria-labelledby="codes-title">
+      <h3 id="codes-title">Enregistrez ces codes maintenant</h3>
+      <p>
+        Chaque code de récupération n'est utilisable qu'une seule fois et ne sera plus jamais
+        affiché. Conservez-les dans un endroit sûr : ils vous permettent de vous connecter si vous
+        perdez votre téléphone.
+      </p>
+      <ul class="codes">
+        @for (item of recoveryCodes(); track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+      <button
+        class="button primary"
+        type="button"
+        data-test="codes-done"
+        (click)="dismissRecoveryCodes()"
+      >
+        J'ai enregistré mes codes
+      </button>
+    </div>
+  }
+
+  @if (setup(); as current) {
+    <div class="setup">
+      <h3>Configurer Google Authenticator</h3>
+      <ol>
+        <li>
+          Installez Google Authenticator (ou une application TOTP équivalente) sur votre téléphone.
+        </li>
+        <li>Scannez le QR code ci-dessous, ou saisissez la clé manuellement.</li>
+        <li>Saisissez le code à 6 chiffres affiché pour confirmer.</li>
+      </ol>
+      @if (qrDataUrl(); as url) {
+        <img
+          class="qr"
+          [src]="url"
+          width="200"
+          height="200"
+          alt="QR code à scanner avec votre application d'authentification"
+        />
+      }
+      <p class="manual">
+        Clé de configuration manuelle :
+        <code data-test="manual-key">{{ current.sharedKey }}</code>
+      </p>
+      <form data-test="enable-form" (ngSubmit)="enable()" #enableForm="ngForm">
+        <label for="setup-code">Code de vérification</label>
+        <input
+          id="setup-code"
+          name="code"
+          [(ngModel)]="code"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+          required
+        />
+        <div class="actions">
+          <button class="button primary" type="submit" [disabled]="busy()">Activer</button>
+          <button class="button" type="button" data-test="cancel-setup" (click)="cancelSetup()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  @if (action(); as current) {
+    <form class="setup" data-test="action-form" (ngSubmit)="confirmAction()">
+      <h3>
+        {{
+          current === 'disable'
+            ? 'Désactiver la double authentification'
+            : 'Générer de nouveaux codes de récupération'
+        }}
+      </h3>
+      <p>
+        Saisissez un code actuel de votre application d'authentification
+        {{ current === 'regenerate' ? '. Les anciens codes seront invalidés.' : '.' }}
+      </p>
+      <label for="action-code">Code de vérification</label>
+      <input
+        id="action-code"
+        name="code"
+        [(ngModel)]="code"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        required
+      />
+      <div class="actions">
+        <button class="button primary" type="submit" [disabled]="busy()">Confirmer</button>
+        <button class="button" type="button" (click)="cancelAction()">Annuler</button>
+      </div>
+    </form>
+  }
+
+  @if (error(); as message) {
+    <p class="form-error" role="alert">{{ message }}</p>
+  }
+
+  @if (status(); as current) {
+    @if (!current.enabled && !setup()) {
+      <button
+        class="button primary"
+        type="button"
+        data-test="start-setup"
+        [disabled]="busy()"
+        (click)="startSetup()"
+      >
+        Activer la double authentification
+      </button>
+    }
+    @if (current.enabled && !action()) {
+      <div class="actions">
+        <button
+          class="button"
+          type="button"
+          data-test="open-regenerate"
+          (click)="openAction('regenerate')"
+        >
+          Régénérer les codes de récupération
+        </button>
+        <button
+          class="button danger"
+          type="button"
+          data-test="open-disable"
+          (click)="openAction('disable')"
+        >
+          Désactiver
+        </button>
+      </div>
+    }
+  }
+</section>

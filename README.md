@@ -2,11 +2,15 @@
 
 Application Angular 21 de formation connectée au backend
 [`BankManagementStarter`](https://github.com/khalillakhdhar/BankManagementStarter).
-La branche `feature/two-factor-auth` est consacrée à l’interface de
-l’authentification à deux facteurs avec Google Authenticator.
+La branche `feature/two-factor-auth` ajoute l’interface de l’authentification à
+deux facteurs avec Google Authenticator.
 
-> État actuel : le parcours 2FA est conçu mais le code fonctionnel reste à
-> implémenter. Ce README décrit pas à pas les changements frontend prévus.
+> **État actuel : implémenté.** La connexion en deux étapes et la gestion du 2FA
+> depuis **Mon profil** sont fonctionnelles et testées (Vitest).
+
+> **Aucune clé API Google n’est nécessaire.** TOTP est un standard ouvert
+> (RFC 6238) calculé localement par ASP.NET Core Identity côté backend ; le QR
+> code est généré dans le navigateur avec le paquet npm `qrcode`.
 
 ## 1. Récupérer la branche
 
@@ -24,265 +28,133 @@ Ouvrir `http://localhost:4200`. L’API configurée est :
 https://bank.135-125-182-42.nip.io/api
 ```
 
-## 2. Faut-il une API key Google ?
+## 2. Activer Google Authenticator (pas à pas)
 
-Non. Google Authenticator utilise le standard TOTP et ne nécessite ni Google
-Cloud, ni OAuth, ni API Google, ni API key.
+1. Installer **Google Authenticator** (ou une application TOTP équivalente) sur
+   le téléphone.
+2. Se connecter à iBank et ouvrir **Mon profil**.
+3. Cliquer sur **Activer la double authentification** : un QR code et une clé
+   manuelle s’affichent.
+4. Dans Google Authenticator : `+` puis **Scanner un code QR**. Sans caméra :
+   **Saisir une clé de configuration** et recopier la clé manuelle.
+5. Saisir le code à six chiffres affiché par l’application puis cliquer sur
+   **Activer**.
+6. **Enregistrer les codes de récupération** affichés : ils ne sont montrés
+   qu’une seule fois et chacun est à usage unique. Cliquer sur **J’ai
+   enregistré mes codes**.
+7. Se déconnecter puis vérifier la nouvelle connexion en deux étapes.
 
-Le backend fournit une URI `otpauth://` contenant la clé secrète :
+Une fois le 2FA actif, le profil permet de **régénérer les codes de
+récupération** ou de **désactiver** le 2FA ; chaque action demande un code
+Authenticator valide.
 
-```text
-otpauth://totp/iBank:utilisateur@example.com?secret=CLE&issuer=iBank
-```
+## 3. Connexion en deux étapes
 
-Le frontend convertira cette URI en QR code directement dans le navigateur. La
-clé ne sera jamais envoyée à un générateur de QR code externe.
+1. **Étape 1** : e-mail et mot de passe → `POST /Auth/login`. Sans 2FA, la
+   session est créée et le tableau de bord s’ouvre. Avec 2FA, le serveur
+   renvoie `requiresTwoFactor: true` et un challenge valable 5 minutes.
+2. **Étape 2** : code Google Authenticator (ou **Utiliser un code de
+   récupération**) → `POST /Auth/login/2fa`. La session n’est créée qu’après
+   réception du JWT final.
+3. **Retour à la connexion** efface immédiatement le challenge en mémoire.
+   Recharger la page pendant le challenge ramène à l’étape 1 : le challenge
+   n’est volontairement jamais persisté.
 
-## 3. Fichiers frontend concernés
+Après 5 codes invalides consécutifs, le compte est verrouillé 15 minutes
+(message d’erreur générique, identique à un mauvais code).
 
-Les modifications prévues concernent principalement :
+## 4. Endpoints utilisés
+
+Chemins relatifs à l’URL de l’API ci-dessus (`/api/Auth/...`). Les routes
+`2fa/*` envoient le JWT (`Authorization: Bearer`). Exemples fictifs.
+
+| Méthode | Route                     | Requête                                      | Réponse                                                                                                                  |
+| ------- | ------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| POST    | `Auth/login`              | `{ "email", "password" }`                    | `{ "requiresTwoFactor": false, "session": {…} }` ou `{ "requiresTwoFactor": true, "twoFactorChallenge": "<challenge>" }` |
+| POST    | `Auth/login/2fa`          | `{ "twoFactorChallenge", "code": "123456" }` | `{ "token", "expiration", "user" }`                                                                                      |
+| GET     | `Auth/2fa/status`         | —                                            | `{ "enabled": true, "recoveryCodesLeft": 8 }`                                                                            |
+| POST    | `Auth/2fa/setup`          | `{}`                                         | `{ "sharedKey": "ABCD EFGH", "authenticatorUri": "otpauth://totp/…" }`                                                   |
+| POST    | `Auth/2fa/enable`         | `{ "code": "123456" }`                       | `{ "recoveryCodes": ["aaaaa-bbbbb", …] }`                                                                                |
+| POST    | `Auth/2fa/recovery-codes` | `{ "code": "123456" }`                       | `{ "recoveryCodes": [...] }`                                                                                             |
+| POST    | `Auth/2fa/disable`        | `{ "code": "123456" }`                       | `204 No Content`                                                                                                         |
+
+Le champ `code` de `login/2fa` accepte un code TOTP ou un code de récupération.
+Les erreurs de code renvoient `400 { "message": "Code ou jeton invalide." }` ;
+le frontend affiche ce message dans une zone `role="alert"`.
+
+> Changement de format : `POST /Auth/login` renvoie désormais le JWT sous
+> `session`. Les clients non Angular doivent être adaptés.
+
+## 5. Fichiers frontend
 
 ```text
 src/app/
-├── models/auth.model.ts
-├── services/auth.service.ts
-├── features/auth/login/
-│   ├── login.ts
-│   ├── login.html
-│   └── login.css
+├── models/auth.model.ts                  LoginResult, TwoFactor* (client typé)
+├── services/auth.service.ts              login, completeTwoFactorLogin, méthodes 2FA
+├── features/auth/login/                  connexion en deux étapes
 └── features/profile/
-    ├── profile.ts
-    ├── profile.html
-    └── profile.css
+    ├── profile.ts | .html | .css         gestion 2FA
+    ├── qr-renderer.ts                    QR code local (jeton d’injection QR_RENDERER)
+    └── profile.spec.ts                   tests
 ```
 
-Un composant spécialisé pourra être ajouté pour afficher le QR code et les
-recovery codes sans surcharger la page Profil.
+## 6. Sécurité des secrets
 
-## 4. Adapter les modèles d’authentification
+- La clé partagée, l’URI `otpauth://`, le QR code et les codes de récupération
+  restent uniquement dans l’état du composant Profil ; ils sont effacés à
+  l’annulation, après la désactivation, quand on quitte la vue de
+  configuration et à la destruction du composant.
+- Ils ne sont jamais écrits dans `localStorage`/`sessionStorage`, jamais
+  journalisés et jamais envoyés à un service tiers.
+- Si le QR code ne peut pas être généré, la clé manuelle reste disponible.
+- Seule la session JWT est stockée (comme avant) ; ni le challenge ni la clé ne
+  le sont.
 
-La réponse de `POST /Auth/login` aura deux formes.
+## 7. Journal des changements (frontend)
 
-### Connexion terminée sans 2FA
+- Infrastructure de tests Vitest + jsdom pour Angular (`npm test`).
+- Client typé : modèles `LoginResult`, `TwoFactorStatus`, `TwoFactorSetup`,
+  `TwoFactorRecoveryCodes` ; `AuthService` gère le challenge en mémoire et les
+  méthodes de gestion 2FA.
+- Connexion en deux étapes avec code de récupération et retour arrière.
+- Gestion 2FA dans le profil : statut, QR code local, clé manuelle,
+  confirmation par code, affichage unique des codes de récupération,
+  régénération, désactivation, gestion des erreurs API (dont le 400
+  générique).
+- Dépendances ajoutées : `qrcode`, `@types/qrcode` (dev), `vitest`, `jsdom`
+  (dev). Le build signale un avertissement « `qrcode` n’est pas ESM »
+  (sans conséquence fonctionnelle).
 
-```json
-{
-  "requiresTwoFactor": false,
-  "token": "jwt",
-  "expiration": "2026-10-30T16:00:00Z",
-  "user": {}
-}
-```
-
-### Second facteur demandé
-
-```json
-{
-  "requiresTwoFactor": true,
-  "twoFactorChallenge": "challenge-signe-temporaire"
-}
-```
-
-`auth.model.ts` devra représenter explicitement ces deux résultats afin
-d’empêcher le frontend de considérer un challenge comme une session complète.
-
-## 5. Adapter `AuthService`
-
-`AuthService.login()` continuera d’envoyer l’e-mail et le mot de passe.
-
-- Si la réponse contient une session JWT complète, le comportement actuel est
-  conservé.
-- Si `requiresTwoFactor` vaut `true`, aucun élément n’est écrit dans
-  `localStorage`. Le challenge est conservé uniquement en mémoire.
-
-Une nouvelle méthode enverra le code :
-
-```http
-POST /Auth/login/2fa
-```
-
-```json
-{
-  "challenge": "challenge-signe-temporaire",
-  "code": "123456",
-  "useRecoveryCode": false
-}
-```
-
-Le service ne créera la session locale qu’après réception du JWT final.
-
-## 6. Modifier l’écran de connexion
-
-Le formulaire aura deux étapes dans le même écran.
-
-### Étape 1 — mot de passe
-
-1. L’utilisateur saisit son e-mail et son mot de passe.
-2. Le frontend appelle `POST /Auth/login`.
-3. Sans 2FA, il ouvre directement le tableau de bord.
-4. Avec 2FA, il affiche l’étape de validation du code.
-
-### Étape 2 — code Google Authenticator
-
-1. L’utilisateur ouvre Google Authenticator.
-2. Il saisit le code à six chiffres affiché sur son téléphone.
-3. Le frontend appelle `POST /Auth/login/2fa`.
-4. Après validation, il stocke la session et ouvre le tableau de bord.
-
-L’écran proposera aussi :
-
-- **Utiliser un code de récupération** ;
-- **Retour à la connexion**, qui efface immédiatement le challenge en mémoire ;
-- un message générique lorsque le challenge ou le code est invalide ;
-- un état de chargement empêchant les doubles soumissions.
-
-## 7. Ajouter la gestion 2FA au profil
-
-La page **Mon profil** commencera par appeler :
-
-```http
-GET /Auth/2fa/status
-```
-
-Elle affichera si le 2FA est actif et le nombre de recovery codes disponibles.
-
-### Préparer l’association
-
-Le bouton **Configurer Google Authenticator** appellera :
-
-```http
-POST /Auth/2fa/setup
-```
-
-Le backend renverra :
-
-```json
-{
-  "sharedKey": "CLE-MANUELLE",
-  "authenticatorUri": "otpauth://totp/..."
-}
-```
-
-Le frontend affichera :
-
-- le QR code généré localement ;
-- la clé manuelle avec un bouton de copie ;
-- les instructions pour Google Authenticator ;
-- un champ pour confirmer le premier code à six chiffres.
-
-### Activer
-
-Après le scan, le frontend enverra le premier code à :
-
-```http
-POST /Auth/2fa/enable
-```
-
-Si le code est valide, le backend renverra les recovery codes. Ils seront
-affichés une seule fois avec une consigne claire : les conserver hors de
-l’application.
-
-### Régénérer les recovery codes
-
-L’utilisateur devra saisir un code Google Authenticator valide avant l’appel :
-
-```http
-POST /Auth/2fa/recovery-codes
-```
-
-Les nouveaux codes remplaceront tous les anciens.
-
-### Désactiver
-
-L’utilisateur devra confirmer un code Google Authenticator avant l’appel :
-
-```http
-POST /Auth/2fa/disable
-```
-
-Une boîte de confirmation expliquera que les anciens recovery codes ne seront
-plus utilisables.
-
-## 8. Générer le QR code localement
-
-Le frontend utilisera une bibliothèque locale compatible Angular, installée
-depuis npm, pour convertir `authenticatorUri` en image ou en canvas. Aucun appel
-HTTP ne doit contenir cette URI.
-
-Exigences :
-
-- ne jamais journaliser `sharedKey` ou `authenticatorUri` ;
-- effacer la configuration de l’état du composant en quittant la page ;
-- ne pas enregistrer la clé dans `localStorage` ou `sessionStorage` ;
-- conserver un contraste et un niveau de correction suffisants pour le scan ;
-- toujours proposer la clé manuelle si la caméra ne peut pas lire le QR code.
-
-## 9. Parcours complet d’activation
-
-1. Se connecter à iBank.
-2. Ouvrir **Mon profil**.
-3. Choisir **Configurer Google Authenticator**.
-4. Ouvrir Google Authenticator sur le téléphone.
-5. Appuyer sur `+`, puis **Scanner un code QR**.
-6. Scanner le QR affiché dans iBank.
-7. Recopier le code à six chiffres dans le frontend.
-8. Valider l’activation.
-9. Enregistrer les recovery codes dans un emplacement sûr.
-10. Se déconnecter puis vérifier la nouvelle connexion en deux étapes.
-
-## 10. États et erreurs à gérer
-
-L’interface devra gérer explicitement :
-
-- challenge expiré : retour au formulaire e-mail/mot de passe ;
-- code TOTP incorrect : rester sur la seconde étape ;
-- recovery code incorrect ou déjà utilisé ;
-- perte de connexion au backend ;
-- QR code impossible à générer : afficher la clé manuelle ;
-- 401 reçu après connexion : supprimer la session comme aujourd’hui ;
-- rechargement pendant le challenge : revenir à la première étape, puisque le
-  challenge n’est volontairement pas persisté.
-
-## 11. Tests et vérifications
-
-Les tests frontend devront vérifier :
-
-- la connexion existante sans 2FA ;
-- la transition mot de passe → code TOTP ;
-- l’absence de session avant le JWT final ;
-- la validation par Authenticator et par recovery code ;
-- l’effacement du challenge lors du retour ;
-- l’affichage et la suppression en mémoire de la clé de configuration ;
-- les états d’activation, de régénération et de désactivation ;
-- les erreurs HTTP et les doubles soumissions.
-
-Commandes de vérification :
+## 8. Tests et vérifications
 
 ```powershell
 npm ci
+npm test -- --watch=false
 npm run build
 ```
 
-Les tests backend associés devront également réussir :
+Backend associé (dépôt `BankManagementStarter`) :
 
 ```powershell
 dotnet build BankManagement.sln --configuration Release -warnaserror
 dotnet test BankManagement.sln --configuration Release
 ```
 
-## 12. Identifiants et contexte de formation
+## 9. Identifiants et contexte de formation
 
 ```text
 Administrateur : admin@bank.local / Admin123!
 Agent : agent.test.vps@bank.local / TestAgent123!
 ```
 
-La session JWT actuelle est stockée dans `localStorage` pour les besoins de la
-formation. Le challenge 2FA et la clé Authenticator ne devront jamais y être
-stockés. Ces identifiants ne doivent pas être utilisés avec des données réelles.
+La session JWT est stockée dans `localStorage` pour les besoins de la
+formation. Ces identifiants ne doivent pas être utilisés avec des données
+réelles.
 
-## 13. Déploiement
+## 10. Déploiement
 
 La branche `feature/two-factor-auth` doit d’abord être testée avec le backend de
-la même branche. Après validation des deux projets, elle pourra être fusionnée
-dans `master`, ce qui déclenchera le déploiement Vercel de production.
+la même branche (voir la section « Déploiement sur le VPS » du README backend :
+HTTPS, horloge NTP, trousseau Data Protection). Après validation des deux
+projets, elle pourra être fusionnée dans `master`, ce qui déclenche le
+déploiement Vercel de production.
