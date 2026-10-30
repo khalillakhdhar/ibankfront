@@ -115,3 +115,41 @@ input:focus {
     display: none;
   }
 }
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  color: var(--copper);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.link-button:hover {
+  text-decoration: underline;
+}
+#code-error:empty {
+  display: none;
+}
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0.4rem 0;
+  color: var(--copper);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.link-button:hover {
+  text-decoration: underline;
+}
+.link-button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--copper) 24%, transparent);
+}
+.link-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

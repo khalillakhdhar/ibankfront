@@ -10,47 +10,100 @@
   </section>
   <section class="form-panel">
     <div class="login-card">
-      <p class="eyebrow">ACCÈS SÉCURISÉ</p>
-      <h2>Bienvenue</h2>
-      <p class="intro">Connectez-vous avec votre adresse professionnelle.</p>
-      <form #loginForm="ngForm" (ngSubmit)="submit(loginForm)" novalidate>
-        <label for="email">Adresse e-mail</label>
-        <input
-          #email="ngModel"
-          id="email"
-          name="email"
-          type="email"
-          autocomplete="username"
-          [(ngModel)]="credentials.email"
-          required
-          email
-        />
-        @if ((email.touched || submitted) && email.errors?.['required']) {
-          <p class="field-error">L’adresse e-mail est obligatoire.</p>
-        }
-        @if ((email.touched || submitted) && email.errors?.['email']) {
-          <p class="field-error">Saisissez une adresse e-mail valide.</p>
-        }
-        <label for="password">Mot de passe</label>
-        <input
-          #password="ngModel"
-          id="password"
-          name="password"
-          type="password"
-          autocomplete="current-password"
-          [(ngModel)]="credentials.password"
-          required
-        />
-        @if ((password.touched || submitted) && password.invalid) {
-          <p class="field-error">Le mot de passe est obligatoire.</p>
-        }
-        @if (error()) {
-          <p class="alert" role="alert">{{ error() }}</p>
-        }
-        <button class="button primary" type="submit" [disabled]="loading()">
-          {{ loading() ? 'Connexion…' : 'Se connecter' }}
-        </button>
-      </form>
+      @if (twoFactorStep()) {
+        <p class="eyebrow">VÉRIFICATION EN DEUX ÉTAPES</p>
+        <h2>Code de vérification</h2>
+        <p class="intro">
+          {{
+            useRecoveryCode
+              ? 'Saisissez l’un de vos codes de récupération.'
+              : 'Saisissez le code à 6 chiffres affiché par votre application d’authentification.'
+          }}
+        </p>
+        <form #codeForm="ngForm" (ngSubmit)="submitCode(codeForm)" novalidate>
+          <label for="code">{{ useRecoveryCode ? 'Code de récupération' : 'Code à 6 chiffres' }}</label>
+          <input
+            #code="ngModel"
+            id="code"
+            name="code"
+            type="text"
+            [attr.inputmode]="useRecoveryCode ? 'text' : 'numeric'"
+            [attr.autocomplete]="useRecoveryCode ? 'off' : 'one-time-code'"
+            [attr.maxlength]="useRecoveryCode ? 64 : 7"
+            [attr.pattern]="useRecoveryCode ? null : '[0-9 ]*'"
+            [attr.aria-describedby]="error() ? 'code-error' : null"
+            autocapitalize="off"
+            spellcheck="false"
+            [(ngModel)]="twoFactor.code"
+            required
+          />
+          @if ((code.touched || codeSubmitted) && code.invalid) {
+            <p class="field-error">Le code est obligatoire.</p>
+          }
+          <div id="code-error" aria-live="assertive" role="alert">
+            @if (error()) {
+              <p class="alert">{{ error() }}</p>
+            }
+          </div>
+          <button class="button primary" type="submit" [disabled]="loading()">
+            {{ loading() ? 'Vérification…' : 'Vérifier' }}
+          </button>
+          <button
+            class="link-button"
+            type="button"
+            data-test="toggle-recovery"
+            [disabled]="loading()"
+            (click)="toggleRecoveryCode()"
+          >
+            {{ useRecoveryCode ? 'Utiliser le code de l’application' : 'Utiliser un code de récupération' }}
+          </button>
+          <button class="link-button" type="button" data-test="cancel-2fa" (click)="cancel()">
+            Annuler et revenir à la connexion
+          </button>
+        </form>
+      } @else {
+        <p class="eyebrow">ACCÈS SÉCURISÉ</p>
+        <h2>Bienvenue</h2>
+        <p class="intro">Connectez-vous avec votre adresse professionnelle.</p>
+        <form #loginForm="ngForm" (ngSubmit)="submit(loginForm)" novalidate>
+          <label for="email">Adresse e-mail</label>
+          <input
+            #email="ngModel"
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            [(ngModel)]="credentials.email"
+            required
+            email
+          />
+          @if ((email.touched || submitted) && email.errors?.['required']) {
+            <p class="field-error">L’adresse e-mail est obligatoire.</p>
+          }
+          @if ((email.touched || submitted) && email.errors?.['email']) {
+            <p class="field-error">Saisissez une adresse e-mail valide.</p>
+          }
+          <label for="password">Mot de passe</label>
+          <input
+            #password="ngModel"
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            [(ngModel)]="credentials.password"
+            required
+          />
+          @if ((password.touched || submitted) && password.invalid) {
+            <p class="field-error">Le mot de passe est obligatoire.</p>
+          }
+          @if (error()) {
+            <p class="alert" role="alert">{{ error() }}</p>
+          }
+          <button class="button primary" type="submit" [disabled]="loading()">
+            {{ loading() ? 'Connexion…' : 'Se connecter' }}
+          </button>
+        </form>
+      }
     </div>
   </section>
 </main>
