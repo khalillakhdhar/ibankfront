@@ -57,7 +57,13 @@
           >
             {{ useRecoveryCode ? 'Utiliser le code de l’application' : 'Utiliser un code de récupération' }}
           </button>
-          <button class="link-button" type="button" data-test="cancel-2fa" (click)="cancel()">
+          <button
+            class="link-button"
+            type="button"
+            data-test="cancel-2fa"
+            [disabled]="loading()"
+            (click)="cancel()"
+          >
             Annuler et revenir à la connexion
           </button>
         </form>

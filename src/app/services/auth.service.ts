@@ -75,11 +75,17 @@ export class AuthService {
       })
       .pipe(
         tap((session) => {
+          // Cancelled (or superseded) while in flight: never create a session afterwards.
+          if (this.challengeSignal() !== twoFactorChallenge) {
+            throw new Error('Two-factor login was cancelled.');
+          }
           this.startSession(session);
           this.challengeSignal.set(null);
         }),
         catchError((error) => {
-          this.error.set(this.apiError.message(error, 'Code de vérification invalide.'));
+          if (this.challengeSignal() === twoFactorChallenge) {
+            this.error.set(this.apiError.message(error, 'Code de vérification invalide.'));
+          }
           return throwError(() => error);
         }),
         finalize(() => this.loading.set(false)),

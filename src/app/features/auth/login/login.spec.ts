@@ -168,9 +168,11 @@ describe('Login two-step flow', () => {
   it('cancel returns to the credentials form', async () => {
     await create();
     await fillCredentialsAndSubmit();
+    type('#code', '123456');
     await click('[data-test="cancel-2fa"]');
 
     expect(auth.cancelTwoFactorLogin).toHaveBeenCalledTimes(1);
+    expect(q<HTMLInputElement>('#password')!.value).toBe('');
     expect(q('#password')).not.toBeNull();
     expect(q('#code')).toBeNull();
     expect(router.navigateByUrl).not.toHaveBeenCalled();
@@ -216,5 +218,46 @@ describe('Login two-step flow', () => {
     await fillCredentialsAndSubmit();
     expect(q('[aria-live="assertive"]')).not.toBeNull();
     expect(q<HTMLInputElement>('#code')!.getAttribute('maxlength')).toBe('7');
+  });
+
+  it('starts in code mode again after cancelling from recovery mode', async () => {
+    await create();
+    await fillCredentialsAndSubmit();
+    await click('[data-test="toggle-recovery"]');
+    await click('[data-test="cancel-2fa"]');
+    await fillCredentialsAndSubmit();
+
+    expect(q<HTMLInputElement>('#code')!.getAttribute('inputmode')).toBe('numeric');
+    expect(q<HTMLInputElement>('#code')!.value).toBe('');
+  });
+
+  it('disables cancel while a verification is in flight', async () => {
+    auth.completeTwoFactorLogin.mockImplementation(() => {
+      auth.loading.set(true);
+      return new Subject<AuthResponse>();
+    });
+    await create();
+    await fillCredentialsAndSubmit();
+    type('#code', '123456');
+    await fixture.whenStable();
+    await submit();
+
+    expect(q<HTMLButtonElement>('[data-test="cancel-2fa"]')!.disabled).toBe(true);
+  });
+
+  it('does not navigate when a verification completes after the challenge is gone', async () => {
+    const pending = new Subject<AuthResponse>();
+    auth.completeTwoFactorLogin.mockReturnValue(pending);
+    await create();
+    await fillCredentialsAndSubmit();
+    type('#code', '123456');
+    await fixture.whenStable();
+    await submit();
+    challenge.set(null);
+    pending.next(session);
+    pending.complete();
+    await fixture.whenStable();
+
+    expect(router.navigateByUrl).not.toHaveBeenCalled();
   });
 });

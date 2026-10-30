@@ -39,7 +39,10 @@ export class Login {
     this.codeSubmitted = true;
     if (form.invalid || this.loading()) return;
     this.auth.completeTwoFactorLogin(this.twoFactor.code, this.useRecoveryCode).subscribe({
-      next: () => this.finish(),
+      next: () => {
+        // Ignore a completion that arrives after the challenge was cancelled.
+        if (this.twoFactorStep()) this.finish();
+      },
       error: () => undefined,
     });
   }
@@ -53,6 +56,7 @@ export class Login {
     this.auth.cancelTwoFactorLogin();
     this.credentials.password = '';
     this.submitted = false;
+    this.useRecoveryCode = false;
     this.resetCodeStep();
   }
 

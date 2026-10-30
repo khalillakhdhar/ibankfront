@@ -131,6 +131,19 @@ describe('AuthService two-factor client', () => {
     expect(service.twoFactorChallenge()).toBeNull();
   });
 
+  it('does not persist a session or set an error when cancelled while verifying', () => {
+    startChallenge();
+    let errored = false;
+    service.completeTwoFactorLogin('123456', false).subscribe({ error: () => (errored = true) });
+    service.cancelTwoFactorLogin();
+    http.expectOne(`${API}/Auth/login/2fa`).flush(session);
+
+    expect(errored).toBe(true);
+    expect(storage.write).not.toHaveBeenCalled();
+    expect(service.session()).toBeNull();
+    expect(service.error()).toBeNull();
+  });
+
   it('maps the 2FA management endpoints', () => {
     const results: unknown[] = [];
     service.twoFactorStatus().subscribe((r) => results.push(r));
