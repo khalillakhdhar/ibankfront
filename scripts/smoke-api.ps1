@@ -72,7 +72,17 @@ $login = Invoke-ApiRequest -Method POST -Path '/Auth/login' -Body @{
 }
 if ($login.Status -ne 200) { throw "Login failed with HTTP $($login.Status)." }
 $session = $login.Content | ConvertFrom-Json
-$token = $session.token
+if ($session.PSObject.Properties.Name -contains 'requiresTwoFactor' -and $session.requiresTwoFactor -eq $true) {
+    throw 'Le compte de smoke test a la double authentification activee ; utiliser un compte sans 2FA.'
+}
+# Nouvelle forme : { session: { token }, requiresTwoFactor }. Ancienne forme (serveur non redeploye) : { token }.
+$token = $null
+if ($session.PSObject.Properties.Name -contains 'session' -and $null -ne $session.session) {
+    $token = $session.session.token
+}
+elseif ($session.PSObject.Properties.Name -contains 'token') {
+    $token = $session.token
+}
 if (-not $token) { throw 'Login response did not include a token.' }
 
 $collections = @{}
@@ -110,6 +120,17 @@ Invoke-ApiRequest -Method DELETE -Path '/TypesComptes/0' -Token $token -Expected
 Invoke-ApiRequest -Method POST -Path '/Transactions/depot' -Body $invalid -Token $token -Expected '4xx' | Out-Null
 Invoke-ApiRequest -Method POST -Path '/Transactions/retrait' -Body $invalid -Token $token -Expected '4xx' | Out-Null
 Invoke-ApiRequest -Method POST -Path '/Transactions/virement' -Body $invalid -Token $token -Expected '4xx' | Out-Null
+
+# Controles 2FA sans secret et sans mutation : routes protegees sans jeton, puis second facteur invalide.
+Invoke-ApiRequest -Method GET -Path '/Auth/2fa/status' -Expected '4xx' | Out-Null
+Invoke-ApiRequest -Method POST -Path '/Auth/2fa/setup' -Body $invalid -Expected '4xx' | Out-Null
+Invoke-ApiRequest -Method POST -Path '/Auth/2fa/enable' -Body $invalid -Expected '4xx' | Out-Null
+Invoke-ApiRequest -Method POST -Path '/Auth/2fa/recovery-codes' -Body $invalid -Expected '4xx' | Out-Null
+Invoke-ApiRequest -Method POST -Path '/Auth/2fa/disable' -Body $invalid -Expected '4xx' | Out-Null
+Invoke-ApiRequest -Method POST -Path '/Auth/login/2fa' -Body @{
+    twoFactorChallenge = 'invalid-challenge'
+    code = '000000'
+} -Expected '4xx' | Out-Null
 
 $timestamp = Get-Date -Format 'yyyy-MM-dd HH:mm:ss K'
 $lines = @(
